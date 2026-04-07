@@ -1,7 +1,8 @@
 import { Check } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { EarlyAccessDialog } from "@/components/marketing/early-access-dialog"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import type { Language } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 type PricingCardProps = {
@@ -11,6 +12,8 @@ type PricingCardProps = {
   description: string
   highlights: string[]
   featured?: boolean
+  language: Language
+  ctaLabel: string
 }
 
 export function PricingCard({
@@ -20,6 +23,8 @@ export function PricingCard({
   description,
   highlights,
   featured,
+  language,
+  ctaLabel,
 }: PricingCardProps) {
   return (
     <Card
@@ -49,9 +54,13 @@ export function PricingCard({
         </ul>
       </CardContent>
       <CardFooter className="border-border/70 bg-transparent">
-        <Button className="w-full" variant={featured ? "default" : "outline"}>
-          Request early access
-        </Button>
+        <EarlyAccessDialog
+          triggerLabel={ctaLabel}
+          triggerVariant={featured ? "default" : "outline"}
+          triggerSize="default"
+          triggerClassName="w-full"
+          language={language}
+        />
       </CardFooter>
     </Card>
   )
