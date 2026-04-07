@@ -1,4 +1,4 @@
-import { CircleCheck, CircleDashed } from "lucide-react"
+import { Circle, CircleCheck } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -39,7 +39,7 @@ export function AppPreviewCard({
               {meal.done ? (
                 <CircleCheck className="size-4 text-primary" />
               ) : (
-                <CircleDashed className="size-4 text-muted-foreground" />
+                <Circle className="size-4 text-muted-foreground" />
               )}
               <span>{meal.label}</span>
             </li>
