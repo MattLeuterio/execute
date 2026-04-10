@@ -14,7 +14,27 @@ export const metadata: Metadata = {
     default: "Execute",
     template: "%s · Execute",
   },
-  description: "Follow your plan. Step by step.",
+  description:
+    "Execute aiuta i team a trasformare i piani strategici in risultati misurabili, con chiarezza operativa e avanzamento continuo.",
+  openGraph: {
+    title: "Execute",
+    description:
+      "Execute aiuta i team a trasformare i piani strategici in risultati misurabili, con chiarezza operativa e avanzamento continuo.",
+    url: "https://executebase.com",
+    siteName: "Execute",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Execute",
+    description:
+      "Execute aiuta i team a trasformare i piani strategici in risultati misurabili, con chiarezza operativa e avanzamento continuo.",
+  },
+  icons: {
+    icon: [{ url: "/favicon.ico", sizes: "any" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({

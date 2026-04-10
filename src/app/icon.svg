@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><path d="M16.91 14.0001L8.33568 0.5H0.909912L9.48434 14.0001L0.910009 27.5H8.33568L16.91 14.0001Z" fill="url(#paint0_linear_283_1528)"></path><path d="M11.0702 14.0001L19.6444 0.5H27.0702L18.4958 14.0001L27.0701 27.5H19.6444L11.0702 14.0001Z" stroke="url(#paint1_linear_283_1528)"></path><path d="M16.91 14.0001L8.33568 0.5H0.909912L9.48434 14.0001L0.910009 27.5H8.33568L16.91 14.0001Z" stroke="url(#paint2_linear_283_1528)"></path><defs>
+<linearGradient id="paint0_linear_283_1528" x1="8.90991" y1="0.5" x2="8.90991" y2="27.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#34C759"></stop>
+<stop offset="1" stop-color="#19612B"></stop>
+</linearGradient>
+<linearGradient id="paint1_linear_283_1528" x1="8.90991" y1="0.5" x2="8.90991" y2="27.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#34C759"></stop>
+<stop offset="1" stop-color="#19612B"></stop>
+</linearGradient>
+<linearGradient id="paint2_linear_283_1528" x1="8.90991" y1="0.5" x2="8.90991" y2="27.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#34C759"></stop>
+<stop offset="1" stop-color="#19612B"></stop>
+</linearGradient>
+</defs></svg>
