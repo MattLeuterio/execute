@@ -166,3 +166,12 @@ export const translations = {
 } as const;
 
 export type Language = keyof typeof translations;
+
+export const supportedLocales = ["it", "en"] as const
+export type Locale = (typeof supportedLocales)[number]
+
+export const defaultLocale: Locale = "it"
+
+export function isLocale(value: string): value is Locale {
+  return supportedLocales.includes(value as Locale)
+}

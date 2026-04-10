@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Inter } from "next/font/google";
+
+import { defaultLocale, isLocale } from "@/lib/i18n";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,22 +17,6 @@ export const metadata: Metadata = {
     default: "Execute",
     template: "%s · Execute",
   },
-  description:
-    "Execute aiuta i team a trasformare i piani strategici in risultati misurabili, con chiarezza operativa e avanzamento continuo.",
-  openGraph: {
-    title: "Execute",
-    description:
-      "Execute aiuta i team a trasformare i piani strategici in risultati misurabili, con chiarezza operativa e avanzamento continuo.",
-    url: "https://executebase.com",
-    siteName: "Execute",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Execute",
-    description:
-      "Execute aiuta i team a trasformare i piani strategici in risultati misurabili, con chiarezza operativa e avanzamento continuo.",
-  },
   icons: {
     icon: [{ url: "/favicon.ico", sizes: "any" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
@@ -37,13 +24,17 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const requestHeaders = await headers()
+  const headerLocale = requestHeaders.get("x-execute-locale")
+  const htmlLang = headerLocale && isLocale(headerLocale) ? headerLocale : defaultLocale
+
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased dark`}>
+    <html lang={htmlLang} className={`${inter.variable} h-full antialiased dark`}>
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         {children}
       </body>
