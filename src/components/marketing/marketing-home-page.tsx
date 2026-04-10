@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 
-import { AppPreviewCard } from "@/components/marketing/app-preview-card"
-import { EarlyAccessDialog } from "@/components/marketing/early-access-dialog"
-import { FeatureStep } from "@/components/marketing/feature-step"
-import { InsightsPreviewSection } from "@/components/marketing/insights-preview-section"
-import { LanguageSwitch } from "@/components/marketing/language-switch"
-import { LandingSection } from "@/components/marketing/landing-section"
-import { PricingCard } from "@/components/marketing/pricing-card"
-import logoLockup from "@/components/ui/image/logo-lockup.svg"
-import type { Language } from "@/lib/i18n"
-import { marketingContent, translations } from "@/lib/i18n"
+import { AppPreviewCard } from "@/components/marketing/app-preview-card";
+import { EarlyAccessDialog } from "@/components/marketing/early-access-dialog";
+import { FeatureStep } from "@/components/marketing/feature-step";
+import { InsightsPreviewSection } from "@/components/marketing/insights-preview-section";
+import { LanguageSwitch } from "@/components/marketing/language-switch";
+import { LandingSection } from "@/components/marketing/landing-section";
+import { PricingCard } from "@/components/marketing/pricing-card";
+import logoLockup from "@/components/ui/image/logo-lockup.svg";
+import type { Language } from "@/lib/i18n";
+import { marketingContent, translations } from "@/lib/i18n";
 
 type MarketingHomePageProps = {
-  language: Language
-}
+  language: Language;
+};
 
 export function MarketingHomePage({ language }: MarketingHomePageProps) {
-  const t = translations[language]
-  const localizedMarketingContent = marketingContent[language]
-  const stepLabel = localizedMarketingContent.stepLabel
+  const t = translations[language];
+  const localizedMarketingContent = marketingContent[language];
+  const stepLabel = localizedMarketingContent.stepLabel;
 
   const steps = [
     {
@@ -38,10 +38,10 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
       title: t.step3Title,
       description: t.step3Desc,
     },
-  ]
+  ];
 
-  const previewCards = localizedMarketingContent.previewCards
-  const pricingCards = localizedMarketingContent.pricingCards
+  const previewCards = localizedMarketingContent.previewCards;
+  const pricingCards = localizedMarketingContent.pricingCards;
 
   return (
     <main className="pb-48 flex flex-1 flex-col gap-34">
@@ -49,7 +49,12 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
 
       <div className="mx-auto max-w-5xl space-y-12 pt-56 sm:pt-80">
         <div className="flex justify-center">
-          <Image src={logoLockup} alt={t.brand} className="h-auto w-24 sm:w-32" priority />
+          <Image
+            src={logoLockup}
+            alt={t.brand}
+            className="h-auto w-24 sm:w-32"
+            priority
+          />
         </div>
         <div className="space-y-6 px-4 sm:px-0">
           <h1 className="max-w-2xl text-center text-4xl leading-tight font-semibold tracking-tighter sm:text-7xl">
@@ -68,13 +73,22 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
         flexAlignment="center"
         className="text-center"
         description={t.problemDescription}
-      >
-        <p className="text-2xl leading-tight font-semibold tracking-tight text-center text-primary/85 sm:text-3xl">
-          {t.problemHighlight}
-        </p>
-      </LandingSection>
+      />
+
       <div>
-        <LandingSection id="how-it-works" eyebrow={t.howItWorks} title={t.howTitle}>
+        <p className="text-2xl leading-tight font-semibold tracking-tight text-center text-primary/85 sm:text-4xl">
+          {t.problemHighlightFirstLine}
+        </p>
+        <p className="text-2xl leading-tight font-semibold tracking-tight text-center text-primary/85 sm:text-4xl">
+          {t.problemHighlightSecondLine}
+        </p>
+      </div>
+      <div>
+        <LandingSection
+          id="how-it-works"
+          eyebrow={t.howItWorks}
+          title={t.howTitle}
+        >
           <div className="grid gap-4 sm:grid-cols-3">
             {steps.map((step) => (
               <FeatureStep
@@ -132,14 +146,26 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
       <section className="px-4 pb-14 pt-4 sm:px-6 sm:pb-20">
         <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 p-6 sm:p-10">
           <div className="flex flex-col gap-2">
-            <h2 className="text-3xl leading-tight font-semibold sm:text-5xl">{t.finalTitle}</h2>
-            <p className="text-sm text-center leading-6 text-muted-foreground sm:text-xl">{t.finalDesc}</p>
+            <h2 className="text-3xl text-center leading-tight font-semibold sm:text-5xl">
+              {t.finalTitleFirstLine}
+            </h2>
+            <h2 className="text-3xl text-center leading-tight font-semibold sm:text-5xl">
+              {t.finalTitleSecondLine}
+            </h2>
+            <p className="text-sm text-center leading-6 text-muted-foreground sm:text-xl">
+              {t.finalDesc}
+            </p>
           </div>
           <div className="mt-6">
-            <EarlyAccessDialog language={language} triggerLabel={t.cta} triggerSize={"xl"} initialPlan="growth" />
+            <EarlyAccessDialog
+              language={language}
+              triggerLabel={t.cta}
+              triggerSize={"xl"}
+              initialPlan="growth"
+            />
           </div>
         </div>
       </section>
     </main>
-  )
+  );
 }

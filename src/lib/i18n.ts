@@ -12,7 +12,8 @@ export const translations = {
       "I clienti non falliscono perché il piano è sbagliato. Falliscono perché non lo seguono con costanza.",
     problemDescription:
       "Execute traccia l’aderenza quotidiana automaticamente, senza aggiungere attrito.",
-    problemHighlight: "Risultati migliori, meno supposizioni, piena visibilità sul comportamento dei clienti.",
+    problemHighlightFirstLine: "Risultati migliori, meno supposizioni,",
+    problemHighlightSecondLine: "piena visibilità sul comportamento dei clienti.",
 
     howItWorks: "Come funziona",
     howTitle: "Un sistema semplice per la costanza",
@@ -63,7 +64,8 @@ export const translations = {
 
     cta: "Richiedi accesso anticipato",
 
-    finalTitle: "Inizia a costruire aderenza, un giorno alla volta",
+    finalTitleFirstLine: "Inizia a costruire aderenza,",
+    finalTitleSecondLine: "un giorno alla volta",
     finalDesc:
       "Aiuta i tuoi clienti a seguire il piano, non solo a riceverlo.",
 
@@ -105,7 +107,8 @@ export const translations = {
       "Clients don’t fail because the plan is wrong. They fail because they don’t follow it consistently.",
     problemDescription:
       "Execute tracks daily adherence automatically, without adding friction.",
-    problemHighlight: "Better results, less guesswork, full visibility on client behavior.",
+    problemHighlightFirstLine: "Better results, less guesswork,",
+    problemHighlightSecondLine: "full visibility on client behavior.",
 
     howItWorks: "How it works",
     howTitle: "A simple system for consistency",
@@ -153,7 +156,8 @@ export const translations = {
 
     cta: "Request early access",
 
-    finalTitle: "Start building adherence, one day at a time",
+    finalTitleFirstLine: "Start building adherence,",
+    finalTitleSecondLine: "one day at a time",
     finalDesc:
       "Help your clients follow the plan, not just receive it.",
 
