@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { LandingSection } from "@/components/marketing/landing-section"
 import type { Language } from "@/lib/i18n"
 import { insightsContent, translations } from "@/lib/i18n"
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 type InsightsPreviewSectionProps = {
   language: Language
@@ -86,6 +86,7 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
 
   const tooltipSharedProps = {
     cursor: { stroke: "var(--border)", strokeOpacity: 0.5, strokeWidth: 1 },
+    separator: ": ",
     contentStyle: {
       backgroundColor: "var(--card)",
       border: "1px solid var(--border)",
@@ -108,7 +109,13 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
           description={t.adherenceOverTimeDesc}
         >
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={localizedAdherenceData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+            <AreaChart data={localizedAdherenceData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+              <defs>
+                <linearGradient id="insights-adherence-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.16} />
+                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
               <CartesianGrid stroke="var(--border)" strokeOpacity={0.28} vertical={false} />
               <XAxis
                 dataKey="label"
@@ -126,21 +133,28 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
                   adherenceLabel,
                 ]}
               />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="value"
                 stroke="var(--primary)"
                 strokeWidth={1.8}
+                fill="url(#insights-adherence-fill)"
                 dot={false}
                 isAnimationActive={false}
               />
-            </LineChart>
+            </AreaChart>
           </ResponsiveContainer>
         </InsightsCard>
 
         <InsightsCard title={t.weightTrendTitle} description={t.weightTrendDesc}>
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={localizedWeightData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+            <AreaChart data={localizedWeightData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+              <defs>
+                <linearGradient id="insights-weight-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0.1} />
+                  <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
               <CartesianGrid stroke="var(--border)" strokeOpacity={0.22} vertical={false} />
               <XAxis
                 dataKey="label"
@@ -158,16 +172,17 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
                   weightLabel,
                 ]}
               />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="value"
                 stroke="var(--foreground)"
                 strokeOpacity={0.55}
                 strokeWidth={1.6}
+                fill="url(#insights-weight-fill)"
                 dot={false}
                 isAnimationActive={false}
               />
-            </LineChart>
+            </AreaChart>
           </ResponsiveContainer>
         </InsightsCard>
 
@@ -176,7 +191,21 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
           description={t.bodyMeasurementsDesc}
         >
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={localizedMeasurementsData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+            <AreaChart data={localizedMeasurementsData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+              <defs>
+                <linearGradient id="insights-waist-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.12} />
+                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="insights-hips-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0.08} />
+                  <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="insights-chest-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--muted-foreground)" stopOpacity={0.07} />
+                  <stop offset="100%" stopColor="var(--muted-foreground)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
               <CartesianGrid stroke="var(--border)" strokeOpacity={0.2} vertical={false} />
               <XAxis
                 dataKey="label"
@@ -200,34 +229,37 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
                   return [`${Number(value ?? 0).toFixed(1)} cm`, metric]
                 }}
               />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="waist"
                 stroke="var(--primary)"
                 strokeWidth={1.7}
+                fill="url(#insights-waist-fill)"
                 dot={false}
                 isAnimationActive={false}
               />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="hips"
                 stroke="var(--foreground)"
                 strokeOpacity={0.5}
                 strokeWidth={1.4}
+                fill="url(#insights-hips-fill)"
                 dot={false}
                 isAnimationActive={false}
               />
-              <Line
+              <Area
                 type="monotone"
                 dataKey="chest"
                 stroke="var(--muted-foreground)"
                 strokeOpacity={0.65}
                 strokeWidth={1.3}
+                fill="url(#insights-chest-fill)"
                 dot={false}
                 isAnimationActive={false}
               />
-            </LineChart>
-          </ResponsiveContainer>
+            </AreaChart>
+          </ResponsiveContainer> 
           <div className="mt-4 flex flex-wrap gap-3 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1.5">
               <span className="size-2 rounded-full bg-primary" />
