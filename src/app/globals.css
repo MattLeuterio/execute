@@ -126,6 +126,18 @@
   }
   body {
     @apply bg-background text-foreground text-[15px] leading-6 font-normal;
+    background-image:
+      radial-gradient(
+        circle at 50% 0%,
+        color-mix(in oklab, var(--primary) 8%, transparent),
+        transparent 60%
+      ),
+      linear-gradient(
+        to bottom,
+        var(--background),
+        color-mix(in oklab, var(--background) 82%, var(--card))
+      );
+    background-attachment: fixed;
     font-feature-settings: "ss01" on, "ss02" on, "cv01" on;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
