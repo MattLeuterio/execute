@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { LandingSection } from "@/components/marketing/landing-section"
 import type { Language } from "@/lib/i18n"
-import { translations } from "@/lib/i18n"
+import { insightsContent, translations } from "@/lib/i18n"
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 type InsightsPreviewSectionProps = {
@@ -63,12 +63,8 @@ function InsightsCard({
 
 export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps) {
   const t = translations[language]
-  const tooltipLabelPrefix = language === "it" ? "Settimana" : "Week"
-  const adherenceLabel = language === "it" ? "Aderenza" : "Adherence"
-  const weightLabel = language === "it" ? "Peso" : "Weight"
-  const waistLabel = language === "it" ? "Vita" : "Waist"
-  const hipsLabel = language === "it" ? "Fianchi" : "Hips"
-  const chestLabel = language === "it" ? "Torace" : "Chest"
+  const { tooltipLabelPrefix, adherenceLabel, weightLabel, waistLabel, hipsLabel, chestLabel } =
+    insightsContent[language]
 
   const tooltipSharedProps = {
     cursor: { stroke: "var(--border)", strokeOpacity: 0.5, strokeWidth: 1 },

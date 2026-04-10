@@ -9,24 +9,23 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import type { Language } from "@/lib/i18n"
-import { translations } from "@/lib/i18n"
+import { formContent, translations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 function createEarlyAccessSchema(language: Language) {
-  const requiredOptionMessage =
-    language === "it" ? "Seleziona un'opzione." : "Please choose an option."
+  const localizedFormContent = formContent[language]
 
   return z.object({
     name: z
       .string()
       .trim()
-      .min(2, language === "it" ? "Il nome deve avere almeno 2 caratteri." : "Name must be at least 2 characters."),
+      .min(2, localizedFormContent.minNameMessage),
     email: z
       .string()
       .trim()
-      .email(language === "it" ? "Inserisci un'email valida." : "Please enter a valid email."),
+      .email(localizedFormContent.invalidEmailMessage),
     isNutritionProfessional: z.enum(["yes", "no"], {
-      error: requiredOptionMessage,
+      error: localizedFormContent.requiredOptionMessage,
     }),
     message: z.string().trim().optional(),
   })
@@ -48,6 +47,7 @@ export function EarlyAccessForm({ className, language = "en" }: EarlyAccessFormP
   const [submitMessage, setSubmitMessage] = useState<string | null>(null)
   const [isSuccess, setIsSuccess] = useState(false)
   const t = translations[language]
+  const localizedFormContent = formContent[language]
   const earlyAccessSchema = useMemo(() => createEarlyAccessSchema(language), [language])
 
   const form = useForm<EarlyAccessFormValues>({
@@ -139,7 +139,7 @@ export function EarlyAccessForm({ className, language = "en" }: EarlyAccessFormP
             <Input
               id="waitlist-name"
               type="text"
-              placeholder={language === "it" ? "Mario Rossi" : "John Doe"}
+              placeholder={localizedFormContent.namePlaceholder}
               autoComplete="name"
               className="border-border/70 bg-background/70 placeholder:text-muted-foreground/80 focus-visible:border-primary/60 focus-visible:ring-primary/25"
               {...form.register("name")}
@@ -239,9 +239,7 @@ export function EarlyAccessForm({ className, language = "en" }: EarlyAccessFormP
             disabled={isSubmitDisabled}
           >
             {form.formState.isSubmitting
-              ? language === "it"
-                ? "Accesso in corso..."
-                : "Getting early access..."
+              ? localizedFormContent.submittingLabel
               : t.submit}
           </Button>
 

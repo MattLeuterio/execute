@@ -8,7 +8,7 @@ import { LanguageSwitch } from "@/components/marketing/language-switch"
 import { LandingSection } from "@/components/marketing/landing-section"
 import { PricingCard } from "@/components/marketing/pricing-card"
 import type { Language } from "@/lib/i18n"
-import { translations } from "@/lib/i18n"
+import { marketingContent, translations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 type MarketingHomePageProps = {
@@ -17,8 +17,8 @@ type MarketingHomePageProps = {
 
 export function MarketingHomePage({ language }: MarketingHomePageProps) {
   const t = translations[language]
-
-  const stepLabel = language === "it" ? "Passo" : "Step"
+  const localizedMarketingContent = marketingContent[language]
+  const stepLabel = localizedMarketingContent.stepLabel
 
   const steps = [
     {
@@ -38,147 +38,8 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
     },
   ]
 
-  const previewCards =
-    language === "it"
-      ? [
-          {
-            title: "Today",
-            subtitle: "Cliente",
-            completion: "75% completato",
-            meals: [
-              { label: "Colazione · completata", done: true },
-              { label: "Pranzo · completato", done: true },
-              { label: "Cena · in sospeso" },
-            ],
-          },
-          {
-            title: "Piano",
-            subtitle: "Vista settimanale",
-            completion: "7 giorni",
-            meals: [
-              { label: "Lunedì", done: true },
-              { label: "Martedì", done: true },
-              { label: "Mercoledì" },
-            ],
-          },
-          {
-            title: "Progressi",
-            subtitle: "Aderenza",
-            completion: "12 giorni di streak",
-            meals: [
-              { label: "Questa settimana · 83%" },
-              { label: "Scorsa settimana · 79%" },
-              { label: "Trend costanza · stabile" },
-            ],
-          },
-        ]
-      : [
-          {
-            title: "Today",
-            subtitle: "Client",
-            completion: "75% done",
-            meals: [
-              { label: "Breakfast · completed", done: true },
-              { label: "Lunch · completed", done: true },
-              { label: "Dinner · pending" },
-            ],
-          },
-          {
-            title: "Plan",
-            subtitle: "Weekly view",
-            completion: "7 days",
-            meals: [
-              { label: "Monday", done: true },
-              { label: "Tuesday", done: true },
-              { label: "Wednesday" },
-            ],
-          },
-          {
-            title: "Progress",
-            subtitle: "Adherence",
-            completion: "12-day streak",
-            meals: [
-              { label: "This week · 83%" },
-              { label: "Last week · 79%" },
-              { label: "Consistency trend · stable" },
-            ],
-          },
-        ]
-
-  const pricingCards =
-    language === "it"
-      ? [
-          {
-            name: "Starter",
-            price: "€9",
-            period: "/mese",
-            description: t.starterDesc,
-            highlights: [
-              "Fino a 10 clienti",
-              "Schermate core app cliente",
-              "Riepilogo aderenza settimanale",
-            ],
-          },
-          {
-            name: "Growth",
-            price: "€19",
-            period: "/mese",
-            description: t.growthDesc,
-            highlights: [
-              "Fino a 40 clienti",
-              "Workspace cliente + nutrizionista",
-              "Aggiornamenti prodotto prioritari",
-            ],
-            featured: true,
-          },
-          {
-            name: "Studio",
-            price: "€39",
-            period: "/mese",
-            description: t.studioDesc,
-            highlights: [
-              "Fino a 120 clienti",
-              "Accesso multi-professionista",
-              "Supporto onboarding dedicato",
-            ],
-          },
-        ]
-      : [
-          {
-            name: "Starter",
-            price: "€9",
-            period: "/month",
-            description: t.starterDesc,
-            highlights: [
-              "Up to 10 clients",
-              "Client app core screens",
-              "Weekly adherence summary",
-            ],
-          },
-          {
-            name: "Growth",
-            price: "€19",
-            period: "/month",
-            description: t.growthDesc,
-            highlights: [
-              "Up to 40 clients",
-              "Client + nutritionist workspaces",
-              "Priority product updates",
-            ],
-            featured: true,
-          },
-          {
-            name: "Studio",
-            price: "€39",
-            period: "/month",
-            description: t.studioDesc,
-            highlights: [
-              "Up to 120 clients",
-              "Multi-practitioner access",
-              "Dedicated onboarding support",
-            ],
-          },
-        ]
+  const previewCards = localizedMarketingContent.previewCards
+  const pricingCards = localizedMarketingContent.pricingCards
 
   return (
     <main className="mb-48 flex flex-1 flex-col gap-34 bg-background text-foreground">
