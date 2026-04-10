@@ -45,7 +45,7 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
   const pricingCards = localizedMarketingContent.pricingCards
 
   return (
-    <main className="pb-48 flex flex-1 flex-col gap-34 bg-background text-foreground">
+    <main className="pb-48 flex flex-1 flex-col gap-34">
       <LanguageSwitch language={language} />
 
       <div className="mx-auto max-w-5xl space-y-12 pt-56 sm:pt-80">
