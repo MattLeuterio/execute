@@ -37,6 +37,20 @@ const measurementsData = [
   { label: "W6", waist: 84, hips: 96.5, chest: 92.8 },
 ]
 
+function localizeWeekLabels<T extends { label: string }>(data: T[], weekPointPrefix: string): T[] {
+  return data.map((item) => ({
+    ...item,
+    label: `${weekPointPrefix}${item.label.replace(/^\D+/, "")}`,
+  }))
+}
+
+function formatTooltipWeekLabel(label: string | number, tooltipLabelPrefix: string) {
+  const value = String(label)
+  const weekNumber = value.replace(/^\D+/, "")
+
+  return weekNumber ? `${tooltipLabelPrefix} ${weekNumber}` : `${tooltipLabelPrefix} ${value}`
+}
+
 function InsightsCard({
   title,
   description,
@@ -63,8 +77,12 @@ function InsightsCard({
 
 export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps) {
   const t = translations[language]
-  const { tooltipLabelPrefix, adherenceLabel, weightLabel, waistLabel, hipsLabel, chestLabel } =
+  const { weekPointPrefix, tooltipLabelPrefix, adherenceLabel, weightLabel, waistLabel, hipsLabel, chestLabel } =
     insightsContent[language]
+
+  const localizedAdherenceData = localizeWeekLabels(adherenceData, weekPointPrefix)
+  const localizedWeightData = localizeWeekLabels(weightData, weekPointPrefix)
+  const localizedMeasurementsData = localizeWeekLabels(measurementsData, weekPointPrefix)
 
   const tooltipSharedProps = {
     cursor: { stroke: "var(--border)", strokeOpacity: 0.5, strokeWidth: 1 },
@@ -90,7 +108,7 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
           description={t.adherenceOverTimeDesc}
         >
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={adherenceData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+            <LineChart data={localizedAdherenceData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
               <CartesianGrid stroke="var(--border)" strokeOpacity={0.28} vertical={false} />
               <XAxis
                 dataKey="label"
@@ -102,7 +120,7 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
               <YAxis hide domain={[55, 85]} />
               <Tooltip
                 {...tooltipSharedProps}
-                labelFormatter={(label) => `${tooltipLabelPrefix} ${label}`}
+                labelFormatter={(label) => formatTooltipWeekLabel(label, tooltipLabelPrefix)}
                 formatter={(value) => [
                   `${Number(value ?? 0)}%`,
                   adherenceLabel,
@@ -122,7 +140,7 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
 
         <InsightsCard title={t.weightTrendTitle} description={t.weightTrendDesc}>
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={weightData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+            <LineChart data={localizedWeightData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
               <CartesianGrid stroke="var(--border)" strokeOpacity={0.22} vertical={false} />
               <XAxis
                 dataKey="label"
@@ -134,7 +152,7 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
               <YAxis hide domain={[76, 79.2]} />
               <Tooltip
                 {...tooltipSharedProps}
-                labelFormatter={(label) => `${tooltipLabelPrefix} ${label}`}
+                labelFormatter={(label) => formatTooltipWeekLabel(label, tooltipLabelPrefix)}
                 formatter={(value) => [
                   `${Number(value ?? 0).toFixed(1)} kg`,
                   weightLabel,
@@ -158,7 +176,7 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
           description={t.bodyMeasurementsDesc}
         >
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={measurementsData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+            <LineChart data={localizedMeasurementsData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
               <CartesianGrid stroke="var(--border)" strokeOpacity={0.2} vertical={false} />
               <XAxis
                 dataKey="label"
@@ -170,7 +188,7 @@ export function InsightsPreviewSection({ language }: InsightsPreviewSectionProps
               <YAxis hide domain={[82, 100]} />
               <Tooltip
                 {...tooltipSharedProps}
-                labelFormatter={(label) => `${tooltipLabelPrefix} ${label}`}
+                labelFormatter={(label) => formatTooltipWeekLabel(label, tooltipLabelPrefix)}
                 formatter={(value, name) => {
                   const metric =
                     name === "waist"

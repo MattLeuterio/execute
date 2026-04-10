@@ -337,6 +337,7 @@ export const marketingContent = {
 
 export const insightsContent = {
   it: {
+    weekPointPrefix: "S",
     tooltipLabelPrefix: "Settimana",
     adherenceLabel: "Aderenza",
     weightLabel: "Peso",
@@ -345,6 +346,7 @@ export const insightsContent = {
     chestLabel: "Torace",
   },
   en: {
+    weekPointPrefix: "W",
     tooltipLabelPrefix: "Week",
     adherenceLabel: "Adherence",
     weightLabel: "Weight",
