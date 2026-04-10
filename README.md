@@ -50,6 +50,17 @@ npm run lint
 npm run build
 ```
 
+## Next.js 16 Proxy Note
+
+- This project uses `src/proxy.ts` (not `src/middleware.ts`).
+- In Next.js 16, `middleware` is deprecated and cannot coexist with `proxy`.
+- If dev shows stale errors like "Could not parse module .../middleware.ts", stop the dev server, clear build cache, and restart:
+
+```bash
+rm -rf .next
+npm run dev
+```
+
 ## MVP Scope Notes
 
 Phase 1 focuses on:
