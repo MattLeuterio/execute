@@ -12,7 +12,6 @@ import { PricingCard } from "@/components/marketing/pricing-card"
 import logoLockup from "@/components/ui/image/logo-lockup.svg"
 import type { Language } from "@/lib/i18n"
 import { marketingContent, translations } from "@/lib/i18n"
-import { cn } from "@/lib/utils"
 
 type MarketingHomePageProps = {
   language: Language
@@ -67,8 +66,13 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
         eyebrow={t.problemLabel}
         title={t.problemText}
         flexAlignment="center"
-        className={cn("mx-auto max-w-2xl text-center align-middle")}
-      />
+        className="text-center"
+        description={t.problemDescription}
+      >
+        <p className="text-2xl leading-tight font-semibold tracking-tight text-center text-primary/85 sm:text-3xl">
+          {t.problemHighlight}
+        </p>
+      </LandingSection>
       <div>
         <LandingSection id="how-it-works" eyebrow={t.howItWorks} title={t.howTitle}>
           <div className="grid gap-4 sm:grid-cols-3">

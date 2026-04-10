@@ -9,7 +9,10 @@ export const translations = {
 
     problemLabel: "Problema",
     problemText:
-      "Le persone non falliscono perché il piano è sbagliato. Falliscono perché smettono di seguirlo.",
+      "Le persone non falliscono perché il piano è sbagliato.",
+    problemDescription:
+      "Falliscono perché, giorno dopo giorno, perdono continuità nell’esecuzione.",
+    problemHighlight: "Pensato per professionisti della nutrizione.",
 
     howItWorks: "Come funziona",
     howTitle: "Un ciclo semplice per la costanza",
@@ -93,7 +96,10 @@ export const translations = {
 
     problemLabel: "Problem",
     problemText:
-      "People don’t fail because the plan is wrong. They fail because they stop following it.",
+      "People don’t fail because the plan is wrong.",
+    problemDescription:
+      "They fail because, day by day, they lose consistency in execution.",
+    problemHighlight: "Built for nutrition professionals.",
 
     howItWorks: "How it works",
     howTitle: "A simple loop for consistency",
