@@ -113,6 +113,7 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
             {pricingCards.map((card) => (
               <PricingCard
                 key={card.name}
+                plan={card.plan}
                 name={card.name}
                 price={card.price}
                 period={card.period}
@@ -135,7 +136,7 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
             <p className="text-sm text-center leading-6 text-muted-foreground sm:text-xl">{t.finalDesc}</p>
           </div>
           <div className="mt-6">
-            <EarlyAccessDialog language={language} triggerLabel={t.cta} triggerSize={"xl"} />
+            <EarlyAccessDialog language={language} triggerLabel={t.cta} triggerSize={"xl"} initialPlan="growth" />
           </div>
         </div>
       </section>

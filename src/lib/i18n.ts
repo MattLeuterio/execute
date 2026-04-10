@@ -81,6 +81,12 @@ export const translations = {
 
     requestFieldsObligatory: "I campi contrassegnati con * sono obbligatori.",
 
+    interestedPlanLabel: "A quale piano sei interessato?",
+    interestedPlanDisabledHelper: "Disponibile solo per professionisti della nutrizione",
+    interestedPlanStarterOption: "Starter — €9/mese",
+    interestedPlanGrowthOption: "Growth — €19/mese",
+    interestedPlanStudioOption: "Studio — €39/mese",
+
     submit: "Richiedi accesso anticipato",
 
     success: "Sei dentro. Ti contatteremo presto per l’accesso.",
@@ -164,6 +170,12 @@ export const translations = {
 
     requestFieldsObligatory: "Fields marked with * are required.",
 
+    interestedPlanLabel: "Which plan are you interested in?",
+    interestedPlanDisabledHelper: "Available only for nutrition professionals",
+    interestedPlanStarterOption: "Starter — €9/month",
+    interestedPlanGrowthOption: "Growth — €19/month",
+    interestedPlanStudioOption: "Studio — €39/month",
+
     submit: "Get early access",
 
     success: "You're in. We’ll reach out soon with early access.",
@@ -178,7 +190,10 @@ export type PreviewCardContent = {
   meals: Array<{ label: string; done?: boolean }>
 }
 
+export type InterestedPlan = "starter" | "growth" | "studio"
+
 export type PricingCardContent = {
+  plan: InterestedPlan
   name: string
   price: string
   period: string
@@ -233,6 +248,7 @@ export const marketingContent = {
     ] as PreviewCardContent[],
     pricingCards: [
       {
+        plan: "starter",
         name: "Starter",
         price: "€9",
         period: "/mese",
@@ -244,6 +260,7 @@ export const marketingContent = {
         ],
       },
       {
+        plan: "growth",
         name: "Growth",
         price: "€19",
         period: "/mese",
@@ -256,6 +273,7 @@ export const marketingContent = {
         featured: true,
       },
       {
+        plan: "studio",
         name: "Studio",
         price: "€39",
         period: "/mese",
@@ -304,6 +322,7 @@ export const marketingContent = {
     ] as PreviewCardContent[],
     pricingCards: [
       {
+        plan: "starter",
         name: "Starter",
         price: "€9",
         period: "/month",
@@ -315,6 +334,7 @@ export const marketingContent = {
         ],
       },
       {
+        plan: "growth",
         name: "Growth",
         price: "€19",
         period: "/month",
@@ -327,6 +347,7 @@ export const marketingContent = {
         featured: true,
       },
       {
+        plan: "studio",
         name: "Studio",
         price: "€39",
         period: "/month",

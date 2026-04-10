@@ -2,10 +2,11 @@ import { Check } from "lucide-react"
 
 import { EarlyAccessDialog } from "@/components/marketing/early-access-dialog"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import type { Language } from "@/lib/i18n"
+import type { InterestedPlan, Language } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 type PricingCardProps = {
+  plan: InterestedPlan
   name: string
   price: string
   period?: string
@@ -17,6 +18,7 @@ type PricingCardProps = {
 }
 
 export function PricingCard({
+  plan,
   name,
   price,
   period = "/month",
@@ -60,6 +62,7 @@ export function PricingCard({
           triggerSize="default"
           triggerClassName="w-full"
           language={language}
+          initialPlan={plan}
         />
       </CardFooter>
     </Card>

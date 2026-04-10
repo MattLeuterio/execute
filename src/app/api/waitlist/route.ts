@@ -4,6 +4,7 @@ type WaitlistBody = {
   name: string
   email: string
   isNutritionProfessional: boolean
+  interestedPlan: "starter" | "growth" | "studio" | null
   message?: string
 }
 
@@ -24,10 +25,24 @@ function parseWaitlistBody(body: unknown): WaitlistBody | null {
   const name = typeof data.name === "string" ? data.name.trim() : ""
   const email = typeof data.email === "string" ? data.email.trim() : ""
   const isNutritionProfessional = data.isNutritionProfessional
+  const interestedPlanValue = data.interestedPlan
 
   if (!name) return null
   if (!email || !isValidEmail(email)) return null
   if (typeof isNutritionProfessional !== "boolean") return null
+
+  const isValidPlan =
+    interestedPlanValue === undefined ||
+    interestedPlanValue === null ||
+    interestedPlanValue === "starter" ||
+    interestedPlanValue === "growth" ||
+    interestedPlanValue === "studio"
+
+  if (!isValidPlan) return null
+
+  const interestedPlan = isNutritionProfessional
+    ? (interestedPlanValue ?? "growth")
+    : null
 
   const messageValue = data.message
   const message =
@@ -39,6 +54,7 @@ function parseWaitlistBody(body: unknown): WaitlistBody | null {
     name,
     email,
     isNutritionProfessional,
+    interestedPlan,
     message,
   }
 }
@@ -88,6 +104,7 @@ export async function POST(request: Request) {
       name: payload.name,
       email: payload.email,
       is_nutrition_professional: payload.isNutritionProfessional,
+      interested_plan: payload.interestedPlan,
       message: payload.message,
     })
 

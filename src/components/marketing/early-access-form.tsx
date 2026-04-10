@@ -1,14 +1,14 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import type { Language } from "@/lib/i18n"
+import type { InterestedPlan, Language } from "@/lib/i18n"
 import { formContent, translations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
@@ -27,6 +27,7 @@ function createEarlyAccessSchema(language: Language) {
     isNutritionProfessional: z.enum(["yes", "no"], {
       error: localizedFormContent.requiredOptionMessage,
     }),
+    interestedPlan: z.enum(["starter", "growth", "studio"]),
     message: z.string().trim().optional(),
   })
 }
@@ -41,9 +42,10 @@ type WaitlistApiResponse = {
 type EarlyAccessFormProps = {
   className?: string
   language?: Language
+  initialPlan?: InterestedPlan
 }
 
-export function EarlyAccessForm({ className, language = "en" }: EarlyAccessFormProps) {
+export function EarlyAccessForm({ className, language = "en", initialPlan = "growth" }: EarlyAccessFormProps) {
   const [submitMessage, setSubmitMessage] = useState<string | null>(null)
   const [isSuccess, setIsSuccess] = useState(false)
   const t = translations[language]
@@ -56,13 +58,26 @@ export function EarlyAccessForm({ className, language = "en" }: EarlyAccessFormP
       name: "",
       email: "",
       isNutritionProfessional: undefined,
+      interestedPlan: initialPlan,
       message: "",
     },
   })
 
+  useEffect(() => {
+    form.setValue("interestedPlan", initialPlan, {
+      shouldDirty: false,
+      shouldValidate: true,
+    })
+  }, [form, initialPlan])
+
   const selectedRole = useWatch({
     control: form.control,
     name: "isNutritionProfessional",
+  })
+
+  const selectedPlan = useWatch({
+    control: form.control,
+    name: "interestedPlan",
   })
 
   const nameValue = useWatch({
@@ -75,11 +90,14 @@ export function EarlyAccessForm({ className, language = "en" }: EarlyAccessFormP
     name: "email",
   })
 
+  const isNutritionProfessional = selectedRole === "yes"
+
   const isSubmitDisabled =
     form.formState.isSubmitting ||
     !nameValue?.trim() ||
     !emailValue?.trim() ||
-    !selectedRole
+    !selectedRole ||
+    !selectedPlan
 
   const onSubmit = async (values: EarlyAccessFormValues) => {
     setSubmitMessage(null)
@@ -95,6 +113,8 @@ export function EarlyAccessForm({ className, language = "en" }: EarlyAccessFormP
           name: values.name,
           email: values.email,
           isNutritionProfessional: values.isNutritionProfessional === "yes",
+          interestedPlan:
+            values.isNutritionProfessional === "yes" ? values.interestedPlan : null,
           message: values.message || undefined,
         }),
       })
@@ -115,7 +135,13 @@ export function EarlyAccessForm({ className, language = "en" }: EarlyAccessFormP
 
       setIsSuccess(true)
       setSubmitMessage(responseBody?.message ?? t.success)
-      form.reset()
+      form.reset({
+        name: "",
+        email: "",
+        isNutritionProfessional: undefined,
+        interestedPlan: initialPlan,
+        message: "",
+      })
     } catch {
       setIsSuccess(false)
       setSubmitMessage(t.error)
@@ -212,6 +238,25 @@ export function EarlyAccessForm({ className, language = "en" }: EarlyAccessFormP
               <p className="text-xs text-destructive">
                 {form.formState.errors.isNutritionProfessional.message}
               </p>
+            ) : null}
+          </div>
+
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="waitlist-plan" className="text-sm font-medium text-foreground/90">
+              {t.interestedPlanLabel}
+            </label>
+            <select
+              id="waitlist-plan"
+              className="h-10 w-full rounded-lg border border-border/70 bg-background/70 px-3 text-sm text-foreground outline-none transition-colors focus-visible:border-primary/60 focus-visible:ring-3 focus-visible:ring-primary/25 disabled:cursor-not-allowed disabled:opacity-65"
+              disabled={!isNutritionProfessional}
+              {...form.register("interestedPlan")}
+            >
+              <option value="starter">{t.interestedPlanStarterOption}</option>
+              <option value="growth">{t.interestedPlanGrowthOption}</option>
+              <option value="studio">{t.interestedPlanStudioOption}</option>
+            </select>
+            {!isNutritionProfessional ? (
+              <p className="text-xs text-muted-foreground">{t.interestedPlanDisabledHelper}</p>
             ) : null}
           </div>
 

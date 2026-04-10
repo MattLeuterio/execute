@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import type { VariantProps } from "class-variance-authority"
 
 import { EarlyAccessForm } from "@/components/marketing/early-access-form"
@@ -12,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import type { Language } from "@/lib/i18n"
+import type { InterestedPlan, Language } from "@/lib/i18n"
 import { translations } from "@/lib/i18n"
 
 type EarlyAccessDialogProps = {
@@ -21,6 +22,7 @@ type EarlyAccessDialogProps = {
   triggerSize?: VariantProps<typeof buttonVariants>["size"]
   triggerClassName?: string
   language?: Language
+  initialPlan?: InterestedPlan
 }
 
 export function EarlyAccessDialog({
@@ -29,11 +31,22 @@ export function EarlyAccessDialog({
   triggerSize = "lg",
   triggerClassName = "w-full sm:w-auto",
   language = "en",
+  initialPlan = "growth",
 }: EarlyAccessDialogProps) {
   const t = translations[language]
+  const [open, setOpen] = useState(false)
+  const [openCount, setOpenCount] = useState(0)
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen)
+
+    if (nextOpen) {
+      setOpenCount((value) => value + 1)
+    }
+  }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger
         render={
           <Button size={triggerSize} variant={triggerVariant} className={`cursor-pointer ${triggerClassName}`}>
@@ -51,7 +64,12 @@ export function EarlyAccessDialog({
         </DialogHeader>
 
         <div className="px-6 pb-6">
-          <EarlyAccessForm language={language} className="max-w-none border-border/60 bg-card/60" />
+          <EarlyAccessForm
+            key={`${language}-${initialPlan}-${openCount}`}
+            language={language}
+            initialPlan={initialPlan}
+            className="max-w-none border-border/60 bg-card/60"
+          />
         </div>
       </DialogContent>
     </Dialog>
