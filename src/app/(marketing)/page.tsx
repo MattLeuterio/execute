@@ -3,6 +3,7 @@
 import { AppPreviewCard } from "@/components/marketing/app-preview-card";
 import { EarlyAccessDialog } from "@/components/marketing/early-access-dialog";
 import { FeatureStep } from "@/components/marketing/feature-step";
+import { InsightsPreviewSection } from "@/components/marketing/insights-preview-section";
 import { LanguageSwitch } from "@/components/marketing/language-switch";
 import { LandingSection } from "@/components/marketing/landing-section";
 import { PricingCard } from "@/components/marketing/pricing-card";
@@ -237,6 +238,9 @@ export default function MarketingHomePage() {
             ))}
           </div>
         </LandingSection>
+
+        <InsightsPreviewSection language={language} />
+
         <LandingSection
           id="pricing"
           eyebrow={t.pricing}

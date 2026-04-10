@@ -31,6 +31,23 @@ export const translations = {
     productDesc:
       "Today, piano e progressi mostrano cosa fare ora e quanto manca per completare la giornata.",
 
+    insightsLabel: "Insight",
+    insightsTitle: "Vedi cosa sta succedendo davvero",
+    insightsDesc:
+      "Non solo piani. Visibilità reale su aderenza, progresso e andamento.",
+
+    adherenceOverTimeTitle: "Aderenza nel tempo",
+    adherenceOverTimeDesc:
+      "Vedi se i clienti sono costanti, stanno migliorando o stanno perdendo continuità.",
+
+    weightTrendTitle: "Andamento del peso",
+    weightTrendDesc:
+      "Monitora le variazioni di peso tra check-in ed esecuzione quotidiana.",
+
+    bodyMeasurementsTitle: "Misure corporee",
+    bodyMeasurementsDesc:
+      "Confronta i cambiamenti del corpo oltre al solo peso.",
+
     pricing: "Prezzi",
     pricingTitle: "Piani semplici per professionisti della nutrizione",
     pricingNote: "Prezzi in anteprima. I piani finali potrebbero cambiare.",
@@ -97,6 +114,22 @@ export const translations = {
     productTitle: "Built for daily completion",
     productDesc:
       "Today, plan and progress are designed to answer what to do now and how close the day is to completion.",
+
+    insightsLabel: "Insights",
+    insightsTitle: "See what’s really happening",
+    insightsDesc:
+      "Not just plans. Real visibility on adherence, progress, and trends.",
+
+    adherenceOverTimeTitle: "Adherence over time",
+    adherenceOverTimeDesc:
+      "See if clients are consistent, improving, or slowly dropping off.",
+
+    weightTrendTitle: "Weight trend",
+    weightTrendDesc:
+      "Track weight changes across check-ins and daily execution.",
+
+    bodyMeasurementsTitle: "Body measurements",
+    bodyMeasurementsDesc: "Compare body changes beyond weight alone.",
 
     pricing: "Pricing",
     pricingTitle: "Simple plans for nutrition professionals",
