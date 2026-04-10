@@ -93,6 +93,10 @@ export const translations = {
 
     success: "Sei dentro. Ti contatteremo presto per l’accesso.",
     error: "Qualcosa non ha funzionato. Riprova.",
+    toastSuccessTitle: "Richiesta inviata",
+    toastSuccessDescription: "Sei dentro. Ti contatteremo presto per l’accesso.",
+    toastErrorTitle: "Invio non riuscito",
+    toastErrorDescription: "Qualcosa non ha funzionato. Riprova.",
   },
   en: {
     brand: "Execute",
@@ -184,6 +188,10 @@ export const translations = {
 
     success: "You're in. We’ll reach out soon with early access.",
     error: "Something went wrong. Please try again.",
+    toastSuccessTitle: "Request sent",
+    toastSuccessDescription: "You're in. We’ll reach out soon with early access.",
+    toastErrorTitle: "Submission failed",
+    toastErrorDescription: "Something went wrong. Please try again.",
   },
 } as const;
 

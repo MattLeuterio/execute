@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Inter } from "next/font/google";
 
+import { Toaster } from "@/components/ui/sonner";
 import { defaultLocale, isLocale } from "@/lib/i18n";
 import "./globals.css";
 
@@ -37,6 +38,7 @@ export default async function RootLayout({
     <html lang={htmlLang} className={`${inter.variable} h-full antialiased dark`}>
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         {children}
+        <Toaster />
       </body>
     </html>
   );

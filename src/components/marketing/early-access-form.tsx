@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
 
@@ -34,20 +34,21 @@ function createEarlyAccessSchema(language: Language) {
 
 type EarlyAccessFormValues = z.infer<ReturnType<typeof createEarlyAccessSchema>>
 
-type WaitlistApiResponse = {
-  success?: boolean
-  message?: string
-}
+type EarlyAccessFormServerSubmitStatus = "success" | "error"
 
 type EarlyAccessFormProps = {
   className?: string
   language?: Language
   initialPlan?: InterestedPlan
+  onServerSubmitResult?: (status: EarlyAccessFormServerSubmitStatus) => void
 }
 
-export function EarlyAccessForm({ className, language = "en", initialPlan = "growth" }: EarlyAccessFormProps) {
-  const [submitMessage, setSubmitMessage] = useState<string | null>(null)
-  const [isSuccess, setIsSuccess] = useState(false)
+export function EarlyAccessForm({
+  className,
+  language = "en",
+  initialPlan = "growth",
+  onServerSubmitResult,
+}: EarlyAccessFormProps) {
   const t = translations[language]
   const localizedFormContent = formContent[language]
   const earlyAccessSchema = useMemo(() => createEarlyAccessSchema(language), [language])
@@ -100,9 +101,6 @@ export function EarlyAccessForm({ className, language = "en", initialPlan = "gro
     !selectedPlan
 
   const onSubmit = async (values: EarlyAccessFormValues) => {
-    setSubmitMessage(null)
-    setIsSuccess(false)
-
     try {
       const response = await fetch("/api/waitlist", {
         method: "POST",
@@ -119,22 +117,12 @@ export function EarlyAccessForm({ className, language = "en", initialPlan = "gro
         }),
       })
 
-      let responseBody: WaitlistApiResponse | null = null
-
-      try {
-        responseBody = (await response.json()) as WaitlistApiResponse
-      } catch {
-        responseBody = null
-      }
-
       if (!response.ok) {
-        setIsSuccess(false)
-        setSubmitMessage(responseBody?.message ?? t.error)
+        onServerSubmitResult?.("error")
         return
       }
 
-      setIsSuccess(true)
-      setSubmitMessage(responseBody?.message ?? t.success)
+      onServerSubmitResult?.("success")
       form.reset({
         name: "",
         email: "",
@@ -143,8 +131,7 @@ export function EarlyAccessForm({ className, language = "en", initialPlan = "gro
         message: "",
       })
     } catch {
-      setIsSuccess(false)
-      setSubmitMessage(t.error)
+      onServerSubmitResult?.("error")
     }
   }
 
@@ -287,19 +274,6 @@ export function EarlyAccessForm({ className, language = "en", initialPlan = "gro
               ? localizedFormContent.submittingLabel
               : t.submit}
           </Button>
-
-          {submitMessage ? (
-            <div
-              className={cn(
-                "rounded-lg border px-3 py-2 text-sm",
-                isSuccess
-                  ? "border-primary/35 bg-primary/10 text-foreground"
-                  : "border-border/70 bg-muted/45 text-muted-foreground"
-              )}
-            >
-              {submitMessage}
-            </div>
-          ) : null}
         </form>
       </CardContent>
     </Card>
