@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+
 import { AppPreviewCard } from "@/components/marketing/app-preview-card"
 import { EarlyAccessDialog } from "@/components/marketing/early-access-dialog"
 import { FeatureStep } from "@/components/marketing/feature-step"
@@ -7,6 +9,7 @@ import { InsightsPreviewSection } from "@/components/marketing/insights-preview-
 import { LanguageSwitch } from "@/components/marketing/language-switch"
 import { LandingSection } from "@/components/marketing/landing-section"
 import { PricingCard } from "@/components/marketing/pricing-card"
+import logoLockup from "@/components/ui/image/logo-lockup.svg"
 import type { Language } from "@/lib/i18n"
 import { marketingContent, translations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
@@ -42,13 +45,13 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
   const pricingCards = localizedMarketingContent.pricingCards
 
   return (
-    <main className="mb-48 flex flex-1 flex-col gap-34 bg-background text-foreground">
+    <main className="pb-48 flex flex-1 flex-col gap-34 bg-background text-foreground">
       <LanguageSwitch language={language} />
 
       <div className="mx-auto max-w-5xl space-y-12 pt-56 sm:pt-80">
-        <p className="text-center text-2xl font-semibold tracking-tighter text-primary/85">
-          {t.brand}
-        </p>
+        <div className="flex justify-center">
+          <Image src={logoLockup} alt={t.brand} className="h-auto w-24 sm:w-32" priority />
+        </div>
         <div className="space-y-6 px-4 sm:px-0">
           <h1 className="max-w-2xl text-center text-4xl leading-tight font-semibold tracking-tighter sm:text-7xl">
             {t.heroTitle1} <br className="hidden sm:block" /> {t.heroTitle2}
