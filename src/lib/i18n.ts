@@ -2,42 +2,42 @@ export const translations = {
   it: {
     brand: "Execute",
 
-    heroTitle1: "Segui il tuo piano",
-    heroTitle2: "Un passo alla volta",
+    heroTitle1: "L’esecuzione batte",
+    heroTitle2: "la pianificazione",
     heroSubtitle:
-      "Smetti di chiederti se i clienti seguono il piano. Vedi l’aderenza reale, ogni giorno.",
+      "Smetti di chiederti se i tuoi clienti stanno seguendo il piano. Vedi l’aderenza reale, ogni giorno.",
 
-    problemLabel: "Problema",
+    problemLabel: "Perché Execute funziona",
     problemText:
-      "Le persone non falliscono perché il piano è sbagliato.",
+      "I clienti non falliscono perché il piano è sbagliato. Falliscono perché non lo seguono con costanza.",
     problemDescription:
-      "Falliscono perché, giorno dopo giorno, perdono continuità nell’esecuzione.",
-    problemHighlight: "Pensato per professionisti della nutrizione.",
+      "Execute traccia l’aderenza quotidiana automaticamente, senza aggiungere attrito.",
+    problemHighlight: "Risultati migliori, meno supposizioni, piena visibilità sul comportamento dei clienti.",
 
     howItWorks: "Come funziona",
-    howTitle: "Un ciclo semplice per la costanza",
+    howTitle: "Un sistema semplice per la costanza",
 
     step1Title: "Crea un piano semplice",
     step1Desc:
-      "I nutrizionisti assegnano pasti chiari, senza inserimenti complessi o configurazioni inutili.",
+      "I nutrizionisti assegnano attività giornaliere chiare senza inserimenti complessi.",
 
     step2Title: "Seguilo ogni giorno",
     step2Desc:
-      "I clienti aprono Today, vedono cosa hanno fatto e completano ciò che manca in pochi tocchi.",
+      "I clienti registrano ciò che fanno in pochi secondi, costruendo vera costanza.",
 
-    step3Title: "Monitora l’aderenza reale",
+    step3Title: "Traccia l’aderenza reale",
     step3Desc:
-      "I progressi si misurano sulla costanza di esecuzione, così i professionisti possono intervenire presto.",
+      "Vedi chi è costante, chi è in difficoltà e intervieni subito.",
 
     productPreview: "Anteprima",
-    productTitle: "Progettato per il completamento quotidiano",
+    productTitle: "Costruito per l’esecuzione quotidiana",
     productDesc:
-      "Today, piano e progressi mostrano cosa fare ora e quanto manca per completare la giornata.",
+      "Tutto è progettato per rispondere a una domanda: il cliente ha seguito il piano oggi?",
 
     insightsLabel: "Insight",
     insightsTitle: "Vedi cosa sta succedendo davvero",
     insightsDesc:
-      "Non solo piani. Visibilità reale su aderenza, progresso e andamento.",
+      "Non solo piani. Dati reali su aderenza, progressi e comportamento.",
 
     adherenceOverTimeTitle: "Aderenza nel tempo",
     adherenceOverTimeDesc:
@@ -51,9 +51,9 @@ export const translations = {
     bodyMeasurementsDesc:
       "Confronta i cambiamenti del corpo oltre al solo peso.",
 
-    pricing: "Prezzi",
+    pricing: "Prezzi founder — disponibili solo per chi richiede accesso anticipato",
     pricingTitle: "Piani semplici per professionisti della nutrizione",
-    pricingNote: "Prezzi in anteprima. I piani finali potrebbero cambiare.",
+    pricingNote: "Questi prezzi sono riservati agli early adopters e aumenteranno dopo il lancio.",
 
     starterDesc:
       "Per professionisti che vogliono validare un flusso di aderenza semplice.",
@@ -63,12 +63,12 @@ export const translations = {
 
     cta: "Richiedi accesso anticipato",
 
-    finalTitle: "Inizia a costruire aderenza, un giorno alla volta.",
+    finalTitle: "Inizia a costruire aderenza, un giorno alla volta",
     finalDesc:
-      "Execute aiuta i tuoi clienti a fare ciò che conta: seguire con costanza il piano che hanno già.",
+      "Aiuta i tuoi clienti a seguire il piano, non solo a riceverlo.",
 
-    modalTitle: "Accedi in anticipo a Execute",
-    modalDesc: "Tra i primi professionisti della nutrizione a provare Execute.",
+    modalTitle: "Richiedi accesso anticipato a Execute",
+    modalDesc: "Basta supposizioni. Solo esecuzione.",
 
     name: "Nome",
     email: "Email",
@@ -81,7 +81,7 @@ export const translations = {
 
     requestFieldsObligatory: "I campi contrassegnati con * sono obbligatori.",
 
-    submit: "Accedi in anticipo",
+    submit: "Richiedi accesso anticipato",
 
     success: "Sei dentro. Ti contatteremo presto per l’accesso.",
     error: "Qualcosa non ha funzionato. Riprova.",
@@ -89,42 +89,42 @@ export const translations = {
   en: {
     brand: "Execute",
 
-    heroTitle1: "Follow your plan",
-    heroTitle2: "Step by step",
+    heroTitle1: "Execution beats",
+    heroTitle2: "planning",
     heroSubtitle:
       "Stop guessing if your clients are following the plan. See real adherence, every day.",
 
-    problemLabel: "Problem",
+    problemLabel: "Why Execute works",
     problemText:
-      "People don’t fail because the plan is wrong.",
+      "Clients don’t fail because the plan is wrong. They fail because they don’t follow it consistently.",
     problemDescription:
-      "They fail because, day by day, they lose consistency in execution.",
-    problemHighlight: "Built for nutrition professionals.",
+      "Execute tracks daily adherence automatically, without adding friction.",
+    problemHighlight: "Better results, less guesswork, full visibility on client behavior.",
 
     howItWorks: "How it works",
-    howTitle: "A simple loop for consistency",
+    howTitle: "A simple system for consistency",
 
     step1Title: "Create a simple plan",
     step1Desc:
-      "Nutritionists assign clear daily meals without complex data entry or distracting setup.",
+      "Nutritionists assign clear daily tasks without complex data entry.",
 
     step2Title: "Follow it every day",
     step2Desc:
-      "Clients open Today, check what is done, and complete what is missing in a few taps.",
+      "Clients log what’s done in seconds, building real consistency.",
 
     step3Title: "Track real adherence",
     step3Desc:
-      "Progress is measured by execution consistency so professionals can intervene early.",
+      "See who is consistent, who is struggling, and act early.",
 
     productPreview: "Product preview",
-    productTitle: "Built for daily completion",
+    productTitle: "Built for daily execution",
     productDesc:
-      "Today, plan and progress are designed to answer what to do now and how close the day is to completion.",
+      "Everything is designed to answer one question: did the client follow the plan today?",
 
     insightsLabel: "Insights",
     insightsTitle: "See what’s really happening",
     insightsDesc:
-      "Not just plans. Real visibility on adherence, progress, and trends.",
+      "Not just plans. Real data on adherence, progress and behavior.",
 
     adherenceOverTimeTitle: "Adherence over time",
     adherenceOverTimeDesc:
@@ -137,9 +137,9 @@ export const translations = {
     bodyMeasurementsTitle: "Body measurements",
     bodyMeasurementsDesc: "Compare body changes beyond weight alone.",
 
-    pricing: "Pricing",
+    pricing: "Founding pricing — available only for early access users",
     pricingTitle: "Simple plans for nutrition professionals",
-    pricingNote: "Early pricing preview. Final plans may evolve.",
+    pricingNote: "These prices are reserved for early adopters and will increase after launch.",
 
     starterDesc: "For professionals validating a focused adherence workflow.",
     growthDesc: "For daily operations with more active clients and workflows.",
@@ -147,12 +147,12 @@ export const translations = {
 
     cta: "Request early access",
 
-    finalTitle: "Start building adherence, one day at a time.",
+    finalTitle: "Start building adherence, one day at a time",
     finalDesc:
-      "Execute helps your clients do what matters most: follow the plan they already have.",
+      "Help your clients follow the plan, not just receive it.",
 
     modalTitle: "Get early access to Execute",
-    modalDesc: "Be among the first nutrition professionals testing Execute.",
+    modalDesc: "No more guessing. Just execution.",
 
     name: "Name",
     email: "Email",
