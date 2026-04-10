@@ -131,11 +131,11 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
       <section className="px-4 pb-14 pt-4 sm:px-6 sm:pb-20">
         <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 p-6 sm:p-10">
           <div className="flex flex-col gap-2">
-            <h2 className="text-2xl leading-tight font-semibold sm:text-3xl">{t.finalTitle}</h2>
-            <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">{t.finalDesc}</p>
+            <h2 className="text-3xl leading-tight font-semibold sm:text-5xl">{t.finalTitle}</h2>
+            <p className="text-sm text-center leading-6 text-muted-foreground sm:text-xl">{t.finalDesc}</p>
           </div>
-          <div>
-            <EarlyAccessDialog language={language} triggerLabel={t.cta} />
+          <div className="mt-6">
+            <EarlyAccessDialog language={language} triggerLabel={t.cta} triggerSize={"xl"} />
           </div>
         </div>
       </section>
