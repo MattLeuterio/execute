@@ -82,6 +82,8 @@ export const translations = {
     messagePlaceholder: "Se vuoi, lasciaci una nota",
 
     requestFieldsObligatory: "I campi contrassegnati con * sono obbligatori.",
+    privacyPolicyLabel: "Privacy Policy",
+    termsLabel: "Termini",
 
     interestedPlanLabel: "A quale piano sei interessato?",
     interestedPlanDisabledHelper: "Disponibile solo per professionisti della nutrizione",
@@ -177,6 +179,8 @@ export const translations = {
     messagePlaceholder: "Anything you'd like us to know",
 
     requestFieldsObligatory: "Fields marked with * are required.",
+    privacyPolicyLabel: "Privacy Policy",
+    termsLabel: "Terms",
 
     interestedPlanLabel: "Which plan are you interested in?",
     interestedPlanDisabledHelper: "Available only for nutrition professionals",
@@ -402,6 +406,8 @@ export const formContent = {
     invalidEmailMessage: "Inserisci un'email valida.",
     namePlaceholder: "Mario Rossi",
     submittingLabel: "Accesso in corso...",
+    consentLabel: "Accetto la Privacy Policy e i Termini",
+    consentRequiredMessage: "Devi accettare la Privacy Policy e i Termini",
   },
   en: {
     requiredOptionMessage: "Please choose an option.",
@@ -409,6 +415,8 @@ export const formContent = {
     invalidEmailMessage: "Please enter a valid email.",
     namePlaceholder: "John Doe",
     submittingLabel: "Getting early access...",
+    consentLabel: "I agree to the Privacy Policy and Terms",
+    consentRequiredMessage: "You must accept the Privacy Policy and Terms",
   },
 } as const
 

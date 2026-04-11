@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import Link from "next/link";
 import Image from "next/image";
 
 import { AppPreviewCard } from "@/components/marketing/app-preview-card";
@@ -197,6 +198,27 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
             />
           </div>
         </motion.div>
+      </section>
+
+      <section className="px-4 pb-10 sm:px-6 sm:pb-12">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-center gap-4 text-xs text-muted-foreground/70 sm:justify-end">
+          <Link
+            href={`/${language}/privacy`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-all duration-200 hover:opacity-100 hover:underline underline-offset-2"
+          >
+            {t.privacyPolicyLabel}
+          </Link>
+          <Link
+            href={`/${language}/terms`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-all duration-200 hover:opacity-100 hover:underline underline-offset-2"
+          >
+            {t.termsLabel}
+          </Link>
+        </div>
       </section>
     </main>
   );

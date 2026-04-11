@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import Link from "next/link"
 import { useEffect, useMemo } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
@@ -29,6 +30,9 @@ function createEarlyAccessSchema(language: Language) {
     }),
     interestedPlan: z.enum(["starter", "growth", "studio"]),
     message: z.string().trim().optional(),
+    consentAccepted: z.boolean().refine((value) => value, {
+      message: localizedFormContent.consentRequiredMessage,
+    }),
   })
 }
 
@@ -51,6 +55,7 @@ export function EarlyAccessForm({
 }: EarlyAccessFormProps) {
   const t = translations[language]
   const localizedFormContent = formContent[language]
+  const legalBasePath = `/${language}`
   const earlyAccessSchema = useMemo(() => createEarlyAccessSchema(language), [language])
 
   const form = useForm<EarlyAccessFormValues>({
@@ -61,6 +66,7 @@ export function EarlyAccessForm({
       isNutritionProfessional: undefined,
       interestedPlan: initialPlan,
       message: "",
+      consentAccepted: false,
     },
   })
 
@@ -91,6 +97,11 @@ export function EarlyAccessForm({
     name: "email",
   })
 
+  const consentAccepted = useWatch({
+    control: form.control,
+    name: "consentAccepted",
+  })
+
   const isNutritionProfessional = selectedRole === "yes"
 
   const isSubmitDisabled =
@@ -101,6 +112,14 @@ export function EarlyAccessForm({
     !selectedPlan
 
   const onSubmit = async (values: EarlyAccessFormValues) => {
+    if (!values.consentAccepted) {
+      form.setError("consentAccepted", {
+        type: "manual",
+        message: localizedFormContent.consentRequiredMessage,
+      })
+      return
+    }
+
     try {
       const response = await fetch("/api/waitlist", {
         method: "POST",
@@ -129,6 +148,7 @@ export function EarlyAccessForm({
         isNutritionProfessional: undefined,
         interestedPlan: initialPlan,
         message: "",
+        consentAccepted: false,
       })
     } catch {
       onServerSubmitResult?.("error")
@@ -140,9 +160,6 @@ export function EarlyAccessForm({
       appearance="glass-subtle"
       className={cn("w-full max-w-md border-border/70 bg-card/55", className)}
     >
-      <CardHeader>
-        <CardTitle className="text-xl">{t.submit}</CardTitle>
-      </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="flex flex-col space-y-2">
@@ -258,6 +275,71 @@ export function EarlyAccessForm({
               className="flex w-full rounded-lg border border-border/60 bg-background/55 px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/80 focus-visible:border-primary/45 focus-visible:ring-3 focus-visible:ring-primary/20"
               {...form.register("message")}
             />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="waitlist-consent" className="flex items-center gap-2 text-xs text-muted-foreground">
+              <input
+                id="waitlist-consent"
+                type="checkbox"
+                className="mt-0.5 size-4 rounded border border-border/70 bg-background/70 accent-primary"
+                checked={Boolean(consentAccepted)}
+                onChange={(event) =>
+                  form.setValue("consentAccepted", event.target.checked, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  })
+                }
+              />
+              {language === "it" ? (
+                <span>
+                  Accetto la{" "}
+                  <Link
+                    href={`${legalBasePath}/privacy`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground/90 underline underline-offset-2 transition-opacity hover:opacity-70"
+                  >
+                    Privacy Policy
+                  </Link>{" "}
+                  e i{" "}
+                  <Link
+                    href={`${legalBasePath}/terms`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground/90 underline underline-offset-2 transition-opacity hover:opacity-70"
+                  >
+                    Termini
+                  </Link>
+                </span>
+              ) : (
+                <span>
+                  I agree to the{" "}
+                  <Link
+                    href={`${legalBasePath}/privacy`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground/90 underline underline-offset-2 transition-opacity hover:opacity-70"
+                  >
+                    Privacy Policy
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    href={`${legalBasePath}/terms`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground/90 underline underline-offset-2 transition-opacity hover:opacity-70"
+                  >
+                    Terms
+                  </Link>
+                </span>
+              )}
+            </label>
+            {form.formState.errors.consentAccepted ? (
+              <p className="text-xs text-destructive">
+                {form.formState.errors.consentAccepted.message}
+              </p>
+            ) : null}
           </div>
 
           <p className="text-xs text-muted-foreground">
