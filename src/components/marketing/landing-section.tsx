@@ -1,5 +1,9 @@
-import type { ReactNode } from "react"
+"use client"
 
+import type { ReactNode } from "react"
+import { motion, useReducedMotion } from "framer-motion"
+
+import { getRevealInViewProps } from "@/components/marketing/motion"
 import { cn } from "@/lib/utils"
 
 type LandingSectionProps = {
@@ -21,10 +25,12 @@ export function LandingSection({
   flexAlignment = "left",
   className,
 }: LandingSectionProps) {
+  const reducedMotion = useReducedMotion() ?? false
+
   return (
     <section id={id} className={cn("px-4 py-12 sm:px-6 sm:py-16", className)}>
       <div className={cn("mx-auto flex w-full max-w-5xl flex-col gap-8", `items-${flexAlignment}`)}>
-        <header className="space-y-3">
+        <motion.header className="space-y-3" {...getRevealInViewProps({ reducedMotion })}>
           {eyebrow ? (
             <p className="text-l font-medium tracking-tighter text-primary/85">
               {eyebrow}
@@ -38,7 +44,7 @@ export function LandingSection({
               {description}
             </p>
           ) : null}
-        </header>
+        </motion.header>
         {children}
       </div>
     </section>

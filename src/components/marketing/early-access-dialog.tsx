@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog"
 import type { InterestedPlan, Language } from "@/lib/i18n"
 import { translations } from "@/lib/i18n"
+import { cn } from "@/lib/utils"
 
 type EarlyAccessDialogProps = {
   triggerLabel?: string
@@ -37,6 +38,10 @@ export function EarlyAccessDialog({
   const t = translations[language]
   const [open, setOpen] = useState(false)
   const [openCount, setOpenCount] = useState(0)
+  const triggerMotionClassName =
+    triggerVariant === "default"
+      ? "transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md hover:brightness-105 motion-reduce:transform-none motion-reduce:transition-none"
+      : "transition-all duration-200 ease-out hover:opacity-95 hover:border-border/90 motion-reduce:transition-none"
 
   const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen)
@@ -65,7 +70,11 @@ export function EarlyAccessDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger
         render={
-          <Button size={triggerSize} variant={triggerVariant} className={`cursor-pointer ${triggerClassName}`}>
+          <Button
+            size={triggerSize}
+            variant={triggerVariant}
+            className={cn("cursor-pointer", triggerMotionClassName, triggerClassName)}
+          >
             {triggerLabel ?? t.cta}
           </Button>
         }

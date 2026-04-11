@@ -31,7 +31,7 @@ export function PricingCard({
   return (
     <Card
       className={cn(
-        "border border-border/70 bg-card/80",
+        "border border-border/70 bg-card/80 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.01] hover:shadow-md hover:ring-1 hover:ring-primary/15 motion-reduce:transform-none motion-reduce:transition-none",
         featured && "border-primary/70 ring-1 ring-primary/30"
       )}
     >

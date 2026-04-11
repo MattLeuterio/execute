@@ -22,7 +22,7 @@ export function AppPreviewCard({
   meals,
 }: AppPreviewCardProps) {
   return (
-    <Card className="border border-border/70 bg-card/80">
+    <Card className="border border-border/70 bg-card/80 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.01] hover:shadow-md hover:ring-1 hover:ring-primary/15 motion-reduce:transform-none motion-reduce:transition-none">
       <CardHeader className="flex-row items-start justify-between gap-4">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{subtitle}</p>
