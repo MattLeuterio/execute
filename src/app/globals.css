@@ -166,3 +166,31 @@
     letter-spacing: -0.01em;
   }
 }
+
+@layer components {
+  /*
+   * Recharts focus cleanup:
+   * - removes the focus rectangle shown after click/tap on charts
+   * - keeps insights cards visually clean
+   */
+  .chart-focus-clean .recharts-wrapper:focus,
+  .chart-focus-clean .recharts-surface:focus,
+  .chart-focus-clean .recharts-wrapper:focus-visible,
+  .chart-focus-clean .recharts-surface:focus-visible {
+    outline: none;
+  }
+
+  /*
+   * Recharts marks some SVG nodes as focusable (g/path with tabindex).
+   * Browsers may apply a UA outline on :focus, producing the blue border.
+   * Explicit override to remove it consistently.
+   */
+  .chart-focus-clean [tabindex]:focus,
+  .chart-focus-clean [tabindex]:focus-visible,
+  .chart-focus-clean svg g:focus,
+  .chart-focus-clean svg g:focus-visible,
+  .chart-focus-clean svg path:focus,
+  .chart-focus-clean svg path:focus-visible {
+    outline: none !important;
+  }
+}

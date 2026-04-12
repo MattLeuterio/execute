@@ -39,7 +39,7 @@ function InsightsCard({
         <p className="text-sm leading-6 text-muted-foreground">{description}</p>
       </CardHeader>
       <CardContent>
-        <div className="h-44 w-full">{children}</div>
+        <div className="chart-focus-clean h-44 w-full">{children}</div>
       </CardContent>
     </Card>
   )
@@ -63,7 +63,7 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
   const chestGradientId = `${uniqueId}-chest-fill`
 
   const tooltipSharedProps = {
-    cursor: { stroke: "var(--border)", strokeOpacity: 0.5, strokeWidth: 1 },
+    cursor: false,
     separator: ": ",
     contentStyle: {
       backgroundColor: "var(--card)",
