@@ -80,21 +80,23 @@ export function EarlyAccessDialog({
         }
       />
 
-      <DialogContent className="max-w-[calc(100%-2rem)] border border-border/70 bg-card/95 p-0 sm:max-w-xl">
-        <DialogHeader className="px-6 pt-6">
+      <DialogContent
+        className="inset-0 h-dvh w-screen max-w-none translate-x-0 translate-y-0 rounded-none border border-border/70 bg-card/95 p-0 gap-0 overflow-hidden flex flex-col sm:max-w-none md:inset-auto md:left-1/2 md:top-1/2 md:h-auto md:w-full md:max-w-xl md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-xl"
+      >
+        <DialogHeader className="shrink-0 px-6 pt-6">
           <DialogTitle className="text-xl">{t.modalTitle}</DialogTitle>
           <DialogDescription>
             {t.modalDesc}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="px-6 pb-6">
+        <div className="flex-1 min-h-0 overflow-hidden px-6 pb-6">
           <EarlyAccessForm
             key={`${language}-${initialPlan}-${openCount}`}
             language={language}
             initialPlan={initialPlan}
             onServerSubmitResult={handleServerSubmitResult}
-            className="max-w-none border-border/60 bg-card/60"
+            className="h-full"
           />
         </div>
       </DialogContent>

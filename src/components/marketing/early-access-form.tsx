@@ -156,12 +156,13 @@ export function EarlyAccessForm({
   }
 
   return (
-    <Card
-      appearance="glass-subtle"
-      className={cn("w-full max-w-md border-border/70 bg-card/55", className)}
-    >
-      <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex h-full min-h-0 flex-col", className)}>
+      <Card
+        appearance="glass-subtle"
+        className="my-4 flex min-h-0 flex-1 flex-col w-full border-border/70 bg-card/55"
+      >
+        <CardContent className="min-h-0 flex-1 overflow-y-auto">
+          <div className="space-y-4">
           <div className="flex flex-col space-y-2">
             <label htmlFor="waitlist-name" className="text-sm font-medium text-foreground/90">
               {t.name} *
@@ -345,19 +346,22 @@ export function EarlyAccessForm({
           <p className="text-xs text-muted-foreground">
             {t.requestFieldsObligatory}
           </p>
+          </div>
+        </CardContent>
+      </Card>
 
-          <Button
-            type="submit"
-            size="lg"
-            className="mt-12 w-full border border-primary/35 bg-primary/85 text-primary-foreground hover:bg-primary"
-            disabled={isSubmitDisabled}
-          >
-            {form.formState.isSubmitting
-              ? localizedFormContent.submittingLabel
-              : t.submit}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+      <div className="shrink-0">
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full border border-primary/35 bg-primary/85 text-primary-foreground hover:bg-primary"
+          disabled={isSubmitDisabled}
+        >
+          {form.formState.isSubmitting
+            ? localizedFormContent.submittingLabel
+            : t.submit}
+        </Button>
+      </div>
+    </form>
   )
 }
