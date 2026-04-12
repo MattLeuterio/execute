@@ -3,12 +3,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { useEffect, useMemo } from "react"
-import { useForm, useWatch } from "react-hook-form"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 import type { InterestedPlan, Language } from "@/lib/i18n"
 import { formContent, translations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
@@ -56,6 +59,11 @@ export function EarlyAccessForm({
   const t = translations[language]
   const localizedFormContent = formContent[language]
   const legalBasePath = `/${language}`
+  const interestedPlanLabels: Record<InterestedPlan, string> = {
+    starter: t.interestedPlanStarterOption,
+    growth: t.interestedPlanGrowthOption,
+    studio: t.interestedPlanStudioOption,
+  }
   const earlyAccessSchema = useMemo(() => createEarlyAccessSchema(language), [language])
 
   const form = useForm<EarlyAccessFormValues>({
@@ -95,11 +103,6 @@ export function EarlyAccessForm({
   const emailValue = useWatch({
     control: form.control,
     name: "email",
-  })
-
-  const consentAccepted = useWatch({
-    control: form.control,
-    name: "consentAccepted",
   })
 
   const isNutritionProfessional = selectedRole === "yes"
@@ -250,16 +253,34 @@ export function EarlyAccessForm({
             <label htmlFor="waitlist-plan" className="text-sm font-medium text-foreground/90">
               {t.interestedPlanLabel}
             </label>
-            <select
-              id="waitlist-plan"
-              className="h-10 w-full rounded-lg border border-border/70 bg-background/70 px-3 text-sm text-foreground outline-none transition-colors focus-visible:border-primary/60 focus-visible:ring-3 focus-visible:ring-primary/25 disabled:cursor-not-allowed disabled:opacity-65"
-              disabled={!isNutritionProfessional}
-              {...form.register("interestedPlan")}
-            >
-              <option value="starter">{t.interestedPlanStarterOption}</option>
-              <option value="growth">{t.interestedPlanGrowthOption}</option>
-              <option value="studio">{t.interestedPlanStudioOption}</option>
-            </select>
+            <Controller
+              control={form.control}
+              name="interestedPlan"
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(value) => field.onChange(value as InterestedPlan)}
+                  disabled={!isNutritionProfessional}
+                >
+                  <SelectTrigger id="waitlist-plan" className="border-border/70 bg-background/70 focus-visible:border-primary/60 focus-visible:ring-primary/25 disabled:opacity-65">
+                    <SelectValue>
+                      {(value) => {
+                        if (!value) {
+                          return ""
+                        }
+
+                        return interestedPlanLabels[value as InterestedPlan]
+                      }}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="starter">{t.interestedPlanStarterOption}</SelectItem>
+                    <SelectItem value="growth">{t.interestedPlanGrowthOption}</SelectItem>
+                    <SelectItem value="studio">{t.interestedPlanStudioOption}</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
             {!isNutritionProfessional ? (
               <p className="text-xs text-muted-foreground">{t.interestedPlanDisabledHelper}</p>
             ) : null}
@@ -269,28 +290,30 @@ export function EarlyAccessForm({
             <label htmlFor="waitlist-message" className="text-sm font-medium text-muted-foreground">
               {t.message}
             </label>
-            <textarea
+            <Textarea
               id="waitlist-message"
               rows={3}
               placeholder={t.messagePlaceholder}
-              className="flex w-full rounded-lg border border-border/60 bg-background/55 px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/80 focus-visible:border-primary/45 focus-visible:ring-3 focus-visible:ring-primary/20"
+              className="border-border/60 bg-background/55 placeholder:text-muted-foreground/80 focus-visible:border-primary/45 focus-visible:ring-primary/20"
               {...form.register("message")}
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="waitlist-consent" className="flex items-center gap-2 text-xs text-muted-foreground">
-              <input
-                id="waitlist-consent"
-                type="checkbox"
-                className="mt-0.5 size-4 rounded border border-border/70 bg-background/70 accent-primary"
-                checked={Boolean(consentAccepted)}
-                onChange={(event) =>
-                  form.setValue("consentAccepted", event.target.checked, {
-                    shouldValidate: true,
-                    shouldDirty: true,
-                  })
-                }
+              <Controller
+                control={form.control}
+                name="consentAccepted"
+                render={({ field }) => (
+                  <Checkbox
+                    id="waitlist-consent"
+                    className="mt-0.5 border-border/70 bg-background/70"
+                    checked={Boolean(field.value)}
+                    onCheckedChange={(checked) =>
+                      field.onChange(Boolean(checked))
+                    }
+                  />
+                )}
               />
               {language === "it" ? (
                 <span>

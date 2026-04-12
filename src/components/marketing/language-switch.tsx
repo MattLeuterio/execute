@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import type { Language } from "@/lib/i18n"
 import { isLocale, languageUi, supportedLocales } from "@/lib/i18n"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
@@ -39,17 +40,19 @@ export function LanguageSwitch({ language }: LanguageSwitchProps) {
       <div className="rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs tracking-wide text-muted-foreground">
         {supportedLocales.map((locale, index) => (
           <span key={locale}>
-            <button
+            <Button
               type="button"
+              size="xs"
+              variant="ghost"
               onClick={() => switchLanguage(locale)}
               className={cn(
-                "transition-colors",
+                "h-auto rounded-none px-0 py-0 text-xs tracking-wide transition-colors",
                 language === locale ? "text-foreground" : "hover:text-foreground"
               )}
               aria-label={languageUi[locale].switchAriaLabel}
             >
               {locale.toUpperCase()}
-            </button>
+            </Button>
             {index < supportedLocales.length - 1 ? <span className="mx-2 text-border">/</span> : null}
           </span>
         ))}

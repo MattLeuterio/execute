@@ -200,3 +200,13 @@ Non costruire tutto in una volta. Siamo nella fase 1: brand definito, dominio ac
 18. Sintesi del prodotto
 
 Execute nasce come piattaforma per l’aderenza ai piani nutrizionali. I nutrizionisti creano piani; i clienti li seguono quotidianamente. Il sistema aiuta a eseguire in modo costante. Tutto, dal design al copy al codice, deve rispettare questo principio.
+
+19. Engineering guardrails
+
+Per le regole operative di implementazione, il riferimento primario è `AGENTS.md`.
+
+Regole da applicare sempre:
+- usare componenti shadcn/ui (o wrapper custom in `src/components/ui`) per i controlli interattivi;
+- evitare controlli HTML primitivi nelle feature (`button`, `input`, `select`, `textarea`);
+- consentire primitive native solo dentro `src/components/ui` quando servono per creare wrapper coerenti al design system;
+- mantenere i commenti nel codice in inglese.
