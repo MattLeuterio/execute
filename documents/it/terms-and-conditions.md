@@ -1,5 +1,5 @@
 
-# Terms and Conditions
+# Termini e condizioni
 
 ### 1. Introduzione
 
