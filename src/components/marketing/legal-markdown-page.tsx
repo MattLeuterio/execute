@@ -12,7 +12,7 @@ type LegalMarkdownPageProps = {
 async function getMarkdownContent({ language, fileName }: LegalMarkdownPageProps) {
   const filePath = path.join(
     process.cwd(),
-    "context/app-example-screenshots/documents",
+    "/documents",
     language,
     fileName
   )
