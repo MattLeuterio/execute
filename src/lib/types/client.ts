@@ -27,6 +27,8 @@ export interface Client {
 export interface ClientSummary {
   id: string;
   name: string;
+  email?: string;
+  phone?: string;
   status: ClientStatus;
   adherencePercentage: number; // 0-100
   latestWeight?: number;

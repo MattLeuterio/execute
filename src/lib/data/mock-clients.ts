@@ -81,6 +81,8 @@ export const MOCK_CLIENT_SUMMARIES: Record<string, ClientSummary> = {
   'client-marco': {
     id: 'client-marco',
     name: 'Marco Rossi',
+    email: 'marco.rossi@example.com',
+    phone: '+39 333 1234567',
     status: ClientStatus.OnTrack,
     adherencePercentage: 92,
     latestWeight: 76.3,
@@ -93,6 +95,7 @@ export const MOCK_CLIENT_SUMMARIES: Record<string, ClientSummary> = {
   'client-giulia': {
     id: 'client-giulia',
     name: 'Giulia Bianchi',
+    email: 'giulia.b@example.com',
     status: ClientStatus.Warning,
     adherencePercentage: 62,
     latestWeight: 69.8,
@@ -105,6 +108,8 @@ export const MOCK_CLIENT_SUMMARIES: Record<string, ClientSummary> = {
   'client-alessandro': {
     id: 'client-alessandro',
     name: 'Alessandro Fermi',
+    email: 'alex.fermi@example.com',
+    phone: '+39 333 3456789',
     status: ClientStatus.AtRisk,
     adherencePercentage: 31,
     latestWeight: 86.2,
@@ -117,6 +122,7 @@ export const MOCK_CLIENT_SUMMARIES: Record<string, ClientSummary> = {
   'client-francesca': {
     id: 'client-francesca',
     name: 'Francesca Conti',
+    email: 'f.conti@example.com',
     status: ClientStatus.OnTrack,
     adherencePercentage: 88,
     latestWeight: 61.8,
@@ -129,6 +135,8 @@ export const MOCK_CLIENT_SUMMARIES: Record<string, ClientSummary> = {
   'client-davide': {
     id: 'client-davide',
     name: 'Davide Moretti',
+    email: 'davide.m@example.com',
+    phone: '+39 333 4567890',
     status: ClientStatus.Warning,
     adherencePercentage: 71,
     latestWeight: 79.5,
@@ -141,6 +149,8 @@ export const MOCK_CLIENT_SUMMARIES: Record<string, ClientSummary> = {
   'client-elena': {
     id: 'client-elena',
     name: 'Elena De Luca',
+    email: 'elena.deluca@example.com',
+    phone: '+39 333 5678901',
     status: ClientStatus.Warning,
     adherencePercentage: 58,
     latestWeight: 74.2,

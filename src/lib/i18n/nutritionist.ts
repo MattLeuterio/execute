@@ -1,11 +1,15 @@
 export const nutritionistTranslations = {
   it: {
+    brand: "Execute",
     common: {
       time: {
         justNow: "poco fa",
-        hoursAgo: "h fa",
-        daysAgo: "giorni fa",
+        minutesAgo: " minuti fa",
+        hoursAgo: " ore fa",
+        daysAgo: " giorni fa",
         dayAgo: "giorno fa",
+        weeksAgo: " settimane fa",
+        monthsAgo: " mesi fa",
         today: "Oggi",
         yesterday: "Ieri",
       },
@@ -51,14 +55,29 @@ export const nutritionistTranslations = {
         name: "Nome",
         adherence: "Aderenza",
         status: "Stato",
-        weight: "Peso",
+        email: "Email",
+        phone: "Telefono",
         lastActivity: "Ultima attività",
+        trend: "Trend",
       },
       filters: {
         all: "Tutti",
-        onTrack: "In pista",
-        warning: "Avvertenza",
         atRisk: "A rischio",
+        highAdherence: "Alta aderenza",
+        lowAdherence: "Bassa aderenza",
+        inactive: "Inattivo",
+      },
+      search: {
+        placeholder: "Ricerca per nome...",
+        selected: "selezionati",
+      },
+      actions: {
+        archive: "Archivia",
+        confirmArchive: "Archiviare {count} cliente/i?",
+        export: "Esporta",
+      },
+      emptyStates: {
+        noClients: "Nessun cliente corrisponde ai filtri selezionati",
       },
     },
     activity: {
@@ -73,19 +92,23 @@ export const nutritionistTranslations = {
       },
     },
     status: {
-      onTrack: "In pista",
+      onTrack: "In corso",
       warning: "Avvertenza",
       atRisk: "A rischio",
       inactive: "Inattivo",
     },
   },
   en: {
+    brand: "Execute",
     common: {
       time: {
         justNow: "just now",
-        hoursAgo: "h ago",
-        daysAgo: "days ago",
+        minutesAgo: " minutes ago",
+        hoursAgo: " hours ago",
+        daysAgo: " days ago",
         dayAgo: "day ago",
+        weeksAgo: " weeks ago",
+        monthsAgo: " months ago",
         today: "Today",
         yesterday: "Yesterday",
       },
@@ -131,14 +154,29 @@ export const nutritionistTranslations = {
         name: "Name",
         adherence: "Adherence",
         status: "Status",
-        weight: "Weight",
+        email: "Email",
+        phone: "Phone",
         lastActivity: "Last Activity",
+        trend: "Trend",
       },
       filters: {
         all: "All",
-        onTrack: "On Track",
-        warning: "Warning",
         atRisk: "At Risk",
+        highAdherence: "High Adherence",
+        lowAdherence: "Low Adherence",
+        inactive: "Inactive",
+      },
+      search: {
+        placeholder: "Search by name...",
+        selected: "selected",
+      },
+      actions: {
+        archive: "Archive",
+        confirmArchive: "Archive {count} client(s)?",
+        export: "Export",
+      },
+      emptyStates: {
+        noClients: "No clients match the selected filters",
       },
     },
     activity: {
