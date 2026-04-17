@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { ClientStatus } from "@/lib/types"
 import { cn } from "@/lib/utils"
+import { formatTimeAgo } from "@/lib/date-utils"
 
 interface AtRiskClientItemProps {
   id: string
@@ -23,14 +24,6 @@ export function AtRiskClientItem({
   locale,
   t,
 }: AtRiskClientItemProps) {
-  const daysAgo = Math.floor((new Date().getTime() - lastActivityDate.getTime()) / (1000 * 60 * 60 * 24))
-
-  const getTimeAgo = () => {
-    if (daysAgo === 0) return t.common.time.today
-    if (daysAgo === 1) return t.common.time.yesterday
-    return `${daysAgo} ${t.common.time.daysAgo}`
-  }
-
   return (
     <Link
       href={`/${locale}/nutritionist/clients/${id}`}
@@ -41,7 +34,7 @@ export function AtRiskClientItem({
           <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500" />
           <div>
             <h4 className="font-medium text-foreground">{name}</h4>
-            <p className="text-xs text-foreground/50">{getTimeAgo()}</p>
+            <p className="text-xs text-foreground/50">{formatTimeAgo(lastActivityDate, 'string', t, locale)}</p>
           </div>
         </div>
       </div>

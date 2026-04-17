@@ -9,7 +9,7 @@ interface NutritionistLayoutProps {
 
 export default async function NutritionistLayout({ children, params }: NutritionistLayoutProps) {
   const { locale } = await params
-  const t = getTranslations("nutritionist", locale as Locale)
+  const t = getTranslations("nutritionist", locale as Locale)  
 
   return <AppShell locale={locale} t={t}>{children}</AppShell>
 }

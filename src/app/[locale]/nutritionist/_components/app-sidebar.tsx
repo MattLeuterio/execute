@@ -19,7 +19,7 @@ export function AppSidebar({ locale, t }: AppSidebarProps) {
       settings: t.nav.settings,
     };
     return labelMap[href] || href;
-  };
+  };  
 
   return (
     <aside className="fixed left-0 top-0 z-50 hidden h-screen w-64 flex-col border-r border-border/50 bg-background md:flex">

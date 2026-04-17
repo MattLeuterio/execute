@@ -3,6 +3,8 @@
 import { ActivityItem, ActivityType } from "@/lib/types"
 import { CheckCircle2, AlertCircle, TrendingDown, Plus, MessageSquare } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatTimeAgo } from "@/lib/date-utils"
+import { getStatusColors } from "@/lib/colors"
 
 interface ActivityFeedItemProps {
   activity: ActivityItem
@@ -43,26 +45,8 @@ export function ActivityFeedItem({ activity, locale, t }: ActivityFeedItemProps)
     return activity.description
   }
 
-  const timeAgo = (date: Date) => {
-    const now = new Date()
-    const diff = now.getTime() - date.getTime()
-    const hours = Math.floor(diff / (1000 * 60 * 60))
-    const days = Math.floor(hours / 24)
-
-    if (hours === 0) return t.common.time.justNow
-    if (hours < 24) return `${hours} ${t.common.time.hoursAgo}`
-    if (days < 7) return `${days} ${t.common.time.daysAgo}`
-    return date.toLocaleDateString(locale === "it" ? "it-IT" : "en-US")
-  }
-
-  const severityBg = {
-    info: "bg-foreground/5",
-    warning: "bg-yellow-500/10",
-    alert: "bg-red-500/10",
-  }
-
   return (
-    <div className={cn("flex gap-4 rounded-lg border border-border/30 p-4", severityBg[activity.severity])}>
+    <div className={cn("flex gap-4 rounded-lg border border-border/30 p-4", getStatusColors(activity.severity))}>
       <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-background">
         {iconMap[activity.type]}
       </div>
@@ -72,7 +56,7 @@ export function ActivityFeedItem({ activity, locale, t }: ActivityFeedItemProps)
           <p className="text-sm font-medium text-foreground">{activity.clientName}</p>
           <p className="text-sm text-foreground/70">{getActivityDescription(activity.type, activity.metadata)}</p>
         </div>
-        <p className="mt-1 text-xs text-foreground/50">{timeAgo(activity.timestamp)}</p>
+        <p className="mt-1 text-xs text-foreground/50">{formatTimeAgo(activity.timestamp, 'string', t, locale)}</p>
       </div>
 
       {activity.metadata && (
