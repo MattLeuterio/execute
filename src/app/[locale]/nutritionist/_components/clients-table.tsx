@@ -1,11 +1,12 @@
 import Link from "next/link"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { ClientSummary } from "@/lib/types"
 import { ClientTableRow } from "./client-table-row"
 
 interface ClientsTableProps {
   clients: ClientSummary[]
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function ClientsTable({ clients, locale, t }: ClientsTableProps) {

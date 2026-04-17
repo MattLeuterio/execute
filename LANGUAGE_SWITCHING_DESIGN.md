@@ -101,7 +101,7 @@ import { Globe } from "lucide-react"
 
 interface LanguageToggleProps {
   currentLocale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function LanguageToggle({ currentLocale, t }: LanguageToggleProps) {

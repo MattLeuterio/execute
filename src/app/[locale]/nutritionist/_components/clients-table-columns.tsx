@@ -1,6 +1,7 @@
 'use client'
 
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
+import type { NutritionistTranslations } from '@/lib/i18n'
 import { ClientSummary } from '@/lib/types'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
@@ -9,7 +10,10 @@ import { formatTimeAgo } from '@/lib/date-utils'
 
 const columnHelper = createColumnHelper<ClientSummary>()
 
-export function getClientsTableColumns(t?: any, locale?: string): ColumnDef<ClientSummary>[] {
+export function getClientsTableColumns(
+  t?: NutritionistTranslations,
+  locale?: string
+): ColumnDef<ClientSummary>[] {
   return [
     columnHelper.display({
       id: 'select',

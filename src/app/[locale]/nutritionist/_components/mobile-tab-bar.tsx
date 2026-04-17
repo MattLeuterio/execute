@@ -1,11 +1,12 @@
 "use client"
 
 import { NAVIGATION_ITEMS } from "@/lib/navigation"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { NavLink } from "./nav-link"
 
 interface MobileTabBarProps {
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function MobileTabBar({ locale, t }: MobileTabBarProps) {

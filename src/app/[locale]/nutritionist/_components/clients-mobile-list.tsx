@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Table } from '@tanstack/react-table'
+import type { NutritionistTranslations } from '@/lib/i18n'
 import { ClientSummary } from '@/lib/types'
 import { ClientCard } from './client-card'
 import { SelectionFloatingBar } from './selection-floating-bar'
@@ -11,7 +12,7 @@ import { Button } from '@/components/ui/button'
 interface ClientsMobileListProps {
   table: Table<ClientSummary>
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function ClientsMobileList({ table, locale, t }: ClientsMobileListProps) {
@@ -55,7 +56,7 @@ export function ClientsMobileList({ table, locale, t }: ClientsMobileListProps) 
           <p className="text-sm text-foreground/50">{t.clients.emptyStates.noClients}</p>
         </div>
       ) : (
-        rows.map((row: any) => {
+        rows.map((row) => {
           const isSelected = row.getIsSelected()
           
           if (isSelecting) {

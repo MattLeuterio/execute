@@ -10,14 +10,17 @@ import {
   SortingState,
   VisibilityState,
   PaginationState,
+  RowSelectionState,
+  Updater,
   Table,
 } from '@tanstack/react-table'
+import type { NutritionistTranslations } from '@/lib/i18n'
 import { ClientSummary } from '@/lib/types'
 import { getClientsTableColumns } from './clients-table-columns'
 
 interface UseClientsTableProps {
   data: ClientSummary[]
-  t?: any
+  t?: NutritionistTranslations
 }
 
 interface UseClientsTableReturn {
@@ -37,7 +40,7 @@ export function useClientsTable({ data, t }: UseClientsTableProps): UseClientsTa
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
     getDefaultVisibility()
   )
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 20,
@@ -54,25 +57,20 @@ export function useClientsTable({ data, t }: UseClientsTableProps): UseClientsTa
   const columns = useMemo(() => getClientsTableColumns(t), [t])
 
   // Memoized callbacks to prevent state update warnings
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSortingChange = useCallback((updater: any) => {
+  const onSortingChange = useCallback((updater: Updater<SortingState>) => {
     setSorting((prev) => {
-      const newSorting =
-        typeof updater === 'function' ? updater(prev) : (updater as SortingState)
+      const newSorting = typeof updater === 'function' ? updater(prev) : updater
       return newSorting
     })
   }, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onGlobalFilterChange = useCallback((value: any) => {
-    setGlobalFilter(value)
+  const onGlobalFilterChange = useCallback((updater: Updater<string>) => {
+    setGlobalFilter((prev) => (typeof updater === 'function' ? updater(prev) : updater))
   }, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onColumnVisibilityChange = useCallback((updater: any) => {
+  const onColumnVisibilityChange = useCallback((updater: Updater<VisibilityState>) => {
     setColumnVisibility((prev) => {
-      const newVis =
-        typeof updater === 'function' ? updater(prev) : (updater as VisibilityState)
+      const newVis = typeof updater === 'function' ? updater(prev) : updater
       if (typeof window !== 'undefined') {
         localStorage.setItem('execute_clients_table_visibility', JSON.stringify(newVis))
       }
@@ -80,22 +78,16 @@ export function useClientsTable({ data, t }: UseClientsTableProps): UseClientsTa
     })
   }, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onRowSelectionChange = useCallback((updater: any) => {
+  const onRowSelectionChange = useCallback((updater: Updater<RowSelectionState>) => {
     setRowSelection((prev) => {
-      const newSelection =
-        typeof updater === 'function'
-          ? updater(prev)
-          : (updater as Record<string, boolean>)
+      const newSelection = typeof updater === 'function' ? updater(prev) : updater
       return newSelection
     })
   }, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onPaginationChange = useCallback((updater: any) => {
+  const onPaginationChange = useCallback((updater: Updater<PaginationState>) => {
     setPagination((prev) => {
-      const newPag =
-        typeof updater === 'function' ? updater(prev) : (updater as PaginationState)
+      const newPag = typeof updater === 'function' ? updater(prev) : updater
       return newPag
     })
   }, [])
@@ -120,8 +112,7 @@ export function useClientsTable({ data, t }: UseClientsTableProps): UseClientsTa
     globalFilter,
     setGlobalFilter,
     rowSelection,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getSelectedRows: () => table.getSelectedRowModel().rows.map((r: any) => r.original),
+    getSelectedRows: () => table.getSelectedRowModel().rows.map((r) => r.original),
   }
 }
 

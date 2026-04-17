@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { ClientStatus } from "@/lib/types"
-import { cn } from "@/lib/utils"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { formatTimeAgo } from "@/lib/date-utils"
 
 interface AtRiskClientItemProps {
@@ -12,14 +12,13 @@ interface AtRiskClientItemProps {
   status: ClientStatus
   lastActivityDate: Date
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function AtRiskClientItem({
   id,
   name,
   adherencePercentage,
-  status,
   lastActivityDate,
   locale,
   t,
@@ -31,7 +30,7 @@ export function AtRiskClientItem({
     >
       <div className="flex-1">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500" />
+          <div className="h-10 w-10 rounded-full bg-linear-to-br from-blue-400 to-cyan-500" />
           <div>
             <h4 className="font-medium text-foreground">{name}</h4>
             <p className="text-xs text-foreground/50">{formatTimeAgo(lastActivityDate, 'string', t, locale)}</p>

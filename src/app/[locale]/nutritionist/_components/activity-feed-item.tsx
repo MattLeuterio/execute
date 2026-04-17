@@ -1,15 +1,15 @@
 "use client"
 
 import { ActivityItem, ActivityType } from "@/lib/types"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { CheckCircle2, AlertCircle, TrendingDown, Plus, MessageSquare } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { formatTimeAgo } from "@/lib/date-utils"
-import { getStatusColors } from "@/lib/colors"
 
 interface ActivityFeedItemProps {
   activity: ActivityItem
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function ActivityFeedItem({ activity, locale, t }: ActivityFeedItemProps) {
@@ -23,9 +23,7 @@ export function ActivityFeedItem({ activity, locale, t }: ActivityFeedItemProps)
     [ActivityType.NoteAdded]: <MessageSquare className="h-4 w-4 text-blue-500" />,
   }
 
-  const getActivityDescription = (type: ActivityType, metadata?: any) => {
-    const clientName = (metadata as any)?.clientName || ""
-    
+  const getActivityDescription = (type: ActivityType) => {
     const typeMap: Record<ActivityType, keyof typeof t.activity.types> = {
       [ActivityType.ClientAdded]: "clientAdded" as const,
       [ActivityType.PlanAssigned]: "planAssigned" as const,
@@ -38,15 +36,20 @@ export function ActivityFeedItem({ activity, locale, t }: ActivityFeedItemProps)
     
     const baseKey = typeMap[type]
     
-    if (baseKey && t?.activity?.types && baseKey in t.activity.types) {
-      const template = (t.activity.types as any)[baseKey]
-      return typeof template === "string" ? template.replace("{client}", clientName) : activity.description
-    }
-    return activity.description
+    const template = t.activity.types[baseKey]
+    return template.replace("{client}", activity.clientName)
   }
 
+  const severityBg: Record<ActivityItem["severity"], string> = {
+    info: "bg-foreground/5",
+    warning: "bg-yellow-500/10",
+    alert: "bg-red-500/10",
+  }
+
+  const metadata = activity.metadata
+
   return (
-    <div className={cn("flex gap-4 rounded-lg border border-border/30 p-4", getStatusColors(activity.severity))}>
+    <div className={cn("flex gap-4 rounded-lg border border-border/30 p-4", severityBg[activity.severity])}>
       <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-background">
         {iconMap[activity.type]}
       </div>
@@ -54,21 +57,21 @@ export function ActivityFeedItem({ activity, locale, t }: ActivityFeedItemProps)
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline gap-2">
           <p className="text-sm font-medium text-foreground">{activity.clientName}</p>
-          <p className="text-sm text-foreground/70">{getActivityDescription(activity.type, activity.metadata)}</p>
+          <p className="text-sm text-foreground/70">{getActivityDescription(activity.type)}</p>
         </div>
         <p className="mt-1 text-xs text-foreground/50">{formatTimeAgo(activity.timestamp, 'string', t, locale)}</p>
       </div>
 
-      {activity.metadata && (
+      {metadata && (
         <div className="flex-shrink-0 text-right">
-          {(activity.metadata as any).change !== undefined && (
-            <span className={cn("text-xs font-medium", (activity.metadata as any).change < 0 ? "text-emerald-600" : "text-red-600")}>
-              {(activity.metadata as any).change > 0 ? "+" : ""}{(activity.metadata as any).change}
+          {metadata.change !== undefined && (
+            <span className={cn("text-xs font-medium", metadata.change < 0 ? "text-emerald-600" : "text-red-600")}>
+              {metadata.change > 0 ? "+" : ""}{metadata.change}
             </span>
           )}
-          {(activity.metadata as any).fromValue !== undefined && (
+          {metadata.fromValue !== undefined && (
             <p className="text-xs text-foreground/50">
-              {(activity.metadata as any).fromValue} → {(activity.metadata as any).toValue}
+              {metadata.fromValue} → {metadata.toValue}
             </p>
           )}
         </div>

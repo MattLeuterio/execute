@@ -1,31 +1,16 @@
 import { ClientSummary, ClientStatus } from "@/lib/types"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
-import { TrendingDown, TrendingUp, Minus } from "lucide-react"
 import { getStatusColors } from "@/lib/colors"
 import { formatTimeAgo } from "@/lib/date-utils"
 
 interface ClientTableRowProps {
   client: ClientSummary
-  t: any
+  t: NutritionistTranslations
   locale?: string
 }
 
-function getStatusBadgeColor(status: ClientStatus) {
-  switch (status) {
-    case ClientStatus.OnTrack:
-      return "bg-emerald-500/20 text-emerald-600"
-    case ClientStatus.Warning:
-      return "bg-amber-500/20 text-amber-600"
-    case ClientStatus.AtRisk:
-      return "bg-red-500/20 text-red-600"
-    case ClientStatus.Inactive:
-      return "bg-slate-500/20 text-slate-600"
-    default:
-      return "bg-foreground/10 text-foreground/60"
-  }
-}
-
-function getStatusLabel(status: ClientStatus, t: any): string {
+function getStatusLabel(status: ClientStatus, t: NutritionistTranslations): string {
   switch (status) {
     case ClientStatus.OnTrack:
       return t.status.onTrack
@@ -41,9 +26,6 @@ function getStatusLabel(status: ClientStatus, t: any): string {
 }
 
 export function ClientTableRow({ client, t, locale }: ClientTableRowProps) {
-  const lastWeightChange = (client as any).lastWeightChange || 0 // Demo: would come from adherence data
-  const trendIcon = lastWeightChange > 0 ? <TrendingUp /> : lastWeightChange < 0 ? <TrendingDown /> : <Minus />
-
   return (
     <div className="grid grid-cols-12 gap-4 px-6 py-4 text-sm">
       {/* Name */}

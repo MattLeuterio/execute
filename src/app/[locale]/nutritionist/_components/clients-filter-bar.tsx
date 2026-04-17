@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 interface ClientsFilterBarProps {
@@ -8,7 +9,7 @@ interface ClientsFilterBarProps {
   currentSort: string
   currentSortDir: "asc" | "desc"
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 type FilterType = "all" | "atRisk" | "highAdherence" | "lowAdherence" | "inactive"
@@ -28,8 +29,8 @@ export function ClientsFilterBar({
   locale,
   t,
 }: ClientsFilterBarProps) {
-  const getFilterLabel = (key: string): string => {
-    return t.clients.filters[key] || key
+  const getFilterLabel = (key: FilterType): string => {
+    return t.clients.filters[key]
   }
 
   return (
@@ -46,7 +47,7 @@ export function ClientsFilterBar({
                 : "bg-foreground/10 text-foreground/70 hover:bg-foreground/20"
             )}
           >
-            {getFilterLabel(option.label)}
+            {getFilterLabel(option.value)}
           </Link>
         ))}
       </div>

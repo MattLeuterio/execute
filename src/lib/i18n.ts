@@ -18,6 +18,8 @@ export {
   languageUi,
   type Locale,
   type Category,
+  type CategoryTranslations,
+  type NutritionistTranslations,
   marketingTranslations,
   nutritionistTranslations,
   clientTranslations,

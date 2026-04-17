@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import type { NutritionistTranslations } from '@/lib/i18n'
 import { X, CheckSquare } from 'lucide-react'
 
 interface SelectionFloatingBarProps {
@@ -8,7 +9,7 @@ interface SelectionFloatingBarProps {
   totalCount: number
   onSelectAll: () => void
   onClearSelection: () => void
-  t: any
+  t: NutritionistTranslations
 }
 
 export function SelectionFloatingBar({

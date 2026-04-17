@@ -1,4 +1,5 @@
 import { ClientSummary, ClientStatus } from "@/lib/types"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 import { getStatusColors } from "@/lib/colors"
 import { formatTimeAgo } from "@/lib/date-utils"
@@ -6,13 +7,13 @@ import { TrendingDown, TrendingUp, Minus, ChevronRight } from "lucide-react"
 
 interface ClientCardProps {
   client: ClientSummary
-  t: any
+  t: NutritionistTranslations
   isSelecting?: boolean
   isSelected?: boolean
   locale?: string
 }
 
-function getStatusLabel(status: ClientStatus, t: any): string {
+function getStatusLabel(status: ClientStatus, t: NutritionistTranslations): string {
   switch (status) {
     case ClientStatus.OnTrack:
       return t.status.onTrack

@@ -5,14 +5,27 @@ import { clientTranslations } from "./client"
 export type Locale = "it" | "en"
 export type Category = "marketing" | "nutritionist" | "client"
 
+type TranslationsByCategory = {
+  marketing: typeof marketingTranslations
+  nutritionist: typeof nutritionistTranslations
+  client: typeof clientTranslations
+}
+
+export type CategoryTranslations<C extends Category> =
+  TranslationsByCategory[C][Locale]
+
 export { marketingTranslations, nutritionistTranslations, clientTranslations }
+export type { NutritionistTranslations } from "./nutritionist"
 
 /**
  * Get translations for a specific category and locale
  * @example getTranslations('nutritionist', 'it').dashboard.header
  */
-export function getTranslations(category: Category, locale: Locale): any {
-  const translations = {
+export function getTranslations<C extends Category>(
+  category: C,
+  locale: Locale
+): CategoryTranslations<C> {
+  const translations: TranslationsByCategory = {
     marketing: marketingTranslations,
     nutritionist: nutritionistTranslations,
     client: clientTranslations,

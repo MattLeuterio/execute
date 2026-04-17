@@ -1,11 +1,12 @@
 import { ReactNode } from "react"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { AppSidebar } from "./app-sidebar"
 import { MobileTabBar } from "./mobile-tab-bar"
 
 interface AppShellProps {
   children: ReactNode
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function AppShell({ children, locale, t }: AppShellProps) {

@@ -2,12 +2,13 @@
 
 import Link from "next/link"
 import { ActivityItem } from "@/lib/types"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { ActivityFeedItem } from "./activity-feed-item"
 
 interface ActivitySectionProps {
   activities: ActivityItem[]
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function ActivitySection({ activities, locale, t }: ActivitySectionProps) {

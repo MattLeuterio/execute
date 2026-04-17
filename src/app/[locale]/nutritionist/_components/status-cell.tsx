@@ -1,13 +1,14 @@
 import { ClientStatus } from "@/lib/types"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 import { getStatusColors } from "@/lib/colors"
 
 interface StatusCellProps {
   status: ClientStatus
-  t: any
+  t: NutritionistTranslations
 }
 
-function getStatusLabel(status: ClientStatus, t: any): string {
+function getStatusLabel(status: ClientStatus, t: NutritionistTranslations): string {
   switch (status) {
     case ClientStatus.OnTrack:
       return t.status.onTrack

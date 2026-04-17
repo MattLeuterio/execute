@@ -2,12 +2,13 @@
 
 import Link from "next/link"
 import { ClientSummary } from "@/lib/types"
+import type { NutritionistTranslations } from "@/lib/i18n"
 import { AtRiskClientItem } from "./at-risk-client-item"
 
 interface AtRiskSectionProps {
   clients: ClientSummary[]
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function AtRiskSection({ clients, locale, t }: AtRiskSectionProps) {

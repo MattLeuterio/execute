@@ -1,13 +1,13 @@
 'use client'
 
-import Link from 'next/link'
 import { flexRender, Table } from '@tanstack/react-table'
+import type { NutritionistTranslations } from '@/lib/i18n'
 import { ClientSummary } from '@/lib/types'
 
 interface ClientsTableClientProps {
   table: Table<ClientSummary>
   locale: string
-  t: any
+  t: NutritionistTranslations
 }
 
 export function ClientsTableClient({ table, locale, t }: ClientsTableClientProps) {
@@ -18,12 +18,12 @@ export function ClientsTableClient({ table, locale, t }: ClientsTableClientProps
         <table className="w-full" style={{ tableLayout: 'fixed' }}>
           {/* Header */}
           <thead>
-            {table.getHeaderGroups().map((headerGroup: any) => (
+            {table.getHeaderGroups().map((headerGroup) => (
               <tr
                 key={headerGroup.id}
                 className="border-b border-border/30 bg-background text-xs font-semibold uppercase tracking-wider text-foreground/60"
               >
-                {headerGroup.headers.map((header: any) => {
+                {headerGroup.headers.map((header) => {
                   const isSelect = header.column.id === 'select'
                   const isName = header.column.id === 'name'
                   const isStickyColumn = isSelect || isName
@@ -70,13 +70,13 @@ export function ClientsTableClient({ table, locale, t }: ClientsTableClientProps
 
           {/* Body */}
           <tbody className="divide-y divide-border/30">
-            {table.getRowModel().rows.map((row: any) => (
+            {table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
                 className="transition-colors hover:bg-foreground/5"
                 data-state={row.getIsSelected() ? 'selected' : undefined}
               >
-                {row.getVisibleCells().map((cell: any) => {
+                {row.getVisibleCells().map((cell) => {
                   const isSelect = cell.column.id === 'select'
                   const isName = cell.column.id === 'name'
                   const isStickyColumn = isSelect || isName

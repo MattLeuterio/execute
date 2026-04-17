@@ -1,13 +1,14 @@
 "use client";
 
 import { NAVIGATION_ITEMS } from "@/lib/navigation";
+import type { NutritionistTranslations } from "@/lib/i18n";
 import { NavLink } from "./nav-link";
 import Image from "next/image";
 import logoLockupHorizontal from "@/components/ui/image/logo-lockup-horizontal.svg";
 
 interface AppSidebarProps {
   locale: string;
-  t: any;
+  t: NutritionistTranslations;
 }
 
 export function AppSidebar({ locale, t }: AppSidebarProps) {

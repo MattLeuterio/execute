@@ -200,3 +200,4 @@ export const nutritionistTranslations = {
 } as const
 
 export type Locale = keyof typeof nutritionistTranslations
+export type NutritionistTranslations = (typeof nutritionistTranslations)[Locale]

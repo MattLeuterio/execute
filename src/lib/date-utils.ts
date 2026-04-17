@@ -3,6 +3,8 @@
  * Used across Marketing, Nutritionist, and App sections
  */
 
+import type { NutritionistTranslations } from "@/lib/i18n"
+
 export type TimeUnit = 'now' | 'hour' | 'day' | 'week' | 'month' | 'date'
 
 export interface TimeAgoResult {
@@ -35,14 +37,14 @@ export interface TimeAgoResult {
 export function formatTimeAgo(
   date: Date,
   format?: 'string',
-  t?: any,
+  t?: NutritionistTranslations,
   locale?: string
 ): string
 
 export function formatTimeAgo(
   date: Date,
   format: 'object',
-  t?: any,
+  t?: NutritionistTranslations,
   locale?: string
 ): TimeAgoResult
 
@@ -50,7 +52,7 @@ export function formatTimeAgo(
 export function formatTimeAgo(
   date: Date,
   format: 'string' | 'object' = 'string',
-  t?: any,
+  t?: NutritionistTranslations,
   locale?: string
 ): string | TimeAgoResult {
   const now = new Date()

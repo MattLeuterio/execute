@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Search, Download, Archive } from 'lucide-react'
+import type { NutritionistTranslations } from '@/lib/i18n'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { ClientSummary } from '@/lib/types'
@@ -11,7 +12,7 @@ interface ClientsTableToolbarProps {
   selectedClients: ClientSummary[]
   searchTerm: string
   onSearchChange: (term: string) => void
-  t: any
+  t: NutritionistTranslations
 }
 
 export function ClientsTableToolbar({
@@ -28,7 +29,7 @@ export function ClientsTableToolbar({
 
   const handleArchive = async () => {
     if (selectedClients.length === 0) return
-    const confirmMsg = t?.clients?.actions?.confirmArchive?.replace('{count}', selectedClients.length) 
+    const confirmMsg = t?.clients?.actions?.confirmArchive?.replace('{count}', String(selectedClients.length)) 
       || `Archive ${selectedClients.length} client(s)?`
     if (!confirm(confirmMsg)) return
 
