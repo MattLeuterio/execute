@@ -15,22 +15,20 @@ export interface TimeAgoResult {
 }
 
 /**
- * Format a date as relative time (e.g., "5 days ago", "poco fa", "3 ore fa")
- * Supports full granularity: hours → days → weeks → months → full date
+ * Format a date as absolute time in the following format:
+ * DD/MM/YYYY | HH:mm
  *
  * @param date - The date to format
  * @param format - Return format: 'string' (default) or 'object'
- * @param t - Translation object with common.time keys
- * @param locale - Locale code for full date formatting (e.g., 'it', 'en')
+ * @param t - Kept for backward compatibility (unused)
+ * @param locale - Kept for backward compatibility (unused)
  *
  * @example
- * // String format (default)
- * formatTimeAgo(new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), 'string', t, 'it')
- * // → "2 giorni fa"
+ * formatTimeAgo(new Date('2026-04-24T14:54:00'))
+ * // → "24/04/2026 | 14:54"
  *
- * // Object format
- * formatTimeAgo(new Date(Date.now() - 5 * 60 * 60 * 1000), 'object', t)
- * // → { value: 5, unit: 'hour', key: 'hoursAgo', formatted: '5 hours ago' }
+ * formatTimeAgo(new Date('2026-04-24T14:54:00'), 'object')
+ * // → { value: 0, unit: 'date', key: 'fullDate', formatted: '24/04/2026 | 14:54' }
  */
 
 // Overload signatures
@@ -52,90 +50,25 @@ export function formatTimeAgo(
 export function formatTimeAgo(
   date: Date,
   format: 'string' | 'object' = 'string',
-  t?: NutritionistTranslations,
-  locale?: string
+  _t?: NutritionistTranslations,
+  _locale?: string
 ): string | TimeAgoResult {
-  const now = new Date()
-  const diff = now.getTime() - date.getTime()
+  void _t
+  void _locale
 
-  // Calculate time units
-  const ms = diff
-  const seconds = Math.floor(ms / 1000)
-  const minutes = Math.floor(seconds / 60)
-  const hours = Math.floor(minutes / 60)
-  const days = Math.floor(hours / 24)
-  const weeks = Math.floor(days / 7)
-  const months = Math.floor(days / 30)
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = String(date.getFullYear())
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
 
-  // Determine unit and key
-  let unit: TimeUnit
-  let value: number
-  let key: string
-  let suffix: string
-
-  if (seconds < 60) {
-    unit = 'now'
-    value = 0
-    key = 'justNow'
-    suffix = t?.common?.time?.justNow || 'just now'
-  } else if (hours < 1) {
-    unit = 'hour'
-    value = minutes
-    key = 'minutesAgo'
-    suffix = t?.common?.time?.minutesAgo || 'minutes ago'
-  } else if (days < 1) {
-    unit = 'hour'
-    value = hours
-    key = 'hoursAgo'
-    suffix = t?.common?.time?.hoursAgo || ' hours ago'
-  } else if (days === 1) {
-    unit = 'day'
-    value = 1
-    key = 'yesterday'
-    suffix = t?.common?.time?.yesterday || 'yesterday'
-  } else if (weeks < 1) {
-    unit = 'day'
-    value = days
-    key = 'daysAgo'
-    suffix = t?.common?.time?.daysAgo || ' days ago'
-  } else if (months < 1) {
-    unit = 'week'
-    value = weeks
-    key = 'weeksAgo'
-    suffix = t?.common?.time?.weeksAgo || ' weeks ago'
-  } else if (months < 12) {
-    unit = 'month'
-    value = months
-    key = 'monthsAgo'
-    suffix = t?.common?.time?.monthsAgo || ' months ago'
-  } else {
-    unit = 'date'
-    value = 0
-    key = 'fullDate'
-    suffix = date.toLocaleDateString(
-      locale === 'it' ? 'it-IT' : locale === 'en' ? 'en-US' : 'en-US'
-    )
-  }
-
-  // Format the output string
-  let formatted: string
-
-  if (unit === 'now') {
-    formatted = suffix
-  } else if (unit === 'day' && key === 'yesterday') {
-    formatted = suffix
-  } else if (unit === 'date') {
-    formatted = suffix
-  } else {
-    // For numeric values, concatenate value + suffix
-    formatted = `${value}${suffix}`
-  }
+  const formatted = `${day}.${month}.${year} | ${hours}:${minutes}`
 
   if (format === 'object') {
     return {
-      value,
-      unit,
-      key,
+      value: 0,
+      unit: 'date',
+      key: 'fullDate',
       formatted,
     }
   }
