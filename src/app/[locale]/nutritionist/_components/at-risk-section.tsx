@@ -13,14 +13,9 @@ interface AtRiskSectionProps {
 
 export function AtRiskSection({ clients, locale, t }: AtRiskSectionProps) {
   const getSubtitle = () => {
-    if (locale === "it") {
-      return clients.length === 1
-        ? "1 cliente ha bisogno di attenzione"
-        : `${clients.length} clienti hanno bisogno di attenzione`
-    }
     return clients.length === 1
-      ? "1 client needs attention"
-      : `${clients.length} clients need attention`
+      ? t.dashboard.summaries.singleClientNeedsAttention
+      : t.dashboard.summaries.multipleClientsNeedAttention.replace("{count}", String(clients.length))
   }
 
   if (clients.length === 0) {
@@ -42,7 +37,7 @@ export function AtRiskSection({ clients, locale, t }: AtRiskSectionProps) {
           <p className="mt-1 text-xs text-foreground/50">{getSubtitle()}</p>
         </div>
         <Link
-          href={`/${locale}/nutritionist/clients?filter=at-risk&sortBy=adherence&sort=asc`}
+          href={`/${locale}/nutritionist/clients?sortBy=adherence&sort=asc`}
           className="text-xs font-medium text-emerald-500 hover:text-emerald-400 transition-colors"
         >
           {t.dashboard.cta.viewAll}

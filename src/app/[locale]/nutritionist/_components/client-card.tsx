@@ -1,9 +1,8 @@
-import { ClientSummary, ClientStatus } from "@/lib/types"
+import { ClientSummary } from "@/lib/types"
 import type { NutritionistTranslations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 import { getStatusColors } from "@/lib/colors"
 import { formatTimeAgo } from "@/lib/date-utils"
-import { TrendingDown, TrendingUp, Minus, ChevronRight } from "lucide-react"
 
 interface ClientCardProps {
   client: ClientSummary
@@ -11,21 +10,6 @@ interface ClientCardProps {
   isSelecting?: boolean
   isSelected?: boolean
   locale?: string
-}
-
-function getStatusLabel(status: ClientStatus, t: NutritionistTranslations): string {
-  switch (status) {
-    case ClientStatus.OnTrack:
-      return t.status.onTrack
-    case ClientStatus.Warning:
-      return t.status.warning
-    case ClientStatus.AtRisk:
-      return t.status.atRisk
-    case ClientStatus.Inactive:
-      return t.status.inactive
-    default:
-      return status
-  }
 }
 
 export function ClientCard({ client, t, isSelecting = false, isSelected = false, locale }: ClientCardProps) {

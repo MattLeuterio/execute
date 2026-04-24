@@ -77,7 +77,7 @@ export function getClientsTableColumns(
           {formatTimeAgo(info.getValue(), 'string', t, locale)}
         </div>
       ),
-      size: 170,
+      size: 200,
     }) as ColumnDef<ClientSummary>,
   ]
 }

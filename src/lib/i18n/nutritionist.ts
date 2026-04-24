@@ -39,6 +39,10 @@ export const nutritionistTranslations = {
         recentActivity: "Attività recenti",
         latestUpdates: "Ultimi aggiornamenti dai tuoi clienti",
       },
+      summaries: {
+        singleClientNeedsAttention: "1 cliente ha bisogno di attenzione",
+        multipleClientsNeedAttention: "{count} clienti hanno bisogno di attenzione",
+      },
       emptyStates: {
         noClients: "Nessun cliente ancora",
         noActivity: "Nessuna attività recente",
@@ -137,6 +141,10 @@ export const nutritionistTranslations = {
         atRisk: "Clients at risk",
         recentActivity: "Recent activities",
         latestUpdates: "Latest updates from your clients",
+      },
+      summaries: {
+        singleClientNeedsAttention: "1 client needs attention",
+        multipleClientsNeedAttention: "{count} clients need attention",
       },
       emptyStates: {
         noClients: "No clients yet",
