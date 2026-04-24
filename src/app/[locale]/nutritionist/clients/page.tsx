@@ -1,9 +1,10 @@
 'use client'
 
 import { useMemo } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import { getAllClientSummaries } from '@/lib/data/mock-clients'
 import { nutritionistTranslations } from '@/lib/i18n'
+import { ClientStatus } from '@/lib/types'
 import { useClientsTable } from './../_components/use-clients-table'
 import { ClientsTableClient } from './../_components/clients-table-client'
 import { ClientsTableToolbar } from './../_components/clients-table-toolbar'
@@ -12,15 +13,52 @@ import { ClientsMobileList } from './../_components/clients-mobile-list'
 
 export default function ClientsPage() {
   const params = useParams()
+  const searchParams = useSearchParams()
   const locale = params.locale as string
+  const searchParamsString = searchParams.toString()
 
   // Memoize clients data to prevent infinite loop
   const clients = useMemo(() => getAllClientSummaries(), [])
+
+  const filteredClients = useMemo(() => {
+    const filter = searchParams.get('filter')
+
+    if (filter === 'at-risk') {
+      return clients.filter((client) => client.status === ClientStatus.AtRisk)
+    }
+
+    return clients
+  }, [clients, searchParams])
+
+  const initialSorting = useMemo(() => {
+    const sortBy = searchParams.get('sortBy')
+    const sort = searchParams.get('sort')
+
+    const sortByToColumnId: Record<string, string> = {
+      name: 'name',
+      adherence: 'adherencePercentage',
+      adherencePercentage: 'adherencePercentage',
+      lastActivity: 'lastActivityDate',
+      lastActivityDate: 'lastActivityDate',
+    }
+
+    const columnId = sortBy ? sortByToColumnId[sortBy] : undefined
+
+    if (!columnId) {
+      return [{ id: 'name', desc: false }]
+    }
+
+    return [{ id: columnId, desc: sort !== 'asc' }]
+  }, [searchParams])
   
   // Get translations from centralized file
   const t = useMemo(() => nutritionistTranslations[locale as keyof typeof nutritionistTranslations] || nutritionistTranslations.en, [locale])
 
-  const { table, globalFilter, setGlobalFilter, getSelectedRows } = useClientsTable({ data: clients, t })
+  const { table, globalFilter, setGlobalFilter, getSelectedRows } = useClientsTable({
+    data: filteredClients,
+    t,
+    initialSorting,
+  })
 
   return (
     <div className="space-y-6">
@@ -31,7 +69,7 @@ export default function ClientsPage() {
       </div>
 
       {/* Toolbar with search & bulk actions */}
-      {clients.length > 0 && (
+      {filteredClients.length > 0 && (
         <ClientsTableToolbar
           selectedClients={getSelectedRows()}
           searchTerm={globalFilter}
@@ -41,7 +79,7 @@ export default function ClientsPage() {
       )}
 
       {/* Table */}
-      {clients.length === 0 ? (
+      {filteredClients.length === 0 ? (
         <div className="rounded-lg border border-border/50 bg-background/50 p-12 text-center backdrop-blur-sm">
           <p className="text-sm text-foreground/50">{t.clients.emptyStates.noClients}</p>
         </div>

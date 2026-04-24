@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -21,6 +21,7 @@ import { getClientsTableColumns } from './clients-table-columns'
 interface UseClientsTableProps {
   data: ClientSummary[]
   t?: NutritionistTranslations
+  initialSorting?: SortingState
 }
 
 interface UseClientsTableReturn {
@@ -31,11 +32,13 @@ interface UseClientsTableReturn {
   getSelectedRows: () => ClientSummary[]
 }
 
-export function useClientsTable({ data, t }: UseClientsTableProps): UseClientsTableReturn {
+export function useClientsTable({ data, t, initialSorting }: UseClientsTableProps): UseClientsTableReturn {
   // State (independent from URL params to avoid infinite loops)
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'name', desc: false },
-  ])
+  const [sorting, setSorting] = useState<SortingState>(
+    initialSorting && initialSorting.length > 0
+      ? initialSorting
+      : [{ id: 'name', desc: false }]
+  )
   const [globalFilter, setGlobalFilter] = useState('')
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
     getDefaultVisibility()
@@ -45,6 +48,11 @@ export function useClientsTable({ data, t }: UseClientsTableProps): UseClientsTa
     pageIndex: 0,
     pageSize: 20,
   })
+
+  useEffect(() => {
+    if (!initialSorting || initialSorting.length === 0) return
+    setSorting(initialSorting)
+  }, [initialSorting])
 
   // Search filter
   const filteredData = useMemo(() => {

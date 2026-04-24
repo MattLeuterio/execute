@@ -20,7 +20,7 @@ export function ActivitySection({ activities, locale, t }: ActivitySectionProps)
           <p className="mt-1 text-xs text-foreground/50">{t.dashboard.sections.latestUpdates}</p>
         </div>
         <Link
-          href={`/${locale}/nutritionist/clients?sortBy=lastActivity&sort=desc`}
+          href={`/${locale}/nutritionist/clients?sortBy=lastActivityDate&sort=desc`}
           className="text-xs font-medium text-emerald-500 hover:text-emerald-400 transition-colors"
         >
           {t.dashboard.cta.viewAll}
