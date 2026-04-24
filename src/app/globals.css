@@ -124,6 +124,38 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  /* Global scrollbar theme: keeps scrollbars aligned with app palette */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--primary) 30%, var(--muted-foreground))
+      color-mix(in oklab, var(--background) 80%, var(--card));
+  }
+
+  *::-webkit-scrollbar {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: color-mix(in oklab, var(--background) 80%, var(--card));
+    border-radius: 9999px;
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: color-mix(in oklab, var(--background) 80%, var(--card));
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--primary) 30%, var(--muted-foreground));
+    border: 2px solid color-mix(in oklab, var(--background) 80%, var(--card));
+    border-radius: 9999px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklab, var(--primary) 45%, var(--muted-foreground));
+  }
+
   body {
     @apply bg-background text-foreground text-[15px] leading-6 font-normal;
     background-image:
