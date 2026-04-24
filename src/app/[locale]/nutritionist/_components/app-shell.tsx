@@ -17,7 +17,7 @@ export function AppShell({ children, locale, t }: AppShellProps) {
       <AppSidebar locale={locale} t={t} />
 
       {/* Main content area */}
-      <main className="w-full flex-1 overflow-auto md:ml-64">
+      <main className="w-full flex-1 overflow-auto md:ml-48">
         <div className="w-full px-4 py-6 pb-20 sm:px-6 md:px-8 md:py-8">
           {children}
         </div>

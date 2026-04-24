@@ -23,13 +23,13 @@ export function AppSidebar({ locale, t }: AppSidebarProps) {
   };  
 
   return (
-    <aside className="fixed left-0 top-0 z-50 hidden h-screen w-64 flex-col border-r border-border/50 bg-background md:flex">
+    <aside className="fixed left-0 top-0 z-50 hidden h-screen w-48 flex-col border-r border-border/50 bg-background md:flex">
       {/* Header */}
-      <div className="flex items-center justify-center gap-2 border-b border-border/50 px-4 py-8">
+      <div className="flex items-center justify-center gap-2 border-b border-border/50 px-4 py-12">
         <Image
           src={logoLockupHorizontal}
           alt={t.brand}
-          className="h-auto w-24 sm:w-32"
+          className="h-auto w-24 sm:w-24"
           priority
         />
       </div>
