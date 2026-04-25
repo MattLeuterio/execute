@@ -11,6 +11,109 @@ export interface StatusColorClass {
 }
 
 /**
+ * Chart palette definitions are intentionally separate from status colors.
+ * Status colors communicate semantic risk. Chart colors identify data series.
+ */
+
+export type ChartSeriesKey = 'adherence' | 'weight' | 'waist' | 'hips' | 'chest' | 'reference'
+
+export interface ChartSeriesColor {
+  stroke: string
+  strokeOpacity: number
+  fillOpacity: number
+  legendDotClass: string
+}
+
+export interface ChartGridColor {
+  stroke: string
+  strokeOpacity: number
+}
+
+export interface ChartGradientStop {
+  color: string
+  opacity: number
+}
+
+export interface ChartGradientStops {
+  start: ChartGradientStop
+  end: ChartGradientStop
+}
+
+const CHART_SERIES_COLORS: Record<ChartSeriesKey, ChartSeriesColor> = {
+  adherence: {
+    stroke: '#5b8def',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.16,
+    legendDotClass: 'bg-[#5b8def]',
+  },
+  weight: {
+    stroke: '#8b7fd1',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.1,
+    legendDotClass: 'bg-[#8b7fd1]',
+  },
+  waist: {
+    stroke: '#4fa38a',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.12,
+    legendDotClass: 'bg-[#4fa38a]',
+  },
+  hips: {
+    stroke: '#c08a5b',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#c08a5b]',
+  },
+  chest: {
+    stroke: '#a86c8a',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.07,
+    legendDotClass: 'bg-[#a86c8a]',
+  },
+  reference: {
+    stroke: 'var(--border)',
+    strokeOpacity: 1,
+    fillOpacity: 0,
+    legendDotClass: 'bg-border',
+  },
+}
+
+export function getChartSeriesColor(series: ChartSeriesKey): ChartSeriesColor {
+  return CHART_SERIES_COLORS[series]
+}
+
+export function getChartGridColor(strokeOpacity: number): ChartGridColor {
+  return {
+    stroke: 'var(--border)',
+    strokeOpacity,
+  }
+}
+
+export function getChartGradientStops(series: ChartSeriesKey, startOpacity?: number): ChartGradientStops {
+  const colorDef = getChartSeriesColor(series)
+  const resolvedStartOpacity = startOpacity ?? colorDef.fillOpacity
+
+  return {
+    start: {
+      color: colorDef.stroke,
+      opacity: resolvedStartOpacity,
+    },
+    end: {
+      color: colorDef.stroke,
+      opacity: 0,
+    },
+  }
+}
+
+export function getChartTooltipContentStyle() {
+  return {
+    backgroundColor: 'var(--card)',
+    border: '1px solid var(--border)',
+    borderRadius: 10,
+  }
+}
+
+/**
  * Get status color classes based on ClientStatus enum, adherence percentage, or severity level
  *
  * @param value - ClientStatus enum, adherence percentage (0-100), or severity ('low'|'medium'|'high')
@@ -47,8 +150,11 @@ export function getStatusColors(
 ): string | StatusColorClass {
   let status: ClientStatus
 
-  // Handle severity strings
-  if (typeof value === 'string') {
+  // Handle ClientStatus enum values first since they are string enums at runtime.
+  if (value === ClientStatus.OnTrack || value === ClientStatus.Warning || value === ClientStatus.AtRisk || value === ClientStatus.Inactive) {
+    status = value
+  } else if (typeof value === 'string') {
+    // Handle severity strings
     if (value === 'low') {
       status = ClientStatus.OnTrack
     } else if (value === 'medium') {

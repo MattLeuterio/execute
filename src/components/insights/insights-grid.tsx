@@ -7,6 +7,12 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import { getRevealInViewProps } from "@/components/marketing/motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
+  getChartGradientStops,
+  getChartGridColor,
+  getChartSeriesColor,
+  getChartTooltipContentStyle,
+} from "@/lib/colors"
+import {
   adherenceData,
   formatTooltipWeekLabel,
   localizeWeekLabels,
@@ -62,13 +68,23 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
   const hipsGradientId = `${uniqueId}-hips-fill`
   const chestGradientId = `${uniqueId}-chest-fill`
 
+  const adherenceColor = getChartSeriesColor("adherence")
+  const weightColor = getChartSeriesColor("weight")
+  const waistColor = getChartSeriesColor("waist")
+  const hipsColor = getChartSeriesColor("hips")
+  const chestColor = getChartSeriesColor("chest")
+
+  const adherenceStops = getChartGradientStops("adherence")
+  const weightStops = getChartGradientStops("weight")
+  const waistStops = getChartGradientStops("waist")
+  const hipsStops = getChartGradientStops("hips")
+  const chestStops = getChartGradientStops("chest")
+
   const tooltipSharedProps = {
     cursor: false,
     separator: ": ",
     contentStyle: {
-      backgroundColor: "var(--card)",
-      border: "1px solid var(--border)",
-      borderRadius: 10,
+      ...getChartTooltipContentStyle(),
     },
     labelStyle: { color: "var(--foreground)", fontSize: 12 },
     itemStyle: { color: "var(--foreground)", fontSize: 12 },
@@ -89,11 +105,11 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
             <AreaChart data={localizedAdherenceData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
               <defs>
                 <linearGradient id={adherenceGradientId} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.16} />
-                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
+                  <stop offset="0%" stopColor={adherenceStops.start.color} stopOpacity={adherenceStops.start.opacity} />
+                  <stop offset="100%" stopColor={adherenceStops.end.color} stopOpacity={adherenceStops.end.opacity} />
                 </linearGradient>
               </defs>
-              <CartesianGrid stroke="var(--border)" strokeOpacity={0.28} vertical={false} />
+              <CartesianGrid {...getChartGridColor(0.28)} vertical={false} />
               <XAxis
                 dataKey="label"
                 tickLine={false}
@@ -110,7 +126,8 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
               <Area
                 type="monotone"
                 dataKey="value"
-                stroke="var(--primary)"
+                stroke={adherenceColor.stroke}
+                strokeOpacity={adherenceColor.strokeOpacity}
                 strokeWidth={1.8}
                 fill={`url(#${adherenceGradientId})`}
                 dot={false}
@@ -129,11 +146,11 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
             <AreaChart data={localizedWeightData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
               <defs>
                 <linearGradient id={weightGradientId} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0.1} />
-                  <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
+                  <stop offset="0%" stopColor={weightStops.start.color} stopOpacity={weightStops.start.opacity} />
+                  <stop offset="100%" stopColor={weightStops.end.color} stopOpacity={weightStops.end.opacity} />
                 </linearGradient>
               </defs>
-              <CartesianGrid stroke="var(--border)" strokeOpacity={0.22} vertical={false} />
+              <CartesianGrid {...getChartGridColor(0.22)} vertical={false} />
               <XAxis
                 dataKey="label"
                 tickLine={false}
@@ -150,7 +167,7 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
               <Area
                 type="monotone"
                 dataKey="value"
-                stroke="var(--foreground)"
+                stroke={weightColor.stroke}
                 strokeOpacity={0.55}
                 strokeWidth={1.6}
                 fill={`url(#${weightGradientId})`}
@@ -173,19 +190,19 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
             <AreaChart data={localizedMeasurementsData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
               <defs>
                 <linearGradient id={waistGradientId} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.12} />
-                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
+                  <stop offset="0%" stopColor={waistStops.start.color} stopOpacity={waistStops.start.opacity} />
+                  <stop offset="100%" stopColor={waistStops.end.color} stopOpacity={waistStops.end.opacity} />
                 </linearGradient>
                 <linearGradient id={hipsGradientId} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0.08} />
-                  <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
+                  <stop offset="0%" stopColor={hipsStops.start.color} stopOpacity={hipsStops.start.opacity} />
+                  <stop offset="100%" stopColor={hipsStops.end.color} stopOpacity={hipsStops.end.opacity} />
                 </linearGradient>
                 <linearGradient id={chestGradientId} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--muted-foreground)" stopOpacity={0.07} />
-                  <stop offset="100%" stopColor="var(--muted-foreground)" stopOpacity={0} />
+                  <stop offset="0%" stopColor={chestStops.start.color} stopOpacity={chestStops.start.opacity} />
+                  <stop offset="100%" stopColor={chestStops.end.color} stopOpacity={chestStops.end.opacity} />
                 </linearGradient>
               </defs>
-              <CartesianGrid stroke="var(--border)" strokeOpacity={0.2} vertical={false} />
+              <CartesianGrid {...getChartGridColor(0.2)} vertical={false} />
               <XAxis
                 dataKey="label"
                 tickLine={false}
@@ -197,11 +214,12 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
               <Tooltip
                 {...tooltipSharedProps}
                 labelFormatter={(label) => formatTooltipWeekLabel(label, tooltipLabelPrefix)}
-                formatter={(value, name) => {
+                formatter={(value, _name, entry) => {
+                  const dataKey = String(entry?.dataKey ?? "")
                   const metric =
-                    name === "waist"
+                    dataKey === "waist"
                       ? waistLabel
-                      : name === "hips"
+                      : dataKey === "hips"
                         ? hipsLabel
                         : chestLabel
 
@@ -211,7 +229,8 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
               <Area
                 type="monotone"
                 dataKey="waist"
-                stroke="var(--primary)"
+                stroke={waistColor.stroke}
+                strokeOpacity={waistColor.strokeOpacity}
                 strokeWidth={1.7}
                 fill={`url(#${waistGradientId})`}
                 dot={false}
@@ -220,7 +239,7 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
               <Area
                 type="monotone"
                 dataKey="hips"
-                stroke="var(--foreground)"
+                stroke={hipsColor.stroke}
                 strokeOpacity={0.5}
                 strokeWidth={1.4}
                 fill={`url(#${hipsGradientId})`}
@@ -230,7 +249,7 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
               <Area
                 type="monotone"
                 dataKey="chest"
-                stroke="var(--muted-foreground)"
+                stroke={chestColor.stroke}
                 strokeOpacity={0.65}
                 strokeWidth={1.3}
                 fill={`url(#${chestGradientId})`}
@@ -241,15 +260,15 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
           </ResponsiveContainer>
           <div className="mt-4 flex flex-wrap gap-3 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-primary" />
+              <span className={`size-2 rounded-full ${waistColor.legendDotClass}`} />
               {waistLabel}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-foreground/45" />
+              <span className={`size-2 rounded-full ${hipsColor.legendDotClass}`} />
               {hipsLabel}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-muted-foreground/65" />
+              <span className={`size-2 rounded-full ${chestColor.legendDotClass}`} />
               {chestLabel}
             </span>
           </div>
