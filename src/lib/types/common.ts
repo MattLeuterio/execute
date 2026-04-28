@@ -56,8 +56,31 @@ export enum ActivityType {
 
 /**
  * Measurement types
+ * 
+ * Core measurements (body circumferences):
+ * - waist, abdomen, hips, chest: torso
+ * - arm, forearm, wrist: upper limbs
+ * - thighProximal, thighMiddle, thighDistal, calf, shin: lower limbs
+ * - back: posterior torso
+ * 
+ * Legacy: thigh (generic), legs (generic lower body)
  */
-export type MeasurementType = 'waist' | 'hips' | 'chest' | 'thigh' | 'arm' | 'legs' | 'back';
+export type MeasurementType =
+  | 'waist'
+  | 'abdomen'
+  | 'hips'
+  | 'chest'
+  | 'arm'
+  | 'forearm'
+  | 'wrist'
+  | 'thighProximal'
+  | 'thighMiddle'
+  | 'thighDistal'
+  | 'calf'
+  | 'shin'
+  | 'back'
+  | 'thigh'
+  | 'legs';
 
 /**
  * Sort direction

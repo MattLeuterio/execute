@@ -217,9 +217,33 @@ ACTIVITY RELATIONSHIPS:
  * Use cases: Charting weight/measurements over time
  * Why separate types:
  *   - Weight is singular (one value per recording)
- *   - Measurements are plural (waist, hips, chest, etc could be many)
+ *   - Measurements are plural (waist, hips, chest, arm, etc - many types)
  *   - They have different units and recording frequencies
  *   - Keeps data normalized and easy to query
+ * 
+ * MeasurementType system (circumferences corporee - classical):
+ * 
+ * TORSO:
+ *   - waist (vita): waist circumference at natural waist level
+ *   - abdomen (addome): abdominal circumference at widest point
+ *   - chest (torace): chest circumference at nipple level
+ *   - back (schiena): back circumference across shoulder blades
+ * 
+ * UPPER LIMBS:
+ *   - arm (braccio): upper arm circumference (bicep area)
+ *   - forearm (avambraccio): forearm circumference at widest point
+ *   - wrist (polso): wrist circumference
+ * 
+ * LOWER LIMBS:
+ *   - thighProximal (coscia prossimale/doscia inguinale): upper thigh near groin
+ *   - thighMiddle (coscia mediana): mid-thigh circumference
+ *   - thighDistal (coscia distale/ordinaria): lower thigh above knee
+ *   - calf (polpaccio): calf circumference at widest point
+ *   - shin (stinco/gamba): shin/lower leg circumference
+ * 
+ * LEGACY (generic, not recommended):
+ *   - thigh (coscia): generic thigh (use thighProximal/Middle/Distal instead)
+ *   - legs (gambe): generic legs (use calf/shin instead)
  */
 
 /**
@@ -328,8 +352,14 @@ ActivityType: What happened?
   - adherence_drop
   - plan_updated
 
-MeasurementType: Which measurement?
-  - waist, hips, chest, thigh, arm, legs, back
+MeasurementType: Which body circumference measurement?
+  CORE: waist, hips, chest, abdomen, back
+  UPPER_LIMBS: arm, forearm, wrist
+  LOWER_LIMBS: thighProximal, thighMiddle, thighDistal, calf, shin
+  LEGACY: thigh (generic), legs (generic)
+  
+  Each measurement captures a specific body circumference at a defined location.
+  See MeasurementEntry and measurements.ts for full classification system.
 
 */
 

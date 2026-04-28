@@ -6,6 +6,7 @@ interface ClientDetailSectionProps {
   children: React.ReactNode
   actions?: React.ReactNode
   contentClassName?: string
+  className?: string
 }
 
 export function ClientDetailSection({
@@ -14,9 +15,10 @@ export function ClientDetailSection({
   children,
   actions,
   contentClassName,
+  className,
 }: ClientDetailSectionProps) {
   return (
-    <Card className="border border-border/60 bg-background/60">
+    <Card className={className ?? "border border-border/60 bg-background/60"}>
       <CardHeader>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-1">

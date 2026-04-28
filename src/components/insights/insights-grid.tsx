@@ -8,10 +8,13 @@ import { getRevealInViewProps } from "@/components/marketing/motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   getChartGradientStops,
-  getChartGridColor,
   getChartSeriesColor,
-  getChartTooltipContentStyle,
 } from "@/lib/colors"
+import {
+  getChartAxisDomainWithOffset,
+  getChartGridColor,
+  getChartTooltipContentStyle,
+} from "@/lib/chart-utils"
 import {
   adherenceData,
   formatTooltipWeekLabel,
@@ -83,6 +86,7 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
   const tooltipSharedProps = {
     cursor: false,
     separator: ": ",
+    wrapperStyle: { zIndex: 30 },
     contentStyle: {
       ...getChartTooltipContentStyle(),
     },
@@ -210,7 +214,7 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
                 tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                 dy={8}
               />
-              <YAxis hide domain={[82, 100]} />
+              <YAxis hide domain={getChartAxisDomainWithOffset(5)} />
               <Tooltip
                 {...tooltipSharedProps}
                 labelFormatter={(label) => formatTooltipWeekLabel(label, tooltipLabelPrefix)}
@@ -240,7 +244,7 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
                 type="monotone"
                 dataKey="hips"
                 stroke={hipsColor.stroke}
-                strokeOpacity={0.5}
+                strokeOpacity={hipsColor.strokeOpacity}
                 strokeWidth={1.4}
                 fill={`url(#${hipsGradientId})`}
                 dot={false}
@@ -250,7 +254,7 @@ export function InsightsGrid({ language, withReveal = false }: InsightsGridProps
                 type="monotone"
                 dataKey="chest"
                 stroke={chestColor.stroke}
-                strokeOpacity={0.65}
+                strokeOpacity={chestColor.strokeOpacity}
                 strokeWidth={1.3}
                 fill={`url(#${chestGradientId})`}
                 dot={false}

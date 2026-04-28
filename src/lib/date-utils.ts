@@ -75,3 +75,58 @@ export function formatTimeAgo(
 
   return formatted
 }
+
+/**
+ * Format a date for chart tooltips: DD.MM.YY
+ * Used to display dates in tooltip labels with year included
+ *
+ * @param date - The date to format
+ * @returns Formatted date string (e.g., "24.04.26")
+ *
+ * @example
+ * formatChartTooltipDate(new Date('2026-04-24'))
+ * // → "24.04.26"
+ */
+export function formatChartTooltipDate(date: Date): string {
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = String(date.getFullYear()).slice(-2)
+  return `${day}.${month}.${year}`
+}
+
+/**
+ * Filter chart data points to show only the last N months
+ * Used to limit historical chart display to recent data
+ *
+ * @param data - Array of chart data points with a 'label' and optional 'sortValue' or date info
+ * @param months - Number of months to keep (e.g., 3 for last 3 months)
+ * @param getRawDate - Optional function to extract Date from each data point
+ * @returns Filtered array containing only data from the last N months
+ *
+ * @example
+ * const filtered = filterDataByMonthsRange(weightData, 3, (point) => new Date(point.date))
+ * // Returns only weight data from the last 3 months
+ */
+export function filterDataByMonthsRange<T extends { label: string }>(
+  data: T[],
+  months: number,
+  getRawDate?: (point: T) => Date
+): T[] {
+  if (!data.length || months < 0) return data
+  
+  // Special case: months = -1 means "all data"
+  if (months < 0) return data
+
+  const now = new Date()
+  const cutoffDate = new Date(now.getFullYear(), now.getMonth() - months, now.getDate())
+
+  return data.filter((point) => {
+    if (!getRawDate) {
+      // Fallback: assume point might have a date field or use current date
+      return true
+    }
+    
+    const pointDate = getRawDate(point)
+    return pointDate >= cutoffDate
+  })
+}

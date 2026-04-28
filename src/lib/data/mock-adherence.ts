@@ -39,40 +39,90 @@ function createAdherenceEntry(
  */
 export const MOCK_ADHERENCE_ENTRIES: AdherenceEntry[] = [
   // ========================================================================
-  // MARCO ROSSI - Strong adherence, improving over time
-  // Week 1 (Feb 1-7): 80% avg
+  // MARCO ROSSI - 2.2 anni di aderenza coerente con timeline peso/misure
+  // Fase 1 (feb-ott 2024): Crescita 70% → 92% (motivazione alta, perdita rapida)
+  // Fase 2 (nov 2024-dic 2025): Stabile ~90% (plateau, disciplina mantenuta)
+  // Fase 3 (gen-apr 2026): 88-95% (ripartenza, nuova motivazione)
   // ========================================================================
-  createAdherenceEntry('adh-marco-001', 'client-marco', 'plan-marco-classic', new Date('2026-02-01'), 2),
-  createAdherenceEntry('adh-marco-002', 'client-marco', 'plan-marco-classic', new Date('2026-02-02'), 3),
-  createAdherenceEntry('adh-marco-003', 'client-marco', 'plan-marco-classic', new Date('2026-02-03'), 3),
-  createAdherenceEntry('adh-marco-004', 'client-marco', 'plan-marco-classic', new Date('2026-02-04'), 2),
-  createAdherenceEntry('adh-marco-005', 'client-marco', 'plan-marco-classic', new Date('2026-02-05'), 3),
-  createAdherenceEntry('adh-marco-006', 'client-marco', 'plan-marco-classic', new Date('2026-02-06'), 3),
-  createAdherenceEntry('adh-marco-007', 'client-marco', 'plan-marco-classic', new Date('2026-02-07'), 3),
-  // Week 2 (Feb 8-14): 90% avg - improving
-  createAdherenceEntry('adh-marco-008', 'client-marco', 'plan-marco-classic', new Date('2026-02-08'), 3),
-  createAdherenceEntry('adh-marco-009', 'client-marco', 'plan-marco-classic', new Date('2026-02-09'), 3),
-  createAdherenceEntry('adh-marco-010', 'client-marco', 'plan-marco-classic', new Date('2026-02-10'), 3),
-  createAdherenceEntry('adh-marco-011', 'client-marco', 'plan-marco-classic', new Date('2026-02-11'), 3),
-  createAdherenceEntry('adh-marco-012', 'client-marco', 'plan-marco-classic', new Date('2026-02-12'), 2),
-  createAdherenceEntry('adh-marco-013', 'client-marco', 'plan-marco-classic', new Date('2026-02-13'), 3),
-  createAdherenceEntry('adh-marco-014', 'client-marco', 'plan-marco-classic', new Date('2026-02-14'), 3),
-  // Week 3 (Feb 15-21): 95% avg
-  createAdherenceEntry('adh-marco-015', 'client-marco', 'plan-marco-classic', new Date('2026-02-15'), 3),
-  createAdherenceEntry('adh-marco-016', 'client-marco', 'plan-marco-classic', new Date('2026-02-16'), 3),
-  createAdherenceEntry('adh-marco-017', 'client-marco', 'plan-marco-classic', new Date('2026-02-17'), 3),
-  createAdherenceEntry('adh-marco-018', 'client-marco', 'plan-marco-classic', new Date('2026-02-18'), 3),
-  createAdherenceEntry('adh-marco-019', 'client-marco', 'plan-marco-classic', new Date('2026-02-19'), 3),
-  createAdherenceEntry('adh-marco-020', 'client-marco', 'plan-marco-classic', new Date('2026-02-20'), 2),
-  createAdherenceEntry('adh-marco-021', 'client-marco', 'plan-marco-classic', new Date('2026-02-21'), 3),
-  // Continuing through March and into April with 90%+ consistency
-  ...Array.from({ length: 54 }, (_, i) => 
+  // Feb 2024: Inizio motivato, 70-75% aderenza
+  ...Array.from({ length: 14 }, (_, i) => 
     createAdherenceEntry(
-      `adh-marco-${22 + i}`,
+      `adh-marco-${i + 1}`,
       'client-marco',
       'plan-marco-classic',
-      new Date(2026, 1, 22 + Math.floor(i / 1), i % (30 - 22) + 1), // Spread across Feb, Mar, Apr
-      Math.random() > 0.1 ? 3 : 2 // 90% chance of 3/3, 10% chance of 2/3
+      new Date(2024, 1, 1 + i * 1.5), // ~14 giorni in feb
+      [2, 2, 3][Math.floor(Math.random() * 3)] // Mix: 67% 3/3, 33% 2/3
+    )
+  ),
+  // Mar 2024: Aderenza 75-80%, motivazione crescente
+  ...Array.from({ length: 20 }, (_, i) => 
+    createAdherenceEntry(
+      `adh-marco-${15 + i}`,
+      'client-marco',
+      'plan-marco-classic',
+      new Date(2024, 2, 1 + i * 1.5),
+      [2, 2, 3, 3][Math.floor(Math.random() * 4)] // Mix: 50% 3/3, 50% 2/3
+    )
+  ),
+  // Apr 2024: Aderenza 80-85%, momentum building
+  ...Array.from({ length: 20 }, (_, i) => 
+    createAdherenceEntry(
+      `adh-marco-${35 + i}`,
+      'client-marco',
+      'plan-marco-classic',
+      new Date(2024, 3, 1 + i * 1.5),
+      [2, 2, 3, 3, 3][Math.floor(Math.random() * 5)] // Mix: 60% 3/3, 40% 2/3
+    )
+  ),
+  // Mag-ott 2024: Aderenza 85-92%, picco durante perdita rapida
+  ...Array.from({ length: 130 }, (_, i) => 
+    createAdherenceEntry(
+      `adh-marco-${55 + i}`,
+      'client-marco',
+      'plan-marco-classic',
+      new Date(2024, 4 + Math.floor(i / 22), 1 + (i % 22) * 1.3),
+      Math.random() > 0.1 ? 3 : 2 // 90% chance 3/3
+    )
+  ),
+  // Nov 2024-dic 2025: Plateau, aderenza stabile 88-92%
+  ...Array.from({ length: 200 }, (_, i) => 
+    createAdherenceEntry(
+      `adh-marco-${185 + i}`,
+      'client-marco',
+      'plan-marco-classic',
+      new Date(2024, 10 + Math.floor(i / 67), 1 + (i % 22) * 1.3),
+      Math.random() > 0.11 ? 3 : 2 // 89% chance 3/3, 11% chance 2/3
+    )
+  ),
+  // Gen-apr 2026: Ripartenza, 88-95% aderenza
+  // Gen: Recovery phase, 88% aderenza
+  ...Array.from({ length: 23 }, (_, i) => 
+    createAdherenceEntry(
+      `adh-marco-${385 + i}`,
+      'client-marco',
+      'plan-marco-classic',
+      new Date(2026, 0, 1 + i * 1.3),
+      Math.random() > 0.12 ? 3 : 2 // 88% chance
+    )
+  ),
+  // Feb 2026: Momentum building, 92% aderenza
+  ...Array.from({ length: 20 }, (_, i) => 
+    createAdherenceEntry(
+      `adh-marco-${408 + i}`,
+      'client-marco',
+      'plan-marco-classic',
+      new Date(2026, 1, 1 + i * 1.4),
+      Math.random() > 0.08 ? 3 : 2 // 92% chance
+    )
+  ),
+  // Mar-apr 2026: Final push, 95% aderenza
+  ...Array.from({ length: 44 }, (_, i) => 
+    createAdherenceEntry(
+      `adh-marco-${428 + i}`,
+      'client-marco',
+      'plan-marco-classic',
+      new Date(2026, 2 + Math.floor(i / 22), 1 + (i % 22) * 1.3),
+      Math.random() > 0.05 ? 3 : 2 // 95% chance
     )
   ),
 

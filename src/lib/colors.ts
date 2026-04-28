@@ -15,18 +15,31 @@ export interface StatusColorClass {
  * Status colors communicate semantic risk. Chart colors identify data series.
  */
 
-export type ChartSeriesKey = 'adherence' | 'weight' | 'waist' | 'hips' | 'chest' | 'reference'
+export type ChartSeriesKey =
+  | 'adherence'
+  | 'weight'
+  | 'waist'
+  | 'abdomen'
+  | 'hips'
+  | 'chest'
+  | 'arm'
+  | 'forearm'
+  | 'wrist'
+  | 'thighProximal'
+  | 'thighMiddle'
+  | 'thighDistal'
+  | 'calf'
+  | 'shin'
+  | 'back'
+  | 'thigh'
+  | 'legs'
+  | 'reference'
 
 export interface ChartSeriesColor {
   stroke: string
   strokeOpacity: number
   fillOpacity: number
   legendDotClass: string
-}
-
-export interface ChartGridColor {
-  stroke: string
-  strokeOpacity: number
 }
 
 export interface ChartGradientStop {
@@ -58,6 +71,12 @@ const CHART_SERIES_COLORS: Record<ChartSeriesKey, ChartSeriesColor> = {
     fillOpacity: 0.12,
     legendDotClass: 'bg-[#4fa38a]',
   },
+  abdomen: {
+    stroke: '#7a9d6f',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.1,
+    legendDotClass: 'bg-[#7a9d6f]',
+  },
   hips: {
     stroke: '#c08a5b',
     strokeOpacity: 0.9,
@@ -70,6 +89,72 @@ const CHART_SERIES_COLORS: Record<ChartSeriesKey, ChartSeriesColor> = {
     fillOpacity: 0.07,
     legendDotClass: 'bg-[#a86c8a]',
   },
+  arm: {
+    stroke: '#b98d6f',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#b98d6f]',
+  },
+  forearm: {
+    stroke: '#c9a570',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#c9a570]',
+  },
+  wrist: {
+    stroke: '#9b7db3',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#9b7db3]',
+  },
+  thighProximal: {
+    stroke: '#6b9fb8',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#6b9fb8]',
+  },
+  thighMiddle: {
+    stroke: '#8d9a7a',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#8d9a7a]',
+  },
+  thighDistal: {
+    stroke: '#7ba08d',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#7ba08d]',
+  },
+  calf: {
+    stroke: '#b89968',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#b89968]',
+  },
+  shin: {
+    stroke: '#a09b78',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#a09b78]',
+  },
+  back: {
+    stroke: '#8b8fa8',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#8b8fa8]',
+  },
+  thigh: {
+    stroke: '#a47a8d',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#a47a8d]',
+  },
+  legs: {
+    stroke: '#6f9c99',
+    strokeOpacity: 0.9,
+    fillOpacity: 0.08,
+    legendDotClass: 'bg-[#6f9c99]',
+  },
   reference: {
     stroke: 'var(--border)',
     strokeOpacity: 1,
@@ -80,13 +165,6 @@ const CHART_SERIES_COLORS: Record<ChartSeriesKey, ChartSeriesColor> = {
 
 export function getChartSeriesColor(series: ChartSeriesKey): ChartSeriesColor {
   return CHART_SERIES_COLORS[series]
-}
-
-export function getChartGridColor(strokeOpacity: number): ChartGridColor {
-  return {
-    stroke: 'var(--border)',
-    strokeOpacity,
-  }
 }
 
 export function getChartGradientStops(series: ChartSeriesKey, startOpacity?: number): ChartGradientStops {
@@ -102,14 +180,6 @@ export function getChartGradientStops(series: ChartSeriesKey, startOpacity?: num
       color: colorDef.stroke,
       opacity: 0,
     },
-  }
-}
-
-export function getChartTooltipContentStyle() {
-  return {
-    backgroundColor: 'var(--card)',
-    border: '1px solid var(--border)',
-    borderRadius: 10,
   }
 }
 
