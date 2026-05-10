@@ -76,18 +76,27 @@ export function formatTimeAgo(
   return formatted
 }
 
+export function capitalizeFirstLetter(value: string) {
+  if (!value) return value
+  return value.charAt(0).toUpperCase() + value.slice(1)
+}
+
 /**
- * Format a date for chart tooltips: DD.MM.YY
- * Used to display dates in tooltip labels with year included
- *
- * @param date - The date to format
- * @returns Formatted date string (e.g., "24.04.26")
- *
- * @example
- * formatChartTooltipDate(new Date('2026-04-24'))
- * // → "24.04.26"
+ * Format a date for chart tooltips.
+ * When a locale is provided, returns a long localized date (e.g. "8 Marzo 2026").
+ * Falls back to the legacy compact format if no locale is supplied.
  */
-export function formatChartTooltipDate(date: Date): string {
+export function formatChartTooltipDate(date: Date, locale?: string): string {
+  if (locale) {
+    return capitalizeFirstLetter(
+      new Intl.DateTimeFormat(locale, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(date)
+    )
+  }
+
   const day = String(date.getDate()).padStart(2, '0')
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const year = String(date.getFullYear()).slice(-2)
