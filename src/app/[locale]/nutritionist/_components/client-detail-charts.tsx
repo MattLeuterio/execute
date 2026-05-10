@@ -189,7 +189,15 @@ export function AdherenceChart({ data, labels }: { data: AdherenceChartPoint[]; 
   )
 }
 
-export function WeightChart({ data, labels }: { data: WeightChartPoint[]; labels: ChartLabels }) {
+export function WeightChart({
+  data,
+  labels,
+  locale,
+}: {
+  data: WeightChartPoint[]
+  labels: ChartLabels
+  locale: string
+}) {
   return (
     <ChartFrame>
       <ResponsiveContainer width="100%" height="100%">
@@ -218,7 +226,7 @@ export function WeightChart({ data, labels }: { data: WeightChartPoint[]; labels
             wrapperStyle={tooltipWrapperStyle}
             labelFormatter={(label) => {
               const point = data.find((p) => p.label === label)
-              return point ? formatChartTooltipDate(point.rawDate) : label
+              return point ? formatChartTooltipDate(point.rawDate, locale) : label
             }}
             formatter={(value) => [`${Number(value).toFixed(1)} kg`, labels.weightSeries]}
           />
@@ -237,7 +245,15 @@ export function WeightChart({ data, labels }: { data: WeightChartPoint[]; labels
   )
 }
 
-export function MeasurementsChart({ data, labels }: { data: MeasurementsChartPoint[]; labels: ChartLabels }) {
+export function MeasurementsChart({
+  data,
+  labels,
+  locale,
+}: {
+  data: MeasurementsChartPoint[]
+  labels: ChartLabels
+  locale: string
+}) {
   const availableSeries = useMemo<MeasurementSeriesKey[]>(() => {
     return ALL_MEASUREMENT_SERIES.filter((key) => hasMeasurementData(data, key))
   }, [data])
@@ -298,7 +314,7 @@ export function MeasurementsChart({ data, labels }: { data: MeasurementsChartPoi
             wrapperStyle={tooltipWrapperStyle}
             labelFormatter={(label) => {
               const point = data.find((p) => p.label === label)
-              return point ? formatChartTooltipDate(point.rawDate) : label
+              return point ? formatChartTooltipDate(point.rawDate, locale) : label
             }}
             formatter={(value, _name, entry) => {
               const dataKey = entry?.dataKey as MeasurementSeriesKey | undefined

@@ -1,21 +1,23 @@
 "use client"
 
 import { useState } from "react"
+import { addDays, addYears } from "date-fns"
 import { notFound } from "next/navigation"
 import { useParams } from "next/navigation"
 import { CalendarClock, ClipboardList, FileText, PencilLine, Plus } from "lucide-react"
+import { type DateRange } from "react-day-picker"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { CalendarRange } from "@/components/ui/calendar-range"
 import {
-  AdherenceChart,
   MeasurementsChart,
   type MeasurementsChartPoint,
   WeightChart,
 } from "../../_components/client-detail-charts"
+import { ClientAdherenceOverview } from "../../_components/client-adherence-overview"
 import { ClientDetailSection } from "../../_components/client-detail-section"
 import { getStatusColors } from "@/lib/colors"
-import { getAdherenceByClientId } from "@/lib/data/mock-adherence"
 import {
   getCheckInsByClientId,
   getWeightHistoryByClientId,
@@ -25,7 +27,7 @@ import { MEASUREMENT_DEFINITIONS } from "@/lib/measurements"
 import { getClientDetailById } from "@/lib/data/mock-clients"
 import { getNotesByClientId } from "@/lib/data/mock-notes"
 import { getPlanByClientId } from "@/lib/data/mock-plans"
-import { filterDataByMonthsRange, formatTimeAgo } from "@/lib/date-utils"
+import { formatTimeAgo } from "@/lib/date-utils"
 import { getTranslations, type Locale } from "@/lib/i18n"
 import { ClientStatus, type MeasurementType } from "@/lib/types"
 import { cn } from "@/lib/utils"
@@ -53,6 +55,24 @@ function isMeasurementChartKey(type: MeasurementType): boolean {
   return ACTIVE_MEASUREMENT_TYPES.has(type)
 }
 
+function filterDataByDateRange<T extends { rawDate: Date }>(
+  data: T[],
+  dateRange: DateRange | undefined
+): T[] {
+  const { from, to } = dateRange ?? {}
+  if (!from || !to) {
+    return data
+  }
+
+  const fromTime = from.getTime()
+  const toTime = to.getTime()
+
+  return data.filter((point) => {
+    const pointTime = point.rawDate.getTime()
+    return pointTime >= fromTime && pointTime <= toTime
+  })
+}
+
 function getLocalizedNoteType(
   type: "observation" | "feedback" | "intervention" | "general",
   copy: ReturnType<typeof getTranslations<"nutritionist">>["clients"]["detail"]["noteTypes"]
@@ -62,10 +82,18 @@ function getLocalizedNoteType(
 
 export default function ClientDetailPage() {
   const { locale, clientId } = useParams<{ locale: string; clientId: string }>()
-  const [rangeByChart, setRangeByChart] = useState({
-    adherence: 3,
-    weight: 3,
-    measurements: 3,
+  const today = new Date()
+  const [weightDateRange, setWeightDateRange] = useState<DateRange | undefined>({
+    from: addDays(today, -90),
+    to: today,
+  })
+  const [measurementDateRange, setMeasurementDateRange] = useState<DateRange | undefined>({
+    from: addDays(today, -90),
+    to: today,
+  })
+  const [adherenceDateRange, setAdherenceDateRange] = useState<DateRange | undefined>({
+    from: addDays(today, -6),
+    to: today,
   })
 
   const t = getTranslations("nutritionist", locale as Locale)
@@ -77,16 +105,45 @@ export default function ClientDetailPage() {
   }
 
   const statusColors = getStatusColors(client.status, "object")
-  
-  // Prepare full adherence data
-  const fullAdherenceData = getAdherenceByClientId(clientId, 21)
-    .slice()
-    .reverse()
-    .map((entry) => ({
-      label: formatChartLabel(entry.date, locale),
-      adherence: entry.adherencePercentage,
-      rawDate: entry.date,
-    }))
+
+  const minAdherenceDate = client.createdAt
+  const maxAdherenceDate = addYears(today, 1)
+
+  const handleAdherenceDateRangeChange = (nextRange: DateRange | undefined) => {
+    if (!nextRange) {
+      setAdherenceDateRange({
+        from: addDays(today, -6),
+        to: today,
+      })
+      return
+    }
+
+    setAdherenceDateRange(nextRange)
+  }
+
+  const handleWeightDateRangeChange = (nextRange: DateRange | undefined) => {
+    if (!nextRange) {
+      setWeightDateRange({
+        from: addDays(today, -90),
+        to: today,
+      })
+      return
+    }
+
+    setWeightDateRange(nextRange)
+  }
+
+  const handleMeasurementDateRangeChange = (nextRange: DateRange | undefined) => {
+    if (!nextRange) {
+      setMeasurementDateRange({
+        from: addDays(today, -90),
+        to: today,
+      })
+      return
+    }
+
+    setMeasurementDateRange(nextRange)
+  }
 
   // Prepare full weight data
   const fullWeightData = getWeightHistoryByClientId(clientId).map((entry) => ({
@@ -127,9 +184,8 @@ export default function ClientDetailPage() {
     })
 
   // Filter data based on selected range per chart
-  const adherenceData = filterDataByMonthsRange(fullAdherenceData, rangeByChart.adherence, (p) => p.rawDate)
-  const weightData = filterDataByMonthsRange(fullWeightData, rangeByChart.weight, (p) => p.rawDate)
-  const measurementsData = filterDataByMonthsRange(fullMeasurementsData, rangeByChart.measurements, (p) => p.rawDate)
+  const weightData = filterDataByDateRange(fullWeightData, weightDateRange)
+  const measurementsData = filterDataByDateRange(fullMeasurementsData, measurementDateRange)
 
   const recentCheckIns = getCheckInsByClientId(clientId).slice(0, 5)
   const notes = getNotesByClientId(clientId).slice(0, 5)
@@ -190,43 +246,18 @@ export default function ClientDetailPage() {
       </ClientDetailSection>
 
       <ClientDetailSection
-        title={detailCopy.sections.adherenceChart}
-        description={detailCopy.sections.adherenceChartDescription}
+        title={detailCopy.adherenceOverview.title}
+        description={detailCopy.adherenceOverview.description}
         className="overflow-visible border border-border/60 bg-background/60"
-        actions={
-          <div className="flex gap-1">
-            <Button
-              size="sm"
-              variant={rangeByChart.adherence === 3 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, adherence: 3 }))}
-            >
-              3 mesi
-            </Button>
-            <Button
-              size="sm"
-              variant={rangeByChart.adherence === 6 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, adherence: 6 }))}
-            >
-              6 mesi
-            </Button>
-            <Button
-              size="sm"
-              variant={rangeByChart.adherence === 12 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, adherence: 12 }))}
-            >
-              1 anno
-            </Button>
-            <Button
-              size="sm"
-              variant={rangeByChart.adherence === -1 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, adherence: -1 }))}
-            >
-              Tutto
-            </Button>
-          </div>
-        }
       >
-        <AdherenceChart data={adherenceData} labels={detailCopy.charts} />
+        <ClientAdherenceOverview
+          clientId={clientId}
+          locale={locale}
+          dateRange={adherenceDateRange}
+          onDateRangeChange={handleAdherenceDateRangeChange}
+          minDate={minAdherenceDate}
+          maxDate={maxAdherenceDate}
+        />
       </ClientDetailSection>
 
       <ClientDetailSection
@@ -234,39 +265,17 @@ export default function ClientDetailPage() {
         description={detailCopy.sections.weightDescription}
         className="overflow-visible border border-border/60 bg-background/60"
         actions={
-          <div className="flex gap-1">
-            <Button
-              size="sm"
-              variant={rangeByChart.weight === 3 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, weight: 3 }))}
-            >
-              3 mesi
-            </Button>
-            <Button
-              size="sm"
-              variant={rangeByChart.weight === 6 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, weight: 6 }))}
-            >
-              6 mesi
-            </Button>
-            <Button
-              size="sm"
-              variant={rangeByChart.weight === 12 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, weight: 12 }))}
-            >
-              1 anno
-            </Button>
-            <Button
-              size="sm"
-              variant={rangeByChart.weight === -1 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, weight: -1 }))}
-            >
-              Tutto
-            </Button>
-          </div>
+          <CalendarRange
+            value={weightDateRange}
+            onChange={handleWeightDateRangeChange}
+            minDate={client.createdAt}
+            maxDate={addYears(today, 1)}
+            locale={locale}
+            placeholder={t.common.calendarRange.placeholder}
+          />
         }
       >
-        <WeightChart data={weightData} labels={detailCopy.charts} />
+        <WeightChart data={weightData} labels={detailCopy.charts} locale={locale} />
       </ClientDetailSection>
 
       <ClientDetailSection
@@ -274,39 +283,21 @@ export default function ClientDetailPage() {
         description={detailCopy.sections.measurementsDescription}
         className="overflow-visible border border-border/60 bg-background/60"
         actions={
-          <div className="flex gap-1">
-            <Button
-              size="sm"
-              variant={rangeByChart.measurements === 3 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, measurements: 3 }))}
-            >
-              3 mesi
-            </Button>
-            <Button
-              size="sm"
-              variant={rangeByChart.measurements === 6 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, measurements: 6 }))}
-            >
-              6 mesi
-            </Button>
-            <Button
-              size="sm"
-              variant={rangeByChart.measurements === 12 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, measurements: 12 }))}
-            >
-              1 anno
-            </Button>
-            <Button
-              size="sm"
-              variant={rangeByChart.measurements === -1 ? "default" : "outline"}
-              onClick={() => setRangeByChart((prev) => ({ ...prev, measurements: -1 }))}
-            >
-              Tutto
-            </Button>
-          </div>
+          <CalendarRange
+            value={measurementDateRange}
+            onChange={handleMeasurementDateRangeChange}
+            minDate={client.createdAt}
+            maxDate={addYears(today, 1)}
+            locale={locale}
+            placeholder={t.common.calendarRange.placeholder}
+          />
         }
       >
-        <MeasurementsChart data={measurementsData} labels={detailCopy.charts} />
+        <MeasurementsChart
+          data={measurementsData}
+          labels={detailCopy.charts}
+          locale={locale}
+        />
       </ClientDetailSection>
 
       <ClientDetailSection
