@@ -136,8 +136,8 @@ export const nutritionistTranslations = {
           sunday: "Domenica",
         },
         adherenceOverview: {
-          title: "Panoramica aderenza ultimi giorni",
-          description: "Vista rapida settimanale/mensile con icone evento e accesso al dettaglio giorno.",
+          title: "Aderenza",
+          description: "Vista rapida e accesso al dettaglio giorno.",
           periodAdherence: "Aderenza periodo",
           coverage: "Copertura",
           streak: "Streak",
@@ -371,8 +371,8 @@ export const nutritionistTranslations = {
           sunday: "Sunday",
         },
         adherenceOverview: {
-          title: "Recent adherence overview",
-          description: "Weekly/monthly quick view with event icons and day drill-down.",
+          title: "Adherence",
+          description: "Quick view and day drill-down.",
           periodAdherence: "Period adherence",
           coverage: "Coverage",
           streak: "Streak",

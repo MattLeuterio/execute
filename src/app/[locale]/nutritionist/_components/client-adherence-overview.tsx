@@ -18,14 +18,13 @@ import { type DateRange } from "react-day-picker";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CalendarRange } from "@/components/ui/calendar-range";
-import { AdherenceBadge } from "@/components/common/adherence-badge";
+import { ClientAdherenceCalendar } from "./client-adherence-calendar";
 import {
   getChartGridColor,
   getChartTooltipContentStyle,
 } from "@/lib/chart-utils";
 import { getMockAdherenceOverviewByClientId } from "@/lib/data/mock-adherence-overview";
 import { getTranslations, type Locale } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
 
 type OverviewView = "calendar" | "chart";
 
@@ -237,69 +236,13 @@ export function ClientAdherenceOverview({
       </div>
 
       {viewType === "calendar" ? (
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-7">
-          {overview.days.map((day) =>
-            (() => {
-              const icons = [
-                day.isInPerfectStreak && day.isPerfectDay ? (
-                  <Flame key="flame" className="size-3.5 text-orange-500" />
-                ) : null,
-                day.hasComment ? (
-                  <MessageSquare key="comment" className="size-3.5" />
-                ) : null,
-                day.hasWeightCheck ? (
-                  <Scale key="weight" className="size-3.5" />
-                ) : null,
-                day.hasMeasurementCheck ? (
-                  <Ruler key="measurement" className="size-3.5" />
-                ) : null,
-              ].filter(Boolean);
-
-              const maxVisibleIcons = 3;
-              const visibleIcons = icons.slice(0, maxVisibleIcons);
-              const overflowIcons = icons.length - visibleIcons.length;
-
-              return (
-                <Button
-                  key={day.date.toISOString()}
-                  variant="outline"
-                  type="button"
-                  className={cn(
-                    "h-auto flex-col items-start justify-start gap-2 p-3 text-left",
-                    day.dayState === "completed" &&
-                      "border-emerald-500/40 bg-emerald-500/5",
-                    day.dayState === "not_tracked" && "border-dashed",
-                  )}
-                  onClick={() => goToDayDetail(day.date)}
-                >
-                  <div className="flex w-full items-center justify-between gap-2">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      {dayLabelFormatter.format(day.date)}
-                    </p>
-                    <AdherenceBadge
-                      value={day.adherencePercentage}
-                      notAvailableLabel={overviewCopy.notAvailable}
-                    />
-                  </div>
-
-                  <div className="flex w-full items-center justify-between gap-2">
-                    <div className="flex flex-wrap items-center gap-1.5 text-muted-foreground">
-                      {visibleIcons}
-                      {overflowIcons > 0 ? (
-                        <Badge
-                          variant="outline"
-                          className="h-5 px-1.5 text-[10px]"
-                        >
-                          {formatOverflowIcons(overflowIcons)}
-                        </Badge>
-                      ) : null}
-                    </div>
-                  </div>
-                </Button>
-              );
-            })(),
-          )}
-        </div>
+        <ClientAdherenceCalendar
+          days={overview.days}
+          dayLabelFormatter={dayLabelFormatter}
+          notAvailableLabel={overviewCopy.notAvailable}
+          onOpenDay={goToDayDetail}
+          formatOverflowIcons={formatOverflowIcons}
+        />
       ) : (
         <ChartFrame>
           <ResponsiveContainer width="100%" height="100%">
