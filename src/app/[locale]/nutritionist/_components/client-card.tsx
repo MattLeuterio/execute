@@ -1,7 +1,7 @@
 import { ClientSummary } from "@/lib/types"
 import type { NutritionistTranslations } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
-import { getStatusColors } from "@/lib/colors"
+import { AdherenceBadge } from "@/components/common/adherence-badge"
 import { formatTimeAgo } from "@/lib/date-utils"
 
 interface ClientCardProps {
@@ -42,14 +42,7 @@ export function ClientCard({ client, t, isSelecting = false, isSelected = false,
         <div>
           <p className="text-foreground/50">{t.clients.table.adherence}</p>
           <div className="mt-1 flex items-center gap-1">
-            <div
-              className={cn(
-                "h-5 w-10 rounded text-xs font-medium flex items-center justify-center",
-                getStatusColors(client.adherencePercentage)
-              )}
-            >
-              {client.adherencePercentage}%
-            </div>
+            <AdherenceBadge value={client.adherencePercentage} />
           </div>
         </div>
 

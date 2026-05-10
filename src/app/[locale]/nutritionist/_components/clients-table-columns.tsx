@@ -4,8 +4,7 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import type { NutritionistTranslations } from '@/lib/i18n'
 import { ClientSummary } from '@/lib/types'
 import { Checkbox } from '@/components/ui/checkbox'
-import { cn } from '@/lib/utils'
-import { getStatusColors } from '@/lib/colors'
+import { AdherenceBadge } from '@/components/common/adherence-badge'
 import { formatTimeAgo } from '@/lib/date-utils'
 
 const columnHelper = createColumnHelper<ClientSummary>()
@@ -55,18 +54,7 @@ export function getClientsTableColumns(
       header: t?.clients?.table?.adherence || 'Adherence',
       cell: (info) => {
         const percentage = info.getValue()
-        const colorClasses = getStatusColors(percentage, 'object')
-        return (
-          <div
-            className={cn(
-              'h-5 w-10 rounded text-xs font-medium flex items-center justify-center',
-              colorClasses.bg,
-              colorClasses.text
-            )}
-          >
-            {percentage}%
-          </div>
-        )
+        return <AdherenceBadge value={percentage} />
       },
       size: 110,
     }) as ColumnDef<ClientSummary>,
