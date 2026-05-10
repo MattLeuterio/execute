@@ -184,6 +184,65 @@ export function ClientAdherenceOverview({
     return chartsCopy?.[measurementType] ?? measurementType;
   };
 
+  const getDayIcons = (day: AdherenceBarPoint) =>
+    [
+      day.isInPerfectStreak && day.isPerfectDay ? (
+        <Flame key="flame" className="size-3 text-orange-500" />
+      ) : null,
+      day.hasComment ? (
+        <MessageSquare key="comment" className="size-3 text-muted-foreground" />
+      ) : null,
+      day.hasWeightCheck ? (
+        <Scale key="weight" className="size-3 text-muted-foreground" />
+      ) : null,
+      day.hasMeasurementCheck ? (
+        <Ruler key="measure" className="size-3 text-muted-foreground" />
+      ) : null,
+    ].filter(Boolean);
+
+  const renderIconsOverlay = (useCompactMode: boolean) => (
+    <div
+      className="pointer-events-none absolute top-1 left-11.5 right-3 grid"
+      style={{
+        gridTemplateColumns: `repeat(${Math.max(barChartData.length, 1)}, minmax(0, 1fr))`,
+      }}
+    >
+      {barChartData.map((day) => {
+        const icons = getDayIcons(day);
+
+        if (!icons.length) {
+          return <div key={day.key} className="h-4" />;
+        }
+
+        if (useCompactMode) {
+          return (
+            <div key={day.key} className="flex h-4 items-center justify-center">
+              <div className="flex items-center justify-center">{icons[0]}</div>
+            </div>
+          );
+        }
+
+        const maxVisibleIcons = 2;
+        const visibleIcons = icons.slice(0, maxVisibleIcons);
+        const overflowIcons = icons.length - visibleIcons.length;
+
+        return (
+          <div key={day.key} className="flex h-4 items-center justify-center">
+            <div className="flex items-center justify-center gap-0.5">
+              {visibleIcons}
+              {overflowIcons > 0 ? (
+                <span className="text-[9px] text-muted-foreground">+{overflowIcons}</span>
+              ) : null}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const useCompactIconsOnMobile = barChartData.length > 10;
+  const useCompactIconsOnDesktop = barChartData.length > 30;
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap flex-col md:flex-row md:items-center justify-between gap-2">
@@ -411,61 +470,11 @@ export function ClientAdherenceOverview({
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-          <div
-            className="pointer-events-none absolute top-1 left-11.5 right-3 grid"
-            style={{
-              gridTemplateColumns: `repeat(${Math.max(barChartData.length, 1)}, minmax(0, 1fr))`,
-            }}
-          >
-            {barChartData.map((day) => {
-              const icons = [
-                day.isInPerfectStreak && day.isPerfectDay ? (
-                  <Flame key="flame" className="size-3 text-orange-500" />
-                ) : null,
-                day.hasComment ? (
-                  <MessageSquare
-                    key="comment"
-                    className="size-3 text-muted-foreground"
-                  />
-                ) : null,
-                day.hasWeightCheck ? (
-                  <Scale
-                    key="weight"
-                    className="size-3 text-muted-foreground"
-                  />
-                ) : null,
-                day.hasMeasurementCheck ? (
-                  <Ruler
-                    key="measure"
-                    className="size-3 text-muted-foreground"
-                  />
-                ) : null,
-              ].filter(Boolean);
-
-              const maxVisibleIcons = 2;
-              const visibleIcons = icons.slice(0, maxVisibleIcons);
-              const overflowIcons = icons.length - visibleIcons.length;
-
-              if (!icons.length) {
-                return <div key={day.key} className="h-4" />;
-              }
-
-              return (
-                <div
-                  key={day.key}
-                  className="flex h-4 items-center justify-center"
-                >
-                  <div className="flex items-center justify-center gap-0.5">
-                    {visibleIcons}
-                    {overflowIcons > 0 ? (
-                      <span className="text-[9px] text-muted-foreground">
-                        +{overflowIcons}
-                      </span>
-                    ) : null}
-                  </div>
-                </div>
-              );
-            })}
+          <div className="md:hidden">
+            {renderIconsOverlay(useCompactIconsOnMobile)}
+          </div>
+          <div className="hidden md:block">
+            {renderIconsOverlay(useCompactIconsOnDesktop)}
           </div>
         </ChartFrame>
       )}
