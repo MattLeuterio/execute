@@ -21,6 +21,7 @@ import {
   getChartTooltipContentStyle,
 } from "@/lib/chart-utils"
 import { formatChartTooltipDate } from "@/lib/date-utils"
+import { LineChartPanel } from "@/components/charts/line-chart-panel"
 
 export interface AdherenceChartPoint {
   label: string
@@ -118,10 +119,6 @@ const DEFAULT_ACTIVE_SERIES: MeasurementSeriesKey[] = [
 
 const MAX_DEFAULT_ACTIVE = 5
 
-function ChartFrame({ children }: { children: React.ReactNode }) {
-  return <div className="h-72 w-full">{children}</div>
-}
-
 const tooltipStyle = {
   ...getChartTooltipContentStyle(),
 }
@@ -143,49 +140,17 @@ function hasMeasurementData(data: MeasurementsChartPoint[], key: MeasurementSeri
 
 export function AdherenceChart({ data, labels }: { data: AdherenceChartPoint[]; labels: ChartLabels }) {
   return (
-    <ChartFrame>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={chartMargin}>
-          <CartesianGrid {...getChartGridColor(0.4)} vertical={false} />
-          <XAxis
-            dataKey="label"
-            tickLine={false}
-            axisLine={false}
-            tick={{ fontSize: 12 }}
-            tickMargin={10}
-            interval="preserveStartEnd"
-            minTickGap={24}
-          />
-          <YAxis
-            domain={[0, 100]}
-            tickLine={false}
-            axisLine={false}
-            tick={{ fontSize: 12 }}
-            tickMargin={8}
-            width={44}
-          />
-          <Tooltip
-            cursor={{ stroke: "var(--border)", strokeDasharray: "4 4" }}
-            contentStyle={tooltipStyle}
-            wrapperStyle={tooltipWrapperStyle}
-            labelFormatter={(label) => {
-              const point = data.find((p) => p.label === label)
-              return point ? formatChartTooltipDate(point.rawDate) : label
-            }}
-            formatter={(value) => [`${Number(value)}%`, labels.adherenceSeries]}
-          />
-          <Line
-            type="monotone"
-            dataKey="adherence"
-            stroke={adherenceColor.stroke}
-            strokeOpacity={adherenceColor.strokeOpacity}
-            strokeWidth={2}
-            dot={false}
-            isAnimationActive={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </ChartFrame>
+    <LineChartPanel
+      data={data}
+      seriesKey="adherence"
+      seriesColor="adherence"
+      seriesLabel={labels.adherenceSeries}
+      valueFormatter={(value) => `${value}%`}
+      labelFormatter={(point) => formatChartTooltipDate(point.rawDate)}
+      yDomain={[0, 100]}
+      yAxisWidth={44}
+      chartMargin={chartMargin}
+    />
   )
 }
 
@@ -199,49 +164,16 @@ export function WeightChart({
   locale: string
 }) {
   return (
-    <ChartFrame>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={chartMargin}>
-          <CartesianGrid {...getChartGridColor(0.4)} vertical={false} />
-          <XAxis
-            dataKey="label"
-            tickLine={false}
-            axisLine={false}
-            tick={{ fontSize: 12 }}
-            tickMargin={10}
-            interval="preserveStartEnd"
-            minTickGap={24}
-          />
-          <YAxis
-            domain={getChartAxisDomainWithOffset(5)}
-            tickLine={false}
-            axisLine={false}
-            tick={{ fontSize: 12 }}
-            tickMargin={8}
-            width={50}
-          />
-          <Tooltip
-            cursor={{ stroke: "var(--border)", strokeDasharray: "4 4" }}
-            contentStyle={tooltipStyle}
-            wrapperStyle={tooltipWrapperStyle}
-            labelFormatter={(label) => {
-              const point = data.find((p) => p.label === label)
-              return point ? formatChartTooltipDate(point.rawDate, locale) : label
-            }}
-            formatter={(value) => [`${Number(value).toFixed(1)} kg`, labels.weightSeries]}
-          />
-          <Line
-            type="monotone"
-            dataKey="weight"
-            stroke={weightColor.stroke}
-            strokeOpacity={weightColor.strokeOpacity}
-            strokeWidth={2}
-            dot={false}
-            isAnimationActive={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </ChartFrame>
+    <LineChartPanel
+      data={data}
+      seriesKey="weight"
+      seriesColor="weight"
+      seriesLabel={labels.weightSeries}
+      valueFormatter={(value) => `${value.toFixed(1)} kg`}
+      labelFormatter={(point) => formatChartTooltipDate(point.rawDate, locale)}
+      yDomain={getChartAxisDomainWithOffset(5)}
+      chartMargin={chartMargin}
+    />
   )
 }
 

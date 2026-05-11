@@ -5,13 +5,7 @@ import { useRouter } from "next/navigation";
 import { Flame, MessageSquare, Ruler, Scale } from "lucide-react";
 import {
   Bar,
-  BarChart,
-  CartesianGrid,
   Cell,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
 } from "recharts";
 import { type DateRange } from "react-day-picker";
 
@@ -19,10 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CalendarRange } from "@/components/ui/calendar-range";
 import { ClientAdherenceCalendar } from "./client-adherence-calendar";
-import {
-  getChartGridColor,
-  getChartTooltipContentStyle,
-} from "@/lib/chart-utils";
+import { BarChartPanel } from "@/components/charts/bar-chart-panel";
 import { getMockAdherenceOverviewByClientId } from "@/lib/data/mock-adherence-overview";
 import { getTranslations, type Locale } from "@/lib/i18n";
 
@@ -63,10 +54,6 @@ function getDateKey(date: Date): string {
   const m = String(date.getMonth() + 1).padStart(2, "0");
   const d = String(date.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
-}
-
-function ChartFrame({ children }: { children: React.ReactNode }) {
-  return <div className="relative h-72 w-full">{children}</div>;
 }
 
 export function ClientAdherenceOverview({
@@ -303,180 +290,160 @@ export function ClientAdherenceOverview({
           formatOverflowIcons={formatOverflowIcons}
         />
       ) : (
-        <ChartFrame>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={barChartData}
-              margin={{ top: 28, right: 12, left: 6, bottom: 8 }}
-            >
-              <defs>
-                <pattern
-                  id={`missing-day-pattern-${clientId}`}
-                  patternUnits="userSpaceOnUse"
+        <div className="relative">
+          <BarChartPanel
+          data={barChartData}
+          xDataKey="label"
+          yDomain={[0, 100]}
+          yAxisWidth={40}
+          chartMargin={{ top: 28, right: 12, left: 6, bottom: 8 }}
+          heightClassName="relative h-72 w-full"
+          tooltipCursor={{ fill: "var(--muted)", fillOpacity: 0.22 }}
+          tooltipContent={({ active, label, payload }: { active?: boolean; label?: string; payload?: Array<{ payload: AdherenceBarPoint }> }) => {
+            if (!active || !payload?.length) return null;
+
+            const day = payload[0].payload as AdherenceBarPoint;
+            const measurementLabels =
+              day.measurementTypes.map(getMeasurementLabel);
+            const visibleMeasurementLabels = measurementLabels.slice(0, 4);
+            const hiddenMeasurements =
+              measurementLabels.length - visibleMeasurementLabels.length;
+            const measurements =
+              hiddenMeasurements > 0
+                ? `${visibleMeasurementLabels.join(", ")} +${hiddenMeasurements}`
+                : visibleMeasurementLabels.join(", ");
+            const weightText =
+              day.weightValue !== undefined
+                ? `${day.weightValue}${day.weightUnit ? ` ${day.weightUnit}` : ""}`
+                : overviewCopy.notAvailable;
+
+            return (
+              <div className="max-w-[320px] space-y-2 rounded-md border border-border/50 bg-background/95 p-3 shadow-md">
+                <p className="text-sm font-semibold text-foreground">
+                  {day.tooltipDateLabel || String(label)}
+                </p>
+                <p className="text-sm text-foreground">
+                  {detailCopy.dayDetail.eventTypes.adherence}:{" "}
+                  <span className="font-semibold">
+                    {day.adherenceLabel}
+                  </span>
+                </p>
+
+                {day.isInPerfectStreak && day.streakLengthAtDay > 0 ? (
+                  <p className="flex items-center gap-1 text-sm text-foreground">
+                    <Flame className="size-3.5 text-orange-500" />
+                    {overviewCopy.streak}:{" "}
+                    <span className="font-semibold">
+                      {day.streakLengthAtDay}
+                    </span>
+                  </p>
+                ) : null}
+
+                {day.commentCount > 0 ? (
+                  <p className="flex items-center gap-1 text-sm text-foreground">
+                    <MessageSquare className="size-3.5 text-muted-foreground" />
+                    {detailCopy.dayDetail.comments}:{" "}
+                    <span className="font-semibold">
+                      {day.commentCount}
+                    </span>
+                  </p>
+                ) : null}
+
+                {day.measurementTypes.length > 0 ? (
+                  <p className="flex items-start gap-1 text-sm text-foreground">
+                    <Ruler className="size-3.5 text-muted-foreground" />
+                    <span className="min-w-0 wrap-break-word">
+                      {detailCopy.dayDetail.measurements}:{" "}
+                      <span className="font-semibold">
+                        {measurements}
+                      </span>
+                    </span>
+                  </p>
+                ) : null}
+
+                {day.hasWeightCheck ? (
+                  <p className="flex items-center gap-1 text-sm text-foreground">
+                    <Scale className="size-3.5 text-muted-foreground" />
+                    {detailCopy.dayDetail.weight}:{" "}
+                    <span className="font-semibold">{weightText}</span>
+                  </p>
+                ) : null}
+              </div>
+            );
+          }}
+        >
+          <>
+            <defs>
+              <pattern
+                id={`missing-day-pattern-${clientId}`}
+                patternUnits="userSpaceOnUse"
+                width="6"
+                height="6"
+                patternTransform="rotate(35)"
+              >
+                <rect
                   width="6"
                   height="6"
-                  patternTransform="rotate(35)"
-                >
-                  <rect
-                    width="6"
-                    height="6"
-                    fill="var(--muted)"
-                    fillOpacity="0.22"
-                  />
-                  <line
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="6"
-                    stroke="var(--muted-foreground)"
-                    strokeOpacity="0.35"
-                    strokeWidth="1.5"
-                  />
-                </pattern>
-              </defs>
-              <CartesianGrid {...getChartGridColor(0.35)} vertical={false} />
-              <XAxis
-                dataKey="label"
-                tickLine={false}
-                axisLine={false}
-                tick={{ fontSize: 11 }}
-                tickMargin={8}
-                interval="preserveStartEnd"
-                minTickGap={20}
-              />
-              <YAxis
-                domain={[0, 100]}
-                tickLine={false}
-                axisLine={false}
-                tick={{ fontSize: 11 }}
-                tickMargin={8}
-                width={40}
-              />
-              <Tooltip
-                cursor={{ fill: "var(--muted)", fillOpacity: 0.22 }}
-                contentStyle={getChartTooltipContentStyle()}
-                content={({ active, label, payload }) => {
-                  if (!active || !payload?.length) return null;
+                  fill="var(--muted)"
+                  fillOpacity="0.22"
+                />
+                <line
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="6"
+                  stroke="var(--muted-foreground)"
+                  strokeOpacity="0.35"
+                  strokeWidth="1.5"
+                />
+              </pattern>
+            </defs>
 
-                  const day = payload[0].payload as AdherenceBarPoint;
-                  const measurementLabels =
-                    day.measurementTypes.map(getMeasurementLabel);
-                  const visibleMeasurementLabels = measurementLabels.slice(
-                    0,
-                    4,
-                  );
-                  const hiddenMeasurements =
-                    measurementLabels.length - visibleMeasurementLabels.length;
-                  const measurements =
-                    hiddenMeasurements > 0
-                      ? `${visibleMeasurementLabels.join(", ")} +${hiddenMeasurements}`
-                      : visibleMeasurementLabels.join(", ");
-                  const weightText =
-                    day.weightValue !== undefined
-                      ? `${day.weightValue}${day.weightUnit ? ` ${day.weightUnit}` : ""}`
-                      : overviewCopy.notAvailable;
+            <Bar
+              dataKey="missingValue"
+              stackId="day"
+              radius={[6, 6, 0, 0]}
+              maxBarSize={22}
+              isAnimationActive={false}
+              fill={`url(#missing-day-pattern-${clientId})`}
+              onClick={(point) => {
+                const row = point?.payload as AdherenceBarPoint | undefined;
+                if (row?.rawDate) {
+                  goToDayDetail(row.rawDate);
+                }
+              }}
+            />
 
-                  return (
-                    <div className="max-w-[320px] space-y-2 rounded-md border border-border/50 bg-background/95 p-3 shadow-md">
-                      <p className="text-sm font-semibold text-foreground">
-                        {day.tooltipDateLabel || String(label)}
-                      </p>
-                      <p className="text-sm text-foreground">
-                        {detailCopy.dayDetail.eventTypes.adherence}:{" "}
-                        <span className="font-semibold">
-                          {day.adherenceLabel}
-                        </span>
-                      </p>
-
-                      {day.isInPerfectStreak && day.streakLengthAtDay > 0 ? (
-                        <p className="flex items-center gap-1 text-sm text-foreground">
-                          <Flame className="size-3.5 text-orange-500" />
-                          {overviewCopy.streak}:{" "}
-                          <span className="font-semibold">
-                            {day.streakLengthAtDay}
-                          </span>
-                        </p>
-                      ) : null}
-
-                      {day.commentCount > 0 ? (
-                        <p className="flex items-center gap-1 text-sm text-foreground">
-                          <MessageSquare className="size-3.5 text-muted-foreground" />
-                          {detailCopy.dayDetail.comments}:{" "}
-                          <span className="font-semibold">
-                            {day.commentCount}
-                          </span>
-                        </p>
-                      ) : null}
-
-                      {day.measurementTypes.length > 0 ? (
-                        <p className="flex items-start gap-1 text-sm text-foreground">
-                          <Ruler className="size-3.5 text-muted-foreground" />
-                          <span className="min-w-0 wrap-break-word">
-                            {detailCopy.dayDetail.measurements}:{" "}
-                            <span className="font-semibold">
-                              {measurements}
-                            </span>
-                          </span>
-                        </p>
-                      ) : null}
-
-                      {day.hasWeightCheck ? (
-                        <p className="flex items-center gap-1 text-sm text-foreground">
-                          <Scale className="size-3.5 text-muted-foreground" />
-                          {detailCopy.dayDetail.weight}:{" "}
-                          <span className="font-semibold">{weightText}</span>
-                        </p>
-                      ) : null}
-                    </div>
-                  );
-                }}
-              />
-
-              <Bar
-                dataKey="missingValue"
-                stackId="day"
-                radius={[6, 6, 0, 0]}
-                maxBarSize={22}
-                isAnimationActive={false}
-                fill={`url(#missing-day-pattern-${clientId})`}
-                onClick={(point) => {
-                  const row = point?.payload as AdherenceBarPoint | undefined;
-                  if (row?.rawDate) {
-                    goToDayDetail(row.rawDate);
-                  }
-                }}
-              />
-
-              <Bar
-                dataKey="adherenceValue"
-                stackId="day"
-                radius={[6, 6, 0, 0]}
-                maxBarSize={22}
-                isAnimationActive={false}
-                onClick={(point) => {
-                  const row = point?.payload as AdherenceBarPoint | undefined;
-                  if (row?.rawDate) {
-                    goToDayDetail(row.rawDate);
-                  }
-                }}
-              >
-                {barChartData.map((entry) => (
-                  <Cell
-                    key={entry.key}
-                    fill={getBarColor(entry.isTracked, entry.adherenceValue)}
-                    fillOpacity={entry.isTracked ? 0.85 : 0.3}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-          <div className="md:hidden">
-            {renderIconsOverlay(useCompactIconsOnMobile)}
-          </div>
-          <div className="hidden md:block">
-            {renderIconsOverlay(useCompactIconsOnDesktop)}
-          </div>
-        </ChartFrame>
+            <Bar
+              dataKey="adherenceValue"
+              stackId="day"
+              radius={[6, 6, 0, 0]}
+              maxBarSize={22}
+              isAnimationActive={false}
+              onClick={(point) => {
+                const row = point?.payload as AdherenceBarPoint | undefined;
+                if (row?.rawDate) {
+                  goToDayDetail(row.rawDate);
+                }
+              }}
+            >
+              {barChartData.map((entry) => (
+                <Cell
+                  key={entry.key}
+                  fill={getBarColor(entry.isTracked, entry.adherenceValue)}
+                  fillOpacity={entry.isTracked ? 0.85 : 0.3}
+                />
+              ))}
+            </Bar>
+          </>
+        </BarChartPanel>
+        <div className="md:hidden">
+          {renderIconsOverlay(useCompactIconsOnMobile)}
+        </div>
+        <div className="hidden md:block">
+          {renderIconsOverlay(useCompactIconsOnDesktop)}
+        </div>
+        </div>
       )}
     </div>
   );
