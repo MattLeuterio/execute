@@ -76,6 +76,7 @@ export const nutritionistTranslations = {
           latestMeasurements: "Ultime misure",
         },
         actions: {
+          edit: "Modifica",
           editPlan: "Modifica piano",
           addCheckin: "Aggiungi check-in",
           viewAll: "Vedi tutto",
@@ -86,13 +87,7 @@ export const nutritionistTranslations = {
           status: "Stato",
           adherence: "Aderenza",
           lastCheckin: "Ultimo check-in",
-          interventionSignal: "Segnale di intervento",
           startDate: "Data inizio",
-        },
-        interventions: {
-          high: "Alta",
-          monitorClosely: "Da monitorare",
-          noUrgentAction: "Nessuna urgenza",
         },
         emptyStates: {
           noCheckins: "Nessun check-in completato.",
@@ -311,6 +306,7 @@ export const nutritionistTranslations = {
           latestMeasurements: "Latest measurements",
         },
         actions: {
+          edit: "Edit",
           editPlan: "Edit Plan",
           addCheckin: "Add Check-in",
           viewAll: "View all",
@@ -321,13 +317,7 @@ export const nutritionistTranslations = {
           status: "Status",
           adherence: "Adherence",
           lastCheckin: "Last Check-in",
-          interventionSignal: "Intervention Signal",
           startDate: "Start date",
-        },
-        interventions: {
-          high: "High",
-          monitorClosely: "Monitor closely",
-          noUrgentAction: "No urgent action",
         },
         emptyStates: {
           noCheckins: "No completed check-ins yet.",
