@@ -197,16 +197,10 @@ export default function ClientDetailPage() {
         title={client.name}
         description={detailCopy.headerDescription}
         actions={
-          <>
-            <Button size="sm" variant="outline" type="button">
-              <PencilLine className="size-4" />
-              {detailCopy.actions.editPlan}
-            </Button>
-            <Button size="sm" type="button">
-              <Plus className="size-4" />
-              {detailCopy.actions.addCheckin}
-            </Button>
-          </>
+          <Button size="sm" variant="outline" type="button">
+            <PencilLine className="size-4" />
+            {detailCopy.actions.edit}
+          </Button>
         }
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -222,24 +216,13 @@ export default function ClientDetailPage() {
 
           <div className="space-y-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{detailCopy.fields.adherence}</p>
-            <p className="text-2xl font-semibold text-foreground">{client.weeklyAdherence}%</p>
+            <p className="text-sm font-semibold text-foreground">{client.weeklyAdherence}%</p>
           </div>
 
           <div className="space-y-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{detailCopy.fields.lastCheckin}</p>
             <p className="text-sm font-medium text-foreground" suppressHydrationWarning>
               {client.lastCheckInDate ? formatTimeAgo(client.lastCheckInDate, "string", t, locale) : detailCopy.emptyStates.noCheckinsYet}
-            </p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{detailCopy.fields.interventionSignal}</p>
-            <p className="text-sm font-medium text-foreground">
-              {client.status === ClientStatus.AtRisk
-                ? detailCopy.interventions.high
-                : client.status === ClientStatus.Warning
-                  ? detailCopy.interventions.monitorClosely
-                  : detailCopy.interventions.noUrgentAction}
             </p>
           </div>
         </div>
@@ -304,10 +287,16 @@ export default function ClientDetailPage() {
         title={detailCopy.sections.recentCheckins}
         description={detailCopy.sections.recentCheckinsDescription}
         actions={
-          <Button size="sm" variant="outline" type="button">
-            <CalendarClock className="size-4" />
-            {detailCopy.actions.viewAll}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button size="sm" variant="outline" type="button">
+              <CalendarClock className="size-4" />
+              {detailCopy.actions.viewAll}
+            </Button>
+            <Button size="sm" type="button">
+              <Plus className="size-4" />
+              {detailCopy.actions.addCheckin}
+            </Button>
+          </div>
         }
       >
         {recentCheckIns.length === 0 ? (
@@ -368,10 +357,16 @@ export default function ClientDetailPage() {
         title={detailCopy.sections.currentPlan}
         description={detailCopy.sections.currentPlanDescription}
         actions={
-          <Button size="sm" variant="outline" type="button">
-            <ClipboardList className="size-4" />
-            {detailCopy.actions.openPlanDetails}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button size="sm" variant="outline" type="button">
+              <ClipboardList className="size-4" />
+              {detailCopy.actions.openPlanDetails}
+            </Button>
+            <Button size="sm" type="button">
+              <PencilLine className="size-4" />
+              {detailCopy.actions.editPlan}
+            </Button>
+          </div>
         }
       >
         {!currentPlan ? (
