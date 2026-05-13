@@ -1,13 +1,123 @@
 /**
  * Mock plan data
- * Realistic nutrition plans assigned to clients
- * 
- * Plans are 7-day templates that repeat weekly.
- * Each day has 3 items: breakfast, lunch, dinner.
- * For MVP, items are just names + descriptions (no macros, no complexity).
+ * Reusable plan templates, tags, and assignments.
  */
 
-import { Plan, WeeklySchedule, DailyPlan, PlanItemType } from '../types';
+import {
+  Plan,
+  PlanAssignment,
+  PlanDocument,
+  PlanTag,
+  WeeklySchedule,
+  PlanItemType,
+} from '../types';
+import {
+  getActiveAssignedPlans,
+  getAssignedPlanByClientId,
+  getPlansByTagSlug as filterPlansByTagSlug,
+  getPublishedPlans as filterPublishedPlans,
+} from '@/lib/plan-utils';
+
+const DEFAULT_NUTRITIONIST_ID = 'nutritionist-demo';
+
+type RichDocumentOptions = {
+  title: string;
+  intro: string;
+  sections: Array<{ title: string; bullets: string[] }>;
+  callout?: { title: string; body: string; tone?: 'info' | 'warning' | 'success' };
+  orderedSteps?: { title: string; steps: string[] };
+  quote?: string;
+  footerLink?: { label: string; href: string };
+};
+
+function createPlanDocument(
+  options: RichDocumentOptions
+): PlanDocument {
+  const {
+    title,
+    intro,
+    sections,
+    callout,
+    orderedSteps,
+    quote,
+    footerLink,
+  } = options;
+
+  return {
+    type: 'doc',
+    version: 1,
+    content: [
+      { type: 'heading', attrs: { level: 1 }, content: [{ type: 'text', text: title }] },
+      { type: 'paragraph', content: [{ type: 'text', text: intro }] },
+      ...(callout
+        ? [
+            {
+              type: 'callout',
+              attrs: { tone: callout.tone ?? 'info' },
+              content: [
+                {
+                  type: 'heading',
+                  attrs: { level: 3 },
+                  content: [{ type: 'text', text: callout.title }],
+                },
+                { type: 'paragraph', content: [{ type: 'text', text: callout.body }] },
+              ],
+            },
+            { type: 'horizontalRule' },
+          ]
+        : []),
+      ...sections.flatMap((section) => [
+        { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: section.title }] },
+        {
+          type: 'bulletList',
+          content: section.bullets.map((bullet) => ({
+            type: 'listItem',
+            content: [{ type: 'paragraph', content: [{ type: 'text', text: bullet }] }],
+          })),
+        },
+      ]),
+      ...(orderedSteps
+        ? [
+            {
+              type: 'heading',
+              attrs: { level: 2 },
+              content: [{ type: 'text', text: orderedSteps.title }],
+            },
+            {
+              type: 'orderedList',
+              content: orderedSteps.steps.map((step) => ({
+                type: 'listItem',
+                content: [{ type: 'paragraph', content: [{ type: 'text', text: step }] }],
+              })),
+            },
+          ]
+        : []),
+      ...(quote
+        ? [
+            {
+              type: 'blockquote',
+              content: [{ type: 'paragraph', content: [{ type: 'text', text: quote }] }],
+            },
+          ]
+        : []),
+      ...(footerLink
+        ? [
+            {
+              type: 'paragraph',
+              content: [
+                { type: 'text', text: 'Approfondimento: ' },
+                {
+                  type: 'text',
+                  text: footerLink.label,
+                  marks: [{ type: 'link', attrs: { href: footerLink.href } }],
+                },
+              ],
+            },
+          ]
+        : []),
+    ],
+  };
+}
 
 // ============================================================================
 // PLAN TEMPLATES
@@ -201,78 +311,351 @@ const WEEKLY_SCHEDULE_MAINTENANCE: WeeklySchedule = {
 // PLANS
 // ============================================================================
 
+export const MOCK_PLAN_TAGS: PlanTag[] = [
+  {
+    id: 'tag-proteico',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    name: 'Proteico',
+    slug: 'proteico',
+    color: 'emerald',
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+  },
+  {
+    id: 'tag-celiachia',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    name: 'Celiachia',
+    slug: 'celiachia',
+    color: 'amber',
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+  },
+  {
+    id: 'tag-reset',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    name: 'Reset abitudini',
+    slug: 'reset-abitudini',
+    color: 'slate',
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+  },
+  {
+    id: 'tag-mantenimento',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    name: 'Mantenimento',
+    slug: 'mantenimento',
+    color: 'blue',
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+  },
+  {
+    id: 'tag-low-carb',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    name: 'Low carb',
+    slug: 'low-carb',
+    color: 'violet',
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+  },
+];
+
 export const MOCK_PLANS: Plan[] = [
   {
     id: 'plan-marco-classic',
-    clientId: 'client-marco',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
     name: 'Piano Proteico Classico',
     description: 'Piano bilanciato ad alto contenuto proteico per perdita di peso sostenibile',
+    summary: 'Template base ad alto contenuto proteico con struttura semplice e ripetibile.',
+    status: 'published',
+    contentJson: createPlanDocument({
+      title: 'Piano Proteico Classico',
+      intro: 'Schema flessibile con focus su sazieta, proteine distribuite e pasti semplici da replicare.',
+      callout: {
+        title: 'Callout professionale',
+        body: 'Nei giorni con allenamento, aggiungere una quota proteica post workout e anticipare l idratazione.',
+        tone: 'success',
+      },
+      sections: [
+        {
+          title: 'Linee guida principali',
+          bullets: [
+            'Ogni pasto principale deve includere una fonte proteica chiara.',
+            'Verdure libere in almeno due pasti al giorno.',
+            'Snack opzionale solo se compare fame reale, non abitudine.',
+          ],
+        },
+        {
+          title: 'Categorie di pasti',
+          bullets: [
+            'Colazione proteica con uova, yogurt greco o skyr.',
+            'Pranzo con proteina magra, cereale semplice e verdure.',
+            'Cena leggera ad alta sazieta con proteina e contorno.',
+          ],
+        },
+      ],
+      orderedSteps: {
+        title: 'Protocollo settimanale rapido',
+        steps: [
+          'Preparazione spesa e meal prep in un unico blocco.',
+          'Controllo aderenza a meta settimana con mini check.',
+          'Revisione porzioni solo se peso e feedback non sono coerenti.',
+        ],
+      },
+      quote:
+        'Obiettivo reale: costanza alta per 4 settimane consecutive, non perfezione quotidiana.',
+      footerLink: { label: 'Guida prodotti senza glutine', href: 'https://example.com/guida-senza-glutine' },
+    }),
+    contentText:
+      'Schema flessibile con focus su sazieta, proteine distribuite e pasti semplici da replicare.',
+    tags: MOCK_PLAN_TAGS.filter((tag) => ['proteico', 'celiachia'].includes(tag.slug)),
     weeklySchedule: WEEKLY_SCHEDULE_BALANCED,
-    startDate: new Date('2026-02-01'),
-    isActive: true,
     createdAt: new Date('2026-02-01'),
-    updatedAt: new Date('2026-02-01'),
+    updatedAt: new Date('2026-03-08'),
+    publishedAt: new Date('2026-02-01'),
+    lastEditedBy: DEFAULT_NUTRITIONIST_ID,
+    version: 3,
     professionalNotes: 'ClientMarco - consistenza alta, perdita di peso 0.5-0.7kg/week target',
   },
   {
     id: 'plan-giulia-light',
-    clientId: 'client-giulia',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
     name: 'Piano Leggero Ipocalorico',
     description: 'Piano ipocalorico per perdita di peso moderata',
+    summary: 'Template leggero per clienti che hanno bisogno di più struttura e meno variabilità.',
+    status: 'published',
+    contentJson: createPlanDocument({
+      title: 'Piano Leggero Ipocalorico',
+      intro: 'Impostazione essenziale con porzioni semplici e messaggi chiari per ridurre il carico decisionale.',
+      callout: {
+        title: 'Nota strategica',
+        body: 'Nei weekend non ridurre i pasti: tenere struttura costante e modulare solo i condimenti.',
+        tone: 'warning',
+      },
+      sections: [
+        {
+          title: 'Priorita del piano',
+          bullets: [
+            'Ripetere pasti facili invece di cercare varietà continua.',
+            'Tenere i condimenti sotto controllo ma senza rigidità assoluta.',
+            'Puntare sulla consistenza settimanale, non sulla perfezione del singolo giorno.',
+          ],
+        },
+      ],
+      orderedSteps: {
+        title: 'Check operativo',
+        steps: [
+          'Stabilire 3 colazioni standard e ruotarle.',
+          'Bloccare 2 pranzi automatici da preparare in batch.',
+          'Usare un solo pasto libero gestito a settimana.',
+        ],
+      },
+    }),
+    contentText:
+      'Impostazione essenziale con porzioni semplici e messaggi chiari per ridurre il carico decisionale.',
+    tags: MOCK_PLAN_TAGS.filter((tag) => ['low-carb'].includes(tag.slug)),
     weeklySchedule: WEEKLY_SCHEDULE_LIGHT,
-    startDate: new Date('2026-01-15'),
-    isActive: true,
     createdAt: new Date('2026-01-15'),
-    updatedAt: new Date('2026-01-15'),
+    updatedAt: new Date('2026-03-12'),
+    publishedAt: new Date('2026-01-15'),
+    lastEditedBy: DEFAULT_NUTRITIONIST_ID,
+    version: 2,
     professionalNotes: 'Intended for moderate caloric deficit, but Giulia has struggled with adherence',
   },
   {
     id: 'plan-alessandro-reset',
-    clientId: 'client-alessandro',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
     name: 'Piano di Ripartenza',
     description: 'Piano semplice per ricostruire abitudini di base',
+    summary: 'Documento guidato per ripartire da routine, orari e scelte molto prevedibili.',
+    status: 'published',
+    contentJson: createPlanDocument({
+      title: 'Piano di Ripartenza',
+      intro: 'Percorso minimo per riprendere regolarita prima di aumentare complessità o vincoli.',
+      callout: {
+        title: 'Fase 1: reset',
+        body: 'Per le prime due settimane evitare regole avanzate: conta solo tornare a eseguire.',
+        tone: 'info',
+      },
+      sections: [
+        {
+          title: 'Abitudini da consolidare',
+          bullets: [
+            'Tre pasti principali con orari abbastanza costanti.',
+            'Lista spesa corta e ripetibile ogni settimana.',
+            'Nessun obiettivo avanzato finché la routine non regge per almeno 14 giorni.',
+          ],
+        },
+      ],
+      quote:
+        'Prima regola: ripetizione. Seconda regola: semplicità. Il resto arriva dopo.',
+    }),
+    contentText:
+      'Percorso minimo per riprendere regolarita prima di aumentare complessità o vincoli.',
+    tags: MOCK_PLAN_TAGS.filter((tag) => ['reset-abitudini'].includes(tag.slug)),
     weeklySchedule: WEEKLY_SCHEDULE_BALANCED,
-    startDate: new Date('2026-03-10'),
-    isActive: true,
     createdAt: new Date('2026-03-10'),
-    updatedAt: new Date('2026-03-10'),
+    updatedAt: new Date('2026-03-24'),
+    publishedAt: new Date('2026-03-10'),
+    lastEditedBy: DEFAULT_NUTRITIONIST_ID,
+    version: 1,
     professionalNotes: 'Alessandro needs to build consistency first. No complex restrictions.',
   },
   {
     id: 'plan-francesca-maintenance',
-    clientId: 'client-francesca',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
     name: 'Piano Mantenimento Premium',
     description: 'Piano per mantenimento del peso con varietà e piacere',
+    summary: 'Assetto flessibile per mantenimento, socialita e qualità alimentare.',
+    status: 'published',
+    contentJson: createPlanDocument({
+      title: 'Piano Mantenimento Premium',
+      intro: 'Piano flessibile per mantenere i risultati senza perdere struttura e controllo.',
+      callout: {
+        title: 'Gestione socialità',
+        body: 'Nelle cene fuori casa: priorita a proteine e vegetali, poi porzioni moderate sui carboidrati.',
+        tone: 'success',
+      },
+      sections: [
+        {
+          title: 'Focus del mantenimento',
+          bullets: [
+            'Mantenere il ritmo più che inseguire restrizione.',
+            'Inserire pasti sociali senza uscire dalla struttura della settimana.',
+            'Monitorare peso e sensazioni senza micro-correzioni quotidiane.',
+          ],
+        },
+      ],
+      orderedSteps: {
+        title: 'Routine mensile',
+        steps: [
+          'Settimana 1-2: mantenere schema base senza modifiche.',
+          'Settimana 3: inserire variazione controllata su 2 pasti.',
+          'Settimana 4: review con nutrizionista e micro aggiustamenti.',
+        ],
+      },
+    }),
+    contentText: 'Piano flessibile per mantenere i risultati senza perdere struttura e controllo.',
+    tags: MOCK_PLAN_TAGS.filter((tag) => ['mantenimento'].includes(tag.slug)),
     weeklySchedule: WEEKLY_SCHEDULE_MAINTENANCE,
-    startDate: new Date('2026-03-15'),
-    isActive: true,
     createdAt: new Date('2026-03-15'),
-    updatedAt: new Date('2026-03-15'),
+    updatedAt: new Date('2026-04-01'),
+    publishedAt: new Date('2026-03-15'),
+    lastEditedBy: DEFAULT_NUTRITIONIST_ID,
+    version: 2,
     professionalNotes: 'Francesca è pronta per fase di mantenimento e può aggiungere movimento',
   },
   {
-    id: 'plan-davide-standard',
-    clientId: 'client-davide',
-    name: 'Piano Standard Protein+',
-    description: 'Piano ad alto contenuto proteico con deficit moderato',
-    weeklySchedule: WEEKLY_SCHEDULE_BALANCED,
-    startDate: new Date('2026-02-22'),
-    isActive: true,
-    createdAt: new Date('2026-02-22'),
-    updatedAt: new Date('2026-02-22'),
-    professionalNotes: 'Davide è migliorato significativamente negli ultimi 3 settimane. Continue con supporto settimanale.',
-  },
-  {
     id: 'plan-elena-starter',
-    clientId: 'client-elena',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
     name: 'Piano Base - Abitudini',
     description: 'Piano semplice e sostenibile per nuovi clienti - focus su abitudini',
+    summary: 'Template base per onboarding nutrizionale e semplificazione massima.',
+    status: 'published',
+    contentJson: createPlanDocument({
+      title: 'Piano Base - Abitudini',
+      intro: 'Percorso onboarding con indicazioni pratiche e alta ripetibilità per ridurre attrito iniziale.',
+      callout: {
+        title: 'Regola delle 2 settimane',
+        body: 'Niente modifiche al piano prima di 14 giorni continui di tracking.',
+        tone: 'info',
+      },
+      sections: [
+        {
+          title: 'Messaggi chiave',
+          bullets: [
+            'Pochi pasti di riferimento da conoscere bene.',
+            'Acqua, regolarità e preparazione spesa come base del lavoro.',
+            'Obiettivo primario: aderenza, non ottimizzazione.',
+          ],
+        },
+      ],
+      orderedSteps: {
+        title: 'Percorso di avvio',
+        steps: [
+          'Settimana 1: apprendere struttura e orari.',
+          'Settimana 2: consolidare routine e lista spesa.',
+          'Settimana 3: prima revisione con eventuali micro modifiche.',
+        ],
+      },
+    }),
+    contentText: 'Percorso onboarding con indicazioni pratiche e alta ripetibilità per ridurre attrito iniziale.',
+    tags: MOCK_PLAN_TAGS.filter((tag) => ['reset-abitudini'].includes(tag.slug)),
     weeklySchedule: WEEKLY_SCHEDULE_BALANCED,
-    startDate: new Date('2026-03-28'),
-    isActive: true,
     createdAt: new Date('2026-03-28'),
-    updatedAt: new Date('2026-03-28'),
+    updatedAt: new Date('2026-04-09'),
+    publishedAt: new Date('2026-04-09'),
+    lastEditedBy: DEFAULT_NUTRITIONIST_ID,
+    version: 2,
     professionalNotes: 'Elena è nuova, focus su habit building. Expect 4-week ramp-up period.',
+  },
+];
+
+export const MOCK_PLAN_ASSIGNMENTS: PlanAssignment[] = [
+  {
+    id: 'assignment-marco-classic',
+    planId: 'plan-marco-classic',
+    clientId: 'client-marco',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    status: 'active',
+    assignedAt: new Date('2026-02-01'),
+    startedAt: new Date('2026-02-01'),
+    createdAt: new Date('2026-02-01'),
+    updatedAt: new Date('2026-02-01'),
+  },
+  {
+    id: 'assignment-davide-classic',
+    planId: 'plan-marco-classic',
+    clientId: 'client-davide',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    status: 'active',
+    assignedAt: new Date('2026-02-22'),
+    startedAt: new Date('2026-02-22'),
+    createdAt: new Date('2026-02-22'),
+    updatedAt: new Date('2026-02-22'),
+  },
+  {
+    id: 'assignment-giulia-light',
+    planId: 'plan-giulia-light',
+    clientId: 'client-giulia',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    status: 'active',
+    assignedAt: new Date('2026-01-15'),
+    startedAt: new Date('2026-01-15'),
+    createdAt: new Date('2026-01-15'),
+    updatedAt: new Date('2026-01-15'),
+  },
+  {
+    id: 'assignment-alessandro-reset',
+    planId: 'plan-alessandro-reset',
+    clientId: 'client-alessandro',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    status: 'active',
+    assignedAt: new Date('2026-03-10'),
+    startedAt: new Date('2026-03-10'),
+    createdAt: new Date('2026-03-10'),
+    updatedAt: new Date('2026-03-10'),
+  },
+  {
+    id: 'assignment-francesca-maintenance',
+    planId: 'plan-francesca-maintenance',
+    clientId: 'client-francesca',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    status: 'active',
+    assignedAt: new Date('2026-03-15'),
+    startedAt: new Date('2026-03-15'),
+    createdAt: new Date('2026-03-15'),
+    updatedAt: new Date('2026-03-15'),
+  },
+  {
+    id: 'assignment-elena-starter',
+    planId: 'plan-elena-starter',
+    clientId: 'client-elena',
+    nutritionistId: DEFAULT_NUTRITIONIST_ID,
+    status: 'active',
+    assignedAt: new Date('2026-04-09'),
+    startedAt: new Date('2026-04-09'),
+    createdAt: new Date('2026-04-09'),
+    updatedAt: new Date('2026-04-09'),
   },
 ];
 
@@ -284,14 +667,34 @@ export function getPlanById(id: string): Plan | undefined {
   return MOCK_PLANS.find((plan) => plan.id === id);
 }
 
-export function getPlanByClientId(clientId: string): Plan | undefined {
-  return MOCK_PLANS.find((plan) => plan.clientId === clientId);
+export function getPlanByClientId(clientId: string) {
+  return getAssignedPlanByClientId(MOCK_PLANS, MOCK_PLAN_ASSIGNMENTS, clientId);
 }
 
 export function getAllPlans(): Plan[] {
   return MOCK_PLANS;
 }
 
-export function getActivePlans(): Plan[] {
-  return MOCK_PLANS.filter((plan) => plan.isActive);
+export function getPublishedPlans(): Plan[] {
+  return filterPublishedPlans(MOCK_PLANS);
+}
+
+export function getActivePlans() {
+  return getActiveAssignedPlans(MOCK_PLANS, MOCK_PLAN_ASSIGNMENTS);
+}
+
+export function getPlanAssignmentsByClientId(clientId: string): PlanAssignment[] {
+  return MOCK_PLAN_ASSIGNMENTS.filter((assignment) => assignment.clientId === clientId);
+}
+
+export function getPlanAssignmentsByPlanId(planId: string): PlanAssignment[] {
+  return MOCK_PLAN_ASSIGNMENTS.filter((assignment) => assignment.planId === planId)
+}
+
+export function getPlansByTagSlug(tagSlug: string): Plan[] {
+  return filterPlansByTagSlug(MOCK_PLANS, tagSlug);
+}
+
+export function getAllPlanTags(): PlanTag[] {
+  return MOCK_PLAN_TAGS;
 }

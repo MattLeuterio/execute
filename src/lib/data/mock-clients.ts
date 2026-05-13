@@ -12,6 +12,24 @@
  */
 
 import { Client, ClientSummary, ClientDetail, ClientStatus } from '../types';
+import { getPlanByClientId } from './mock-plans';
+
+function getCurrentPlanId(clientId: string): string | undefined {
+  return getPlanByClientId(clientId)?.id;
+}
+
+function getCurrentPlanForDetail(clientId: string): ClientDetail['currentPlan'] {
+  const plan = getPlanByClientId(clientId);
+  if (!plan) {
+    return undefined;
+  }
+
+  return {
+    id: plan.id,
+    name: plan.name,
+    startDate: plan.startDate,
+  };
+}
 
 // ============================================================================
 // BASE CLIENTS
@@ -23,7 +41,7 @@ export const MOCK_CLIENTS: Client[] = [
     name: 'Marco Rossi',
     email: 'marco.rossi@example.com',
     phone: '+39 333 1234567',
-    currentPlanId: 'plan-marco-classic',
+    currentPlanId: getCurrentPlanId('client-marco'),
     createdAt: new Date('2026-02-01'),
     updatedAt: new Date('2026-04-15'),
   },
@@ -32,7 +50,7 @@ export const MOCK_CLIENTS: Client[] = [
     name: 'Giulia Bianchi',
     email: 'giulia.b@example.com',
     phone: '+39 333 2345678',
-    currentPlanId: 'plan-giulia-light',
+    currentPlanId: getCurrentPlanId('client-giulia'),
     createdAt: new Date('2026-01-15'),
     updatedAt: new Date('2026-04-15'),
   },
@@ -41,7 +59,7 @@ export const MOCK_CLIENTS: Client[] = [
     name: 'Alessandro Fermi',
     email: 'alex.fermi@example.com',
     phone: '+39 333 3456789',
-    currentPlanId: 'plan-alessandro-reset',
+    currentPlanId: getCurrentPlanId('client-alessandro'),
     createdAt: new Date('2026-03-10'),
     updatedAt: new Date('2026-04-12'),
   },
@@ -49,7 +67,7 @@ export const MOCK_CLIENTS: Client[] = [
     id: 'client-francesca',
     name: 'Francesca Conti',
     email: 'f.conti@example.com',
-    currentPlanId: 'plan-francesca-maintenance',
+    currentPlanId: getCurrentPlanId('client-francesca'),
     createdAt: new Date('2026-02-15'),
     updatedAt: new Date('2026-04-14'),
   },
@@ -58,7 +76,7 @@ export const MOCK_CLIENTS: Client[] = [
     name: 'Davide Moretti',
     email: 'davide.m@example.com',
     phone: '+39 333 4567890',
-    currentPlanId: 'plan-davide-standard',
+    currentPlanId: getCurrentPlanId('client-davide'),
     createdAt: new Date('2026-01-10'),
     updatedAt: new Date('2026-04-15'),
   },
@@ -67,7 +85,7 @@ export const MOCK_CLIENTS: Client[] = [
     name: 'Elena De Luca',
     email: 'elena.deluca@example.com',
     phone: '+39 333 5678901',
-    currentPlanId: 'plan-elena-starter',
+    currentPlanId: getCurrentPlanId('client-elena'),
     createdAt: new Date('2026-03-28'),
     updatedAt: new Date('2026-04-13'),
   },
@@ -177,11 +195,7 @@ export const MOCK_CLIENT_DETAILS: Record<string, ClientDetail> = {
     weeklyAdherence: 92,
     weeklyAdherenceTrend: 'up',
     consecutiveDaysOnTrack: 18,
-    currentPlan: {
-      id: 'plan-marco-classic',
-      name: 'Piano Proteico Classico',
-      startDate: new Date('2026-02-01'),
-    },
+    currentPlan: getCurrentPlanForDetail('client-marco'),
     latestWeight: {
       value: 76.3,
       date: new Date('2026-04-14'),
@@ -210,11 +224,7 @@ export const MOCK_CLIENT_DETAILS: Record<string, ClientDetail> = {
     weeklyAdherence: 62,
     weeklyAdherenceTrend: 'down',
     consecutiveDaysOnTrack: 3,
-    currentPlan: {
-      id: 'plan-giulia-light',
-      name: 'Piano Leggero Ipocalorico',
-      startDate: new Date('2026-01-15'),
-    },
+    currentPlan: getCurrentPlanForDetail('client-giulia'),
     latestWeight: {
       value: 69.8,
       date: new Date('2026-04-13'),
@@ -242,11 +252,7 @@ export const MOCK_CLIENT_DETAILS: Record<string, ClientDetail> = {
     weeklyAdherence: 31,
     weeklyAdherenceTrend: 'down',
     consecutiveDaysOnTrack: 0,
-    currentPlan: {
-      id: 'plan-alessandro-reset',
-      name: 'Piano di Ripartenza',
-      startDate: new Date('2026-03-10'),
-    },
+    currentPlan: getCurrentPlanForDetail('client-alessandro'),
     latestWeight: {
       value: 86.2,
       date: new Date('2026-04-10'),
@@ -267,11 +273,7 @@ export const MOCK_CLIENT_DETAILS: Record<string, ClientDetail> = {
     weeklyAdherence: 88,
     weeklyAdherenceTrend: 'neutral',
     consecutiveDaysOnTrack: 22,
-    currentPlan: {
-      id: 'plan-francesca-maintenance',
-      name: 'Piano Mantenimento Premium',
-      startDate: new Date('2026-03-15'),
-    },
+    currentPlan: getCurrentPlanForDetail('client-francesca'),
     latestWeight: {
       value: 61.8,
       date: new Date('2026-04-14'),
@@ -300,11 +302,7 @@ export const MOCK_CLIENT_DETAILS: Record<string, ClientDetail> = {
     weeklyAdherence: 71,
     weeklyAdherenceTrend: 'up',
     consecutiveDaysOnTrack: 5,
-    currentPlan: {
-      id: 'plan-davide-standard',
-      name: 'Piano Standard Protein+',
-      startDate: new Date('2026-02-22'),
-    },
+    currentPlan: getCurrentPlanForDetail('client-davide'),
     latestWeight: {
       value: 79.5,
       date: new Date('2026-04-12'),
@@ -333,11 +331,7 @@ export const MOCK_CLIENT_DETAILS: Record<string, ClientDetail> = {
     weeklyAdherence: 58,
     weeklyAdherenceTrend: 'neutral',
     consecutiveDaysOnTrack: 2,
-    currentPlan: {
-      id: 'plan-elena-starter',
-      name: 'Piano Base - Abitudini',
-      startDate: new Date('2026-03-28'),
-    },
+    currentPlan: getCurrentPlanForDetail('client-elena'),
     latestWeight: {
       value: 74.2,
       date: new Date('2026-03-28'),

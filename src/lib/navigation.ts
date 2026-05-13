@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, CheckSquare2, Settings } from "lucide-react"
+import { LayoutDashboard, Users, FileText, CheckSquare2, Settings } from "lucide-react"
 
 export type NavigationItem = {
   id: string
@@ -19,6 +19,12 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     label: "Clients",
     href: "clients",
     icon: Users,
+  },
+  {
+    id: "plans",
+    label: "Plans",
+    href: "plans",
+    icon: FileText,
   },
   {
     id: "checkins",
