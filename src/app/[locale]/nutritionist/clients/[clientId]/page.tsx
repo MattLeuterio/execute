@@ -2,14 +2,14 @@
 
 import { useState } from "react"
 import { addDays, addYears } from "date-fns"
-import { notFound } from "next/navigation"
-import { useParams } from "next/navigation"
+import { notFound, useParams, useRouter } from "next/navigation"
 import { CalendarClock, ClipboardList, FileText, PencilLine, Plus } from "lucide-react"
 import { type DateRange } from "react-day-picker"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CalendarRange } from "@/components/ui/calendar-range"
+import { PlanTagList } from "@/components/common/plan-tag-list"
 import {
   MeasurementsChart,
   type MeasurementsChartPoint,
@@ -31,6 +31,8 @@ import { formatTimeAgo } from "@/lib/date-utils"
 import { getTranslations, type Locale } from "@/lib/i18n"
 import { ClientStatus, type MeasurementType } from "@/lib/types"
 import { cn } from "@/lib/utils"
+import { PlanDocumentView } from "../../_components/plan-document-view"
+import { BackButton } from "@/components/ui/back-button"
 
 // All active (non-legacy) measurement types
 const ACTIVE_MEASUREMENT_TYPES = new Set(
@@ -82,6 +84,7 @@ function getLocalizedNoteType(
 
 export default function ClientDetailPage() {
   const { locale, clientId } = useParams<{ locale: string; clientId: string }>()
+  const router = useRouter()
   const today = new Date()
   const [weightDateRange, setWeightDateRange] = useState<DateRange | undefined>({
     from: addDays(today, -90),
@@ -193,6 +196,11 @@ export default function ClientDetailPage() {
 
   return (
     <div className="space-y-6">
+      <BackButton 
+        locale={locale}
+        href={`/${locale}/nutritionist/clients`}
+        suffix={t.clients.header}
+      />
       <ClientDetailSection
         title={client.name}
         description={detailCopy.headerDescription}
@@ -358,7 +366,17 @@ export default function ClientDetailPage() {
         description={detailCopy.sections.currentPlanDescription}
         actions={
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline" type="button">
+            <Button
+              size="sm"
+              variant="outline"
+              type="button"
+              disabled={!currentPlan}
+              onClick={() => {
+                if (currentPlan) {
+                  router.push(`/${locale}/nutritionist/plans/${currentPlan.id}`)
+                }
+              }}
+            >
               <ClipboardList className="size-4" />
               {detailCopy.actions.openPlanDetails}
             </Button>
@@ -378,28 +396,42 @@ export default function ClientDetailPage() {
               {currentPlan.description ? (
                 <p className="mt-1 text-sm text-muted-foreground">{currentPlan.description}</p>
               ) : null}
+              {currentPlan.summary ? (
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{currentPlan.summary}</p>
+              ) : null}
+              <PlanTagList tags={currentPlan.tags} className="mt-3" emptyLabel={t.plans.tags.emptyState} />
               <p className="mt-2 text-xs text-muted-foreground" suppressHydrationWarning>
                 {detailCopy.fields.startDate}: {formatTimeAgo(currentPlan.startDate, "string", t, locale)}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-              {currentPlan.weeklySchedule.days.map((day) => (
-                <div key={day.dayOfWeek} className="rounded-lg border border-border/50 p-3">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{detailCopy.days[day.dayOfWeek]}</p>
-                  <ul className="space-y-2">
-                    {day.items.map((item) => (
-                      <li key={item.id} className="text-sm text-foreground">
-                        <span className="font-medium">{item.name}</span>
-                        {item.description ? (
-                          <span className="text-muted-foreground">: {item.description}</span>
-                        ) : null}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+            {currentPlan.contentJson.content.length > 0 ? (
+              <PlanDocumentView
+                content={currentPlan.contentJson}
+                options={{ preview: true, maxNodes: 7, maxListItems: 3 }}
+                className="rounded-lg border border-border/50 p-4"
+              />
+            ) : currentPlan.weeklySchedule ? (
+              <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+                {currentPlan.weeklySchedule.days.map((day) => (
+                  <div key={day.dayOfWeek} className="rounded-lg border border-border/50 p-3">
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{detailCopy.days[day.dayOfWeek]}</p>
+                    <ul className="space-y-2">
+                      {day.items.map((item) => (
+                        <li key={item.id} className="text-sm text-foreground">
+                          <span className="font-medium">{item.name}</span>
+                          {item.description ? (
+                            <span className="text-muted-foreground">: {item.description}</span>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">{currentPlan.summary ?? currentPlan.description ?? detailCopy.emptyStates.noPlan}</p>
+            )}
           </div>
         )}
       </ClientDetailSection>

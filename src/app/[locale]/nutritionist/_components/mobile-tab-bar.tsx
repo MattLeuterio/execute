@@ -14,6 +14,7 @@ export function MobileTabBar({ locale, t }: MobileTabBarProps) {
     const labelMap: Record<string, string> = {
       dashboard: t.nav.dashboard,
       clients: t.nav.clients,
+      plans: t.nav.plans,
       checkins: t.nav.checkins,
       settings: t.nav.settings,
     }

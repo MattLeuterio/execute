@@ -18,10 +18,9 @@ export function NavLink({ href, label, icon: Icon, isCompact = false }: NavLinkP
   // Example: /it/nutritionist/dashboard -> locale='it', pathSegment='dashboard'
   const pathSegments = pathname.split("/").filter(Boolean)
   const locale = pathSegments[0] ?? "it"
-  const pathSegment = pathSegments[pathSegments.length - 1] ?? ""
   
   // href comes without locale (e.g., "dashboard")
-  const isActive = pathSegment === href
+  const isActive = pathSegments.includes(href)
   
   // Build full href with locale
   const fullHref = `/${locale}/nutritionist/${href}`
@@ -38,7 +37,7 @@ export function NavLink({ href, label, icon: Icon, isCompact = false }: NavLinkP
       )}
       aria-current={isActive ? "page" : undefined}
     >
-      <Icon className={cn("h-4 w-4 flex-shrink-0", isCompact && "h-5 w-5")} />
+      <Icon className={cn("h-4 w-4 shrink-0", isCompact && "h-5 w-5")} />
       {!isCompact && <span>{label}</span>}
     </Link>
   )

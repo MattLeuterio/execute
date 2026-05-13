@@ -1,10 +1,10 @@
 "use client"
 
 import { notFound, useParams, useRouter } from "next/navigation"
-import { ArrowLeft, Check, Flame, MessageSquare, Ruler, Scale } from "lucide-react"
+import { Check, Flame, MessageSquare, Ruler, Scale } from "lucide-react"
 
+import { BackButton } from "@/components/ui/back-button"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { getMockAdherenceDayDetailByClientId } from "@/lib/data/mock-adherence-overview"
 import { formatTimeAgo } from "@/lib/date-utils"
 import { getTranslations, type Locale } from "@/lib/i18n"
@@ -42,6 +42,7 @@ export default function ClientDayDetailPage() {
   const { locale, clientId, date: dateParam } = useParams<{ locale: string; clientId: string; date: string }>()
   const router = useRouter()
   const detailCopy = getTranslations("nutritionist", locale as Locale).clients.detail.dayDetail
+  const backButtonSuffix = detailCopy.backToClient.replace(/^(Torna a|Back to)/i, "")
 
   const parsedDate = parseDateParam(dateParam)
   if (!parsedDate) {
@@ -70,10 +71,11 @@ export default function ClientDayDetailPage() {
         title={`${detailCopy.title} • ${formatDayLabel(detail.date, locale)}`}
         description={detailCopy.description}
         actions={
-          <Button size="sm" variant="outline" onClick={() => router.push(`/${locale}/nutritionist/clients/${clientId}`)}>
-            <ArrowLeft className="size-4" />
-            {detailCopy.backToClient}
-          </Button>
+          <BackButton
+            locale={locale}
+            onClick={() => router.push(`/${locale}/nutritionist/clients/${clientId}`)}
+            suffix={backButtonSuffix}
+          />
         }
       >
         <div className="flex flex-wrap items-center gap-2">

@@ -16,6 +16,7 @@ export function AppSidebar({ locale, t }: AppSidebarProps) {
     const labelMap: Record<string, string> = {
       dashboard: t.nav.dashboard,
       clients: t.nav.clients,
+      plans: t.nav.plans,
       checkins: t.nav.checkins,
       settings: t.nav.settings,
     };
@@ -49,7 +50,7 @@ export function AppSidebar({ locale, t }: AppSidebarProps) {
       {/* Footer */}
       <div className="border-t border-border/50 px-4 py-4">
         <div className="flex items-center gap-3 rounded-lg px-2 py-2">
-          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500" />
+          <div className="h-8 w-8 rounded-full bg-linear-to-br from-blue-400 to-cyan-500" />
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-medium text-foreground">
               Dr. Rossi
