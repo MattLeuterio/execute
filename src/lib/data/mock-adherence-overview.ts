@@ -107,6 +107,10 @@ function getPlannedItemsForDate(clientId: string, date: Date): { plannedItems: n
     return { plannedItems: 0, planId: plan.id };
   }
 
+  if (!plan.weeklySchedule) {
+    return { plannedItems: 0, planId: plan.id };
+  }
+
   const dayName = DAY_OF_WEEK[date.getDay()];
   const dayPlan = plan.weeklySchedule.days.find((day) => day.dayOfWeek === dayName);
 

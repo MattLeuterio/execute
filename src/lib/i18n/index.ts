@@ -30,7 +30,7 @@ export function getTranslations<C extends Category>(
     nutritionist: nutritionistTranslations,
     client: clientTranslations,
   }
-  return translations[category][locale]
+  return translations[category][locale] as CategoryTranslations<C>
 }
 
 export const supportedLocales = ["it", "en"] as const

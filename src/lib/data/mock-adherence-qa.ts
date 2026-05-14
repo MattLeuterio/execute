@@ -30,6 +30,10 @@ export const MOCK_ADHERENCE_QA_OVERVIEW_CASES: MockAdherenceQaCase[] = [
       hasComment: true,
       hasWeightCheck: true,
       hasMeasurementCheck: true,
+      commentCount: 1,
+      measurementTypes: ["waist", "hips"],
+      weightValue: 71.2,
+      streakLengthAtDay: 5,
     },
   },
   {
@@ -48,6 +52,9 @@ export const MOCK_ADHERENCE_QA_OVERVIEW_CASES: MockAdherenceQaCase[] = [
       hasComment: false,
       hasWeightCheck: false,
       hasMeasurementCheck: false,
+      commentCount: 0,
+      measurementTypes: [],
+      streakLengthAtDay: 0,
     },
   },
   {
@@ -66,6 +73,9 @@ export const MOCK_ADHERENCE_QA_OVERVIEW_CASES: MockAdherenceQaCase[] = [
       hasComment: false,
       hasWeightCheck: false,
       hasMeasurementCheck: false,
+      commentCount: 0,
+      measurementTypes: [],
+      streakLengthAtDay: 0,
     },
   },
   {
@@ -84,6 +94,9 @@ export const MOCK_ADHERENCE_QA_OVERVIEW_CASES: MockAdherenceQaCase[] = [
       hasComment: false,
       hasWeightCheck: false,
       hasMeasurementCheck: false,
+      commentCount: 0,
+      measurementTypes: [],
+      streakLengthAtDay: 0,
     },
   },
 ]
