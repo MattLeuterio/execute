@@ -12,7 +12,7 @@ interface PlansTableDesktopProps {
 
 export function PlansTableDesktop({ table, locale, t }: PlansTableDesktopProps) {
   return (
-    <div className="overflow-hidden rounded-lg border border-border/50 bg-background/50 backdrop-blur-sm">
+    <div className="overflow-hidden rounded-lg border border-border/50 bg-background">
       <div className="overflow-x-auto">
         <table className="w-full" style={{ tableLayout: 'fixed' }}>
           <thead>
@@ -68,7 +68,7 @@ export function PlansTableDesktop({ table, locale, t }: PlansTableDesktopProps) 
 
           <tbody className="divide-y divide-border/30">
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="transition-colors hover:bg-foreground/5">
+              <tr key={row.id} className="group">
                 {row.getVisibleCells().map((cell) => {
                   const isSelect = cell.column.id === 'select'
                   const isName = cell.column.id === 'name'
@@ -77,13 +77,14 @@ export function PlansTableDesktop({ table, locale, t }: PlansTableDesktopProps) 
                   return (
                     <td
                       key={cell.id}
-                      className="px-6 py-4 text-sm overflow-hidden"
+                      className={`px-6 py-4 text-sm overflow-hidden ${
+                        isStickyColumn ? 'bg-background group-hover:bg-muted' : 'group-hover:bg-muted'
+                      }`}
                       style={{
                         cursor: cell.column.id !== 'select' ? 'pointer' : 'default',
                         width: cell.column.getSize(),
                         ...(isStickyColumn && {
                           position: 'sticky',
-                          backgroundColor: 'var(--background)',
                           zIndex: isSelect ? 20 : 19,
                           left: isSelect ? 0 : 52,
                         }),
