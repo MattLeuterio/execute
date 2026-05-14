@@ -134,15 +134,6 @@ export default async function PlanDetailPage({ params }: PlanDetailPageProps) {
       <ClientDetailSection
         title={t.plans.detail.sections.document}
         description={plan.summary ?? plan.contentText ?? t.plans.detail.emptyStates.noContent}
-        actions={
-          <Link
-            href={`/${locale}/nutritionist/plans`}
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
-          >
-            <ArrowUpRight className="size-4" />
-            {t.plans.actions.openDetails}
-          </Link>
-        }
       >
         {plan.contentJson.content.length > 0 ? (
           <PlanDocumentView content={plan.contentJson} className="rounded-lg border border-border/50 p-4" />

@@ -22,8 +22,14 @@ export const nutritionistTranslations = {
         status: "stato",
         lastActivity: "ultima attività",
       },
+      profile: {
+        namePlaceholder: "Dott. Rossi",
+        roleProfessional: "Professionista",
+      },
       actions: {
         backTo: "Torna a",
+        selectAll: "Seleziona tutti",
+        cancel: "Annulla",
       },
     },
     nav: {
@@ -195,6 +201,18 @@ export const nutritionistTranslations = {
         phone: "Telefono",
         lastActivity: "Ultima attività",
         trend: "Trend",
+        selection: {
+          selectAllRows: "Seleziona tutte le righe",
+          selectRow: "Seleziona riga {name}",
+        },
+        pagination: {
+          page: "Pagina",
+          of: "di",
+          total: "totale",
+          rows: "righe",
+          previousPage: "Pagina precedente",
+          nextPage: "Pagina successiva",
+        },
       },
       filters: {
         all: "Tutti",
@@ -212,6 +230,16 @@ export const nutritionistTranslations = {
         confirmArchive: "Archiviare {count} cliente/i?",
         export: "Esporta",
       },
+      csv: {
+        filePrefix: "esportazione_clienti",
+        headers: {
+          name: "Nome",
+          adherence: "Aderenza %",
+          weight: "Peso",
+          lastActivity: "Ultima attività",
+          status: "Stato",
+        },
+      },
       emptyStates: {
         noClients: "Nessun cliente corrisponde ai filtri selezionati",
       },
@@ -219,9 +247,32 @@ export const nutritionistTranslations = {
     plans: {
       header: "Piani",
       subtitle: "Esplora i template piano e apri il dettaglio di ciascun piano assegnato.",
+      search: {
+        placeholder: "Ricerca per nome...",
+        selected: "selezionati",
+      },
       actions: {
         backTarget: "i piani",
         openDetails: "Apri dettaglio piano",
+        select: "Seleziona",
+        exportPdf: "Esporta .pdf",
+        changeStatus: "Cambia stato",
+        delete: "Elimina",
+      },
+      confirmations: {
+        changeStatusTitle: "Conferma cambio stato",
+        changeStatusDescription: "Vuoi cambiare lo stato di {count} piano/i in {status}?",
+        changeStatusMixedDescription: "I piani selezionati hanno stati diversi. Confermi il cambio in {status} per {count} piano/i?",
+        deleteTitle: "Elimina piano/i",
+        deleteDescription: "Questa azione eliminerà {count} piano/i. Vuoi continuare?",
+        confirm: "Conferma",
+        deleteConfirm: "Elimina",
+        cancel: "Annulla",
+      },
+      feedback: {
+        exportSuccess: "Esportazione PDF completata per {count} piano/i.",
+        statusUpdated: "Stato aggiornato per {count} piano/i.",
+        deleteSuccess: "Piano/i eliminati: {count}.",
       },
       table: {
         title: "Titolo",
@@ -229,6 +280,32 @@ export const nutritionistTranslations = {
         clients: "Clienti",
         client: "Cliente",
         updatedAt: "Aggiornato",
+        selection: {
+          selectAllRows: "Seleziona tutte le righe",
+          selectRow: "Seleziona riga {name}",
+        },
+        pagination: {
+          page: "Pagina",
+          of: "di",
+          total: "totale",
+          rows: "righe",
+          previousPage: "Pagina precedente",
+          nextPage: "Pagina successiva",
+        },
+      },
+      pdf: {
+        status: "Stato",
+        updated: "Aggiornato",
+        assignedClients: "Clienti assegnati",
+        tags: "Etichette",
+        none: "Nessuna",
+        version: "Versione",
+        summary: "Riepilogo",
+        planDocument: "Documento piano",
+        filePrefix: "esportazione_piani",
+      },
+      emptyStates: {
+        noFilteredPlans: "Nessun piano corrisponde alla ricerca.",
       },
       tags: {
         header: "Etichette",
@@ -328,8 +405,14 @@ export const nutritionistTranslations = {
         status: "status",
         lastActivity: "last activity",
       },
+      profile: {
+        namePlaceholder: "Dr. Rossi",
+        roleProfessional: "Professional",
+      },
       actions: {
         backTo: "Back to",
+        selectAll: "Select all",
+        cancel: "Cancel",
       },
     },
     nav: {
@@ -501,6 +584,18 @@ export const nutritionistTranslations = {
         phone: "Phone",
         lastActivity: "Last Activity",
         trend: "Trend",
+        selection: {
+          selectAllRows: "Select all rows",
+          selectRow: "Select row {name}",
+        },
+        pagination: {
+          page: "Page",
+          of: "of",
+          total: "total",
+          rows: "rows",
+          previousPage: "Previous page",
+          nextPage: "Next page",
+        },
       },
       filters: {
         all: "All",
@@ -518,6 +613,16 @@ export const nutritionistTranslations = {
         confirmArchive: "Archive {count} client(s)?",
         export: "Export",
       },
+      csv: {
+        filePrefix: "clients_export",
+        headers: {
+          name: "Name",
+          adherence: "Adherence %",
+          weight: "Weight",
+          lastActivity: "Last Activity",
+          status: "Status",
+        },
+      },
       emptyStates: {
         noClients: "No clients match the selected filters",
       },
@@ -525,9 +630,32 @@ export const nutritionistTranslations = {
     plans: {
       header: "Plans",
       subtitle: "Browse plan templates and open the detail for each assigned plan.",
+      search: {
+        placeholder: "Search by name...",
+        selected: "selected",
+      },
       actions: {
         backTarget: "plans",
         openDetails: "Open plan details",
+        select: "Select",
+        exportPdf: "Export .pdf",
+        changeStatus: "Change status",
+        delete: "Delete",
+      },
+      confirmations: {
+        changeStatusTitle: "Confirm status change",
+        changeStatusDescription: "Change status for {count} plan(s) to {status}?",
+        changeStatusMixedDescription: "Selected plans have different statuses. Confirm update to {status} for {count} plan(s)?",
+        deleteTitle: "Delete plan(s)",
+        deleteDescription: "This action will delete {count} plan(s). Continue?",
+        confirm: "Confirm",
+        deleteConfirm: "Delete",
+        cancel: "Cancel",
+      },
+      feedback: {
+        exportSuccess: "PDF export completed for {count} plan(s).",
+        statusUpdated: "Updated status for {count} plan(s).",
+        deleteSuccess: "Deleted plan(s): {count}.",
       },
       table: {
         title: "Title",
@@ -535,6 +663,32 @@ export const nutritionistTranslations = {
         clients: "Clients",
         client: "Client",
         updatedAt: "Updated",
+        selection: {
+          selectAllRows: "Select all rows",
+          selectRow: "Select row {name}",
+        },
+        pagination: {
+          page: "Page",
+          of: "of",
+          total: "total",
+          rows: "rows",
+          previousPage: "Previous page",
+          nextPage: "Next page",
+        },
+      },
+      pdf: {
+        status: "Status",
+        updated: "Updated",
+        assignedClients: "Assigned clients",
+        tags: "Tags",
+        none: "None",
+        version: "Version",
+        summary: "Summary",
+        planDocument: "Plan document",
+        filePrefix: "plans_export",
+      },
+      emptyStates: {
+        noFilteredPlans: "No plans match your search.",
       },
       tags: {
         header: "Tags",
