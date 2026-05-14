@@ -407,7 +407,7 @@ export const MOCK_PLANS: Plan[] = [
     }),
     contentText:
       'Schema flessibile con focus su sazieta, proteine distribuite e pasti semplici da replicare.',
-    tags: MOCK_PLAN_TAGS.filter((tag) => ['proteico', 'celiachia'].includes(tag.slug)),
+    tags: MOCK_PLAN_TAGS.filter((tag) => ['proteico', 'celiachia', 'mantenimento', 'low-carb', 'reset-abitudini'].includes(tag.slug)),
     weeklySchedule: WEEKLY_SCHEDULE_BALANCED,
     createdAt: new Date('2026-02-01'),
     updatedAt: new Date('2026-03-08'),
