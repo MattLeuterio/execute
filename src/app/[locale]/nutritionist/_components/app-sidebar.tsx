@@ -12,6 +12,9 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ locale, t }: AppSidebarProps) {
+  const profileName = t.common.profile?.namePlaceholder ?? 'Dr. Rossi'
+  const profileRole = t.common.profile?.roleProfessional ?? 'Professional'
+
   const getNavLabel = (href: string): string => {
     const labelMap: Record<string, string> = {
       dashboard: t.nav.dashboard,
@@ -53,9 +56,9 @@ export function AppSidebar({ locale, t }: AppSidebarProps) {
           <div className="h-8 w-8 rounded-full bg-linear-to-br from-blue-400 to-cyan-500" />
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-medium text-foreground">
-              Dr. Rossi
+              {profileName}
             </p>
-            <p className="truncate text-xs text-foreground/50">Professional</p>
+            <p className="truncate text-xs text-foreground/50">{profileRole}</p>
           </div>
         </div>
       </div>

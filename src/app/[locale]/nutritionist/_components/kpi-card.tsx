@@ -53,7 +53,7 @@ export function KPICard({ label, value, unit, trend, icon }: KPICardProps) {
             </span>
           </div>
           <span className="text-xs text-foreground/60">
-            {trend.percentage ? `${trend.percentage}% from last week` : "No change"}
+            {typeof trend.percentage === 'number' ? `${trend.percentage}%` : null}
           </span>
         </div>
       )}

@@ -27,7 +27,7 @@ export function SelectionFloatingBar({
           {selectedCount}/{totalCount}
         </span>
         <span className="text-xs text-foreground/60">
-          {selectedCount === 1 ? 'selezionato' : 'selezionati'}
+          {t.clients.search.selected}
         </span>
       </div>
 
@@ -41,7 +41,7 @@ export function SelectionFloatingBar({
             className="h-8 px-2 text-xs"
           >
             <CheckSquare className="h-4 w-4 mr-1" />
-            Seleziona tutti
+            {t.common.actions.selectAll}
           </Button>
         )}
         <Button
@@ -51,7 +51,7 @@ export function SelectionFloatingBar({
           className="h-8 px-2 text-xs"
         >
           <X className="h-4 w-4 mr-1" />
-          Annulla
+          {t.common.actions.cancel}
         </Button>
       </div>
     </div>

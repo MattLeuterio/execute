@@ -20,7 +20,8 @@ import { getClientsTableColumns } from './clients-table-columns'
 
 interface UseClientsTableProps {
   data: ClientSummary[]
-  t?: NutritionistTranslations
+  t: NutritionistTranslations
+  locale: string
   initialSorting?: SortingState
 }
 
@@ -32,7 +33,7 @@ interface UseClientsTableReturn {
   getSelectedRows: () => ClientSummary[]
 }
 
-export function useClientsTable({ data, t, initialSorting }: UseClientsTableProps): UseClientsTableReturn {
+export function useClientsTable({ data, t, locale, initialSorting }: UseClientsTableProps): UseClientsTableReturn {
   // State (independent from URL params to avoid infinite loops)
   const [sorting, setSorting] = useState<SortingState>(
     initialSorting && initialSorting.length > 0
@@ -62,7 +63,7 @@ export function useClientsTable({ data, t, initialSorting }: UseClientsTableProp
   }, [data, globalFilter])
 
   // Columns
-  const columns = useMemo(() => getClientsTableColumns(t), [t])
+  const columns = useMemo(() => getClientsTableColumns(t, locale), [t, locale])
 
   // Memoized callbacks to prevent state update warnings
   const onSortingChange = useCallback((updater: Updater<SortingState>) => {

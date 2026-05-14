@@ -15,7 +15,6 @@ export default function ClientsPage() {
   const params = useParams()
   const searchParams = useSearchParams()
   const locale = params.locale as string
-  const searchParamsString = searchParams.toString()
 
   // Memoize clients data to prevent infinite loop
   const clients = useMemo(() => getAllClientSummaries(), [])
@@ -57,6 +56,7 @@ export default function ClientsPage() {
   const { table, globalFilter, setGlobalFilter, getSelectedRows } = useClientsTable({
     data: filteredClients,
     t,
+    locale,
     initialSorting,
   })
 
@@ -96,7 +96,7 @@ export default function ClientsPage() {
           </div>
 
           {/* Pagination */}
-          <ClientsTablePagination table={table} />
+          <ClientsTablePagination table={table} t={t} />
         </>
       )}
     </div>

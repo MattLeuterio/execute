@@ -24,13 +24,12 @@ export function ClientsTableToolbar({
   const [isArchiving, setIsArchiving] = useState(false)
 
   const handleExportCSV = () => {
-    exportClientsToCSV(selectedClients.length > 0 ? selectedClients : [])
+    exportClientsToCSV(selectedClients.length > 0 ? selectedClients : [], t)
   }
 
   const handleArchive = async () => {
     if (selectedClients.length === 0) return
-    const confirmMsg = t?.clients?.actions?.confirmArchive?.replace('{count}', String(selectedClients.length)) 
-      || `Archive ${selectedClients.length} client(s)?`
+    const confirmMsg = t.clients.actions.confirmArchive.replace('{count}', String(selectedClients.length))
     if (!confirm(confirmMsg)) return
 
     setIsArchiving(true)
@@ -48,7 +47,7 @@ export function ClientsTableToolbar({
       <div className="relative flex-1 sm:max-w-xs">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground/40 pointer-events-none" />
         <Input
-          placeholder={t?.clients?.search?.placeholder || "Search by name..."}
+          placeholder={t.clients.search.placeholder}
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
           className="pl-10"
@@ -59,7 +58,7 @@ export function ClientsTableToolbar({
       {selectedClients.length > 0 && (
         <div className="flex gap-2">
           <span className="flex items-center text-xs text-foreground/60">
-            {selectedClients.length} {t?.clients?.search?.selected || "selected"}
+            {selectedClients.length} {t.clients.search.selected}
           </span>
 
           <Button
@@ -67,10 +66,9 @@ export function ClientsTableToolbar({
             variant="ghost"
             size="sm"
             className="gap-2"
-            title="Export selected clients to CSV"
           >
             <Download className="h-4 w-4" />
-            {t?.clients?.actions?.export || "Export"}
+            {t.clients.actions.export}
           </Button>
 
           <Button
@@ -79,10 +77,9 @@ export function ClientsTableToolbar({
             variant="ghost"
             size="sm"
             className="gap-2 text-red-600/70 hover:text-red-600 hover:bg-red-500/10"
-            title="Archive selected clients"
           >
             <Archive className="h-4 w-4" />
-            {t?.clients?.actions?.archive || "Archive"}
+            {t.clients.actions.archive}
           </Button>
         </div>
       )}

@@ -1,10 +1,21 @@
+import type { NutritionistTranslations } from '@/lib/i18n'
 import { ClientSummary } from '@/lib/types'
 
-export function exportClientsToCSV(clients: ClientSummary[], filename?: string) {
+export function exportClientsToCSV(
+  clients: ClientSummary[],
+  t: NutritionistTranslations,
+  filename?: string,
+) {
   const timestamp = new Date().toISOString().split('T')[0]
-  const defaultFilename = `clients_export_${timestamp}.csv`
+  const defaultFilename = `${t.clients.csv.filePrefix}_${timestamp}.csv`
 
-  const headers = ['Name', 'Adherence %', 'Weight', 'Last Activity', 'Status']
+  const headers = [
+    t.clients.csv.headers.name,
+    t.clients.csv.headers.adherence,
+    t.clients.csv.headers.weight,
+    t.clients.csv.headers.lastActivity,
+    t.clients.csv.headers.status,
+  ]
   const rows = clients.map((c) => [
     c.name,
     c.adherencePercentage.toString(),

@@ -13,8 +13,8 @@ import { getPlanByClientId } from '@/lib/data/mock-plans'
 const columnHelper = createColumnHelper<ClientSummary>()
 
 export function getClientsTableColumns(
-  t?: NutritionistTranslations,
-  locale?: string
+  t: NutritionistTranslations,
+  locale: string,
 ): ColumnDef<ClientSummary>[] {
   return [
     columnHelper.display({
@@ -23,27 +23,27 @@ export function getClientsTableColumns(
         <Checkbox
           checked={table.getIsAllRowsSelected()}
           onCheckedChange={(checked) => table.toggleAllRowsSelected(!!checked)}
-          aria-label="Select all rows"
+          aria-label={t.clients.table.selection.selectAllRows}
         />
       ),
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(checked) => row.toggleSelected(!!checked)}
-          aria-label={`Select row ${row.original.name}`}
+          aria-label={t.clients.table.selection.selectRow.replace('{name}', row.original.name)}
         />
       ),
       size: 70,
       
     }) as ColumnDef<ClientSummary>,
     columnHelper.accessor('name', {
-      header: t?.clients?.table?.name || 'Name',
+      header: t.clients.table.name,
       cell: (info) => info.getValue(),
       size: 200,
     }) as ColumnDef<ClientSummary>,
     columnHelper.display({
       id: 'plan',
-      header: t?.clients?.table?.plan || 'Plan',
+      header: t.clients.table.plan,
       cell: ({ row }) => {
         const plan = getPlanByClientId(row.original.id)
 
@@ -56,7 +56,7 @@ export function getClientsTableColumns(
             <span className="truncate text-foreground">{plan.name}</span>
             <Link
               href={`/${locale}/nutritionist/plans/${plan.id}`}
-              aria-label={`${t?.plans?.actions?.openDetails || 'Open plan'}: ${plan.name}`}
+              aria-label={`${t.plans.actions.openDetails}: ${plan.name}`}
               className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               onClick={(event) => event.stopPropagation()}
             >
@@ -69,18 +69,18 @@ export function getClientsTableColumns(
     }) as ColumnDef<ClientSummary>,
     columnHelper.display({
       id: 'email',
-      header: t?.clients?.table?.email || 'Email',
+      header: t.clients.table.email,
       cell: (info) => info.row.original.email || '—',
       size: 200,
     }) as ColumnDef<ClientSummary>,
     columnHelper.display({
       id: 'phone',
-      header: t?.clients?.table?.phone || 'Phone',
+      header: t.clients.table.phone,
       cell: (info) => info.row.original.phone || '—',
       size: 175,
     }) as ColumnDef<ClientSummary>,
     columnHelper.accessor('adherencePercentage', {
-      header: t?.clients?.table?.adherence || 'Adherence',
+      header: t.clients.table.adherence,
       cell: (info) => {
         const percentage = info.getValue()
         return <AdherenceBadge value={percentage} />
@@ -88,7 +88,7 @@ export function getClientsTableColumns(
       size: 110,
     }) as ColumnDef<ClientSummary>,
     columnHelper.accessor('lastActivityDate', {
-      header: t?.clients?.table?.lastActivity || 'Last Activity',
+      header: t.clients.table.lastActivity,
       cell: (info) => (
         <div suppressHydrationWarning>
           {formatTimeAgo(info.getValue(), 'string', t, locale)}
