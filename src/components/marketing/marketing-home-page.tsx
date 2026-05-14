@@ -193,7 +193,7 @@ export function MarketingHomePage({ language }: MarketingHomePageProps) {
             <EarlyAccessDialog
               language={language}
               triggerLabel={t.cta}
-              triggerSize={"xl"}
+              triggerSize={"lg"}
               initialPlan="growth"
             />
           </div>
