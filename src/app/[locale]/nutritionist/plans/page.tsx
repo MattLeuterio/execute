@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { toast } from 'sonner'
 
+import { PageHeader } from '@/components/common/page-header'
 import { getAllPlans, getPlanAssignmentsByPlanId } from '@/lib/data/mock-plans'
 import { nutritionistTranslations } from '@/lib/i18n'
 import { PlansTableDesktop } from '../_components/plans-table-desktop'
@@ -73,10 +74,7 @@ export default function PlansPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t.plans.header}</h1>
-        <p className="mt-2 text-sm text-foreground/60">{t.plans.subtitle}</p>
-      </div>
+      <PageHeader title={t.plans.header} description={t.plans.subtitle} />
 
       {plans.length > 0 && (
         <PlansTableToolbar

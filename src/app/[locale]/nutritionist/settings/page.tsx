@@ -1,4 +1,5 @@
 import { getTranslations, type Locale } from '@/lib/i18n'
+import { PageHeader } from '@/components/common/page-header'
 
 interface SettingsPageProps {
   params: Promise<{ locale: string }>
@@ -10,7 +11,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold">{t.nav.settings}</h1>
+      <PageHeader title={t.nav.settings} />
     </div>
   )
 }

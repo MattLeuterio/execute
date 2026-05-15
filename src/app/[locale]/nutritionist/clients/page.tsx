@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react'
 import { useParams, useSearchParams } from 'next/navigation'
+import { PageHeader } from '@/components/common/page-header'
 import { getAllClientSummaries } from '@/lib/data/mock-clients'
 import { nutritionistTranslations } from '@/lib/i18n'
 import { ClientStatus } from '@/lib/types'
@@ -63,10 +64,7 @@ export default function ClientsPage() {
   return (
     <div className="space-y-6">
       {/* Page header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t.clients.header}</h1>
-        <p className="mt-2 text-sm text-foreground/60">{t.clients.subtitle}</p>
-      </div>
+      <PageHeader title={t.clients.header} description={t.clients.subtitle} />
 
       {/* Toolbar with search & bulk actions */}
       {filteredClients.length > 0 && (

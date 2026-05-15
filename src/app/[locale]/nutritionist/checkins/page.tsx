@@ -1,4 +1,5 @@
 import { getTranslations, type Locale } from '@/lib/i18n'
+import { PageHeader } from '@/components/common/page-header'
 
 interface CheckInsPageProps {
   params: Promise<{ locale: string }>
@@ -10,7 +11,7 @@ export default async function CheckInsPage({ params }: CheckInsPageProps) {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold">{t.nav.checkins}</h1>
+      <PageHeader title={t.nav.checkins} />
     </div>
   )
 }

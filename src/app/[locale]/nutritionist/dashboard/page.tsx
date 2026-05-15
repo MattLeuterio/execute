@@ -1,4 +1,5 @@
 import { Users, TrendingUp, AlertTriangle } from "lucide-react"
+import { PageHeader } from '@/components/common/page-header'
 import { getAllClientSummaries, getClientsByStatus } from "@/lib/data/mock-clients"
 import { getActivityFeed } from "@/lib/data/mock-activity"
 import { ClientStatus } from "@/lib/types"
@@ -33,10 +34,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   return (
     <div className="space-y-8">
       {/* Page header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">{t.dashboard.header}</h1>
-        <p className="mt-2 text-sm text-foreground/60">{t.dashboard.subtitle}</p>
-      </div>
+      <PageHeader title={t.dashboard.header} description={t.dashboard.subtitle} />
 
       {/* KPI Grid - 3 columns on desktop, stacked on mobile */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
