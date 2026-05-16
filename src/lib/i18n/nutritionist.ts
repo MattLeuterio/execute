@@ -39,6 +39,7 @@ export const nutritionistTranslations = {
       plans: "Piani",
       checkins: "Check-in",
       settings: "Impostazioni",
+      archive: "Archivio",
     },
     dashboard: {
       header: "Dashboard",
@@ -454,6 +455,7 @@ export const nutritionistTranslations = {
       plans: "Plans",
       checkins: "Check-ins",
       settings: "Settings",
+      archive: "Archive",
     },
     dashboard: {
       header: "Dashboard",

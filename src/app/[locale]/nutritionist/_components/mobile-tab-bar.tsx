@@ -1,6 +1,6 @@
 "use client"
 
-import { NAVIGATION_ITEMS } from "@/lib/navigation"
+import { MAIN_NAVIGATION_ITEMS } from "@/lib/navigation"
 import type { NutritionistTranslations } from "@/lib/i18n"
 import { NavLink } from "./nav-link"
 
@@ -28,7 +28,7 @@ export function MobileTabBar({ locale, t }: MobileTabBarProps) {
         className="fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-border/50 bg-background md:hidden"
         style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
       >
-        {NAVIGATION_ITEMS.map((item) => (
+        {MAIN_NAVIGATION_ITEMS.map((item) => (
           <NavLink
             key={item.id}
             href={item.href}

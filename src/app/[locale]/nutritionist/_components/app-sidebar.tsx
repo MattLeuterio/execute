@@ -1,6 +1,6 @@
 "use client";
 
-import { NAVIGATION_ITEMS } from "@/lib/navigation";
+import { MAIN_NAVIGATION_ITEMS, SECONDARY_MENU_ITEMS } from "@/lib/navigation";
 import type { NutritionistTranslations } from "@/lib/i18n";
 import { NavLink } from "./nav-link";
 import Image from "next/image";
@@ -22,6 +22,7 @@ export function AppSidebar({ locale, t }: AppSidebarProps) {
       plans: t.nav.plans,
       checkins: t.nav.checkins,
       settings: t.nav.settings,
+      archive: t.nav.archive,
     };
     return labelMap[href] || href;
   };  
@@ -39,15 +40,28 @@ export function AppSidebar({ locale, t }: AppSidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 px-2 py-4">
-        {NAVIGATION_ITEMS.map((item) => (
-          <NavLink
-            key={item.id}
-            href={item.href}
-            label={getNavLabel(item.href)}
-            icon={item.icon}
-          />
-        ))}
+      <nav className="flex-1 flex flex-col justify-between px-2 py-4">
+        <div className="space-y-1">
+          {MAIN_NAVIGATION_ITEMS.map((item) => (
+            <NavLink
+              key={item.id}
+              href={item.href}
+              label={getNavLabel(item.href)}
+              icon={item.icon}
+            />
+          ))}
+        </div>
+
+        <div className="space-y-1 border-t border-border/50 pt-4">
+          {SECONDARY_MENU_ITEMS.map((item) => (
+            <NavLink
+              key={item.id}
+              href={item.href}
+              label={getNavLabel(item.href)}
+              icon={item.icon}
+            />
+          ))}
+        </div>
       </nav>
 
       {/* Footer */}
