@@ -2,15 +2,20 @@
 
 import { useMemo } from 'react'
 import { useParams, useSearchParams } from 'next/navigation'
+import { Archive, Download } from 'lucide-react'
 import { PageHeader } from '@/components/common/page-header'
 import { getAllClientSummaries } from '@/lib/data/mock-clients'
 import { nutritionistTranslations } from '@/lib/i18n'
 import { ClientStatus } from '@/lib/types'
 import { useClientsTable } from './../_components/use-clients-table'
 import { ClientsTableClient } from './../_components/clients-table-client'
-import { ClientsTableToolbar } from './../_components/clients-table-toolbar'
 import { ClientsTablePagination } from './../_components/clients-table-pagination'
 import { ClientsMobileList } from './../_components/clients-mobile-list'
+import {
+  TableActionsToolbar,
+} from './../_components/table-actions-toolbar'
+import { archiveClients, exportClientsToCSV } from './../_components/clients-utils'
+import { useTableToolbarActions } from './../_components/use-table-toolbar-actions'
 
 export default function ClientsPage() {
   const params = useParams()
@@ -61,6 +66,41 @@ export default function ClientsPage() {
     initialSorting,
   })
 
+  const selectedClients = getSelectedRows()
+
+  const handleExportCSV = () => {
+    exportClientsToCSV(selectedClients.length > 0 ? selectedClients : [], t)
+  }
+
+  const handleArchive = async () => {
+    if (selectedClients.length === 0) return
+
+    const confirmMsg = t.clients.actions.confirmArchive.replace('{count}', String(selectedClients.length))
+    if (!confirm(confirmMsg)) return
+
+    await archiveClients(selectedClients.map((client) => client.id))
+    // TODO: Refresh table
+  }
+
+  const { actions } = useTableToolbarActions({
+    selectedCount: selectedClients.length,
+    actionDefinitions: [
+      {
+        id: 'export',
+        label: t.clients.actions.export,
+        icon: Download,
+        onClick: handleExportCSV,
+      },
+      {
+        id: 'archive',
+        label: t.clients.actions.archive,
+        icon: Archive,
+        onClick: handleArchive,
+        className: 'text-red-600/70 hover:bg-red-500/10 hover:text-red-600',
+      },
+    ],
+  })
+
   return (
     <div className="space-y-6">
       {/* Page header */}
@@ -68,11 +108,13 @@ export default function ClientsPage() {
 
       {/* Toolbar with search & bulk actions */}
       {filteredClients.length > 0 && (
-        <ClientsTableToolbar
-          selectedClients={getSelectedRows()}
+        <TableActionsToolbar
+          searchPlaceholder={t.clients.search.placeholder}
           searchTerm={globalFilter}
           onSearchChange={setGlobalFilter}
-          t={t}
+          selectedCount={selectedClients.length}
+          selectedLabel={t.clients.search.selected}
+          actions={actions}
         />
       )}
 

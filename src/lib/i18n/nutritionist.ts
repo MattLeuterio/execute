@@ -28,6 +28,7 @@ export const nutritionistTranslations = {
       },
       actions: {
         backTo: "Torna a",
+        select: "Seleziona",
         selectAll: "Seleziona tutti",
         cancel: "Annulla",
         save: "Salva",
@@ -444,6 +445,7 @@ export const nutritionistTranslations = {
       },
       actions: {
         backTo: "Back to",
+        select: "Select",
         selectAll: "Select all",
         cancel: "Cancel",
         save: "Save",

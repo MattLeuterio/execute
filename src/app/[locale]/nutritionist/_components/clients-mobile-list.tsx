@@ -6,8 +6,7 @@ import { Table } from '@tanstack/react-table'
 import type { NutritionistTranslations } from '@/lib/i18n'
 import { ClientSummary } from '@/lib/types'
 import { ClientCard } from './client-card'
-import { SelectionFloatingBar } from './selection-floating-bar'
-import { Button } from '@/components/ui/button'
+import { MobileSelectionToolbar } from './mobile-selection-toolbar'
 
 interface ClientsMobileListProps {
   table: Table<ClientSummary>
@@ -38,17 +37,17 @@ export function ClientsMobileList({ table, locale, t }: ClientsMobileListProps) 
 
   return (
     <div className="relative space-y-3">
-      {/* Selection mode toggle */}
-      {!isSelecting && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setIsSelecting(true)}
-          className="w-full"
-        >
-          Seleziona
-        </Button>
-      )}
+      <MobileSelectionToolbar
+        isSelecting={isSelecting}
+        selectedCount={selectedCount}
+        totalCount={rows.length}
+        selectLabel={t.common.actions.select}
+        selectAllLabel={t.common.actions.selectAll}
+        cancelLabel={t.common.actions.cancel}
+        onStartSelecting={() => setIsSelecting(true)}
+        onSelectAll={handleSelectAll}
+        onClearSelection={handleClearSelection}
+      />
 
       {/* Cards */}
       {rows.length === 0 ? (
@@ -90,16 +89,6 @@ export function ClientsMobileList({ table, locale, t }: ClientsMobileListProps) 
         })
       )}
 
-      {/* Floating selection bar */}
-      {isSelecting && (
-        <SelectionFloatingBar
-          selectedCount={selectedCount}
-          totalCount={rows.length}
-          onSelectAll={handleSelectAll}
-          onClearSelection={handleClearSelection}
-          t={t}
-        />
-      )}
     </div>
   )
 }

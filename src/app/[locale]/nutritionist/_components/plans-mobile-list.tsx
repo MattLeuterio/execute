@@ -4,8 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Table } from '@tanstack/react-table'
 import type { NutritionistTranslations } from '@/lib/i18n'
-import { SelectionFloatingBar } from './selection-floating-bar'
-import { Button } from '@/components/ui/button'
+import { MobileSelectionToolbar } from './mobile-selection-toolbar'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { CalendarClock, FileText, Tags } from 'lucide-react'
@@ -41,11 +40,17 @@ export function PlansMobileList({ table, locale, t }: PlansMobileListProps) {
 
   return (
     <div className="relative space-y-3">
-      {!isSelecting && (
-        <Button variant="outline" size="sm" onClick={() => setIsSelecting(true)} className="w-full">
-          {t.plans.actions.select}
-        </Button>
-      )}
+      <MobileSelectionToolbar
+        isSelecting={isSelecting}
+        selectedCount={selectedCount}
+        totalCount={rows.length}
+        selectLabel={t.common.actions.select}
+        selectAllLabel={t.common.actions.selectAll}
+        cancelLabel={t.common.actions.cancel}
+        onStartSelecting={() => setIsSelecting(true)}
+        onSelectAll={handleSelectAll}
+        onClearSelection={handleClearSelection}
+      />
 
       {rows.length === 0 ? (
         <div className="rounded-lg border border-border/50 bg-background/50 p-8 text-center backdrop-blur-sm">
@@ -121,15 +126,6 @@ export function PlansMobileList({ table, locale, t }: PlansMobileListProps) {
         })
       )}
 
-      {isSelecting && (
-        <SelectionFloatingBar
-          selectedCount={selectedCount}
-          totalCount={rows.length}
-          onSelectAll={handleSelectAll}
-          onClearSelection={handleClearSelection}
-          t={t}
-        />
-      )}
     </div>
   )
 }
