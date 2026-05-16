@@ -1,9 +1,8 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { MoreVertical } from 'lucide-react'
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { ActionDropdownMenu } from '@/components/common/action-dropdown-menu'
 import { cn } from '@/lib/utils'
 
 interface PageHeaderProps {
@@ -50,17 +49,13 @@ export function PageHeader({
 
       {resolvedMobileActions ? (
         <div className="md:hidden">
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              className="inline-flex size-8 items-center justify-center rounded-lg border border-border/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              aria-label={actionsLabel}
-            >
-              <MoreVertical className="size-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 min-w-56">
-              {resolvedMobileActions}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ActionDropdownMenu
+            ariaLabel={actionsLabel}
+            actions={resolvedMobileActions}
+            triggerSize="md"
+            align="end"
+            contentClassName="w-56 min-w-56"
+          />
         </div>
       ) : null}
     </div>
