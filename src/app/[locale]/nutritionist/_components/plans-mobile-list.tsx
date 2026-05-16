@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { CalendarClock, FileText, Tags } from 'lucide-react'
-import { PlanTagList } from '@/components/common/plan-tag-list'
+import { TagItem } from '@/components/common/tag-item'
 import type { PlanTableItem } from './plans-utils'
 
 interface PlansMobileListProps {
@@ -91,7 +91,15 @@ export function PlansMobileList({ table, locale, t }: PlansMobileListProps) {
                     <Tags className="size-3.5" />
                     {t.plans.tags.header}
                   </p>
-                  <PlanTagList tags={plan.tags} emptyLabel={t.plans.tags.emptyState} />
+                  {plan.tags.length === 0 ? (
+                    <p className="text-xs text-muted-foreground">{t.plans.tags.emptyState}</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {plan.tags.map((tag) => (
+                        <TagItem key={tag.id} tag={tag} mode="readonly" />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </CardHeader>
             </Card>

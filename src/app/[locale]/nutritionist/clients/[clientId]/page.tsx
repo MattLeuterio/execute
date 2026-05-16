@@ -9,7 +9,7 @@ import { type DateRange } from "react-day-picker"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CalendarRange } from "@/components/ui/calendar-range"
-import { PlanTagList } from "@/components/common/plan-tag-list"
+import { TagItem } from "@/components/common/tag-item"
 import {
   MeasurementsChart,
   type MeasurementsChartPoint,
@@ -399,7 +399,15 @@ export default function ClientDetailPage() {
               {currentPlan.summary ? (
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{currentPlan.summary}</p>
               ) : null}
-              <PlanTagList tags={currentPlan.tags} className="mt-3" emptyLabel={t.plans.tags.emptyState} />
+              {currentPlan.tags.length === 0 ? (
+                <p className="mt-3 text-xs text-muted-foreground">{t.plans.tags.emptyState}</p>
+              ) : (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {currentPlan.tags.map((tag) => (
+                    <TagItem key={tag.id} tag={tag} mode="readonly" />
+                  ))}
+                </div>
+              )}
               <p className="mt-2 text-xs text-muted-foreground" suppressHydrationWarning>
                 {detailCopy.fields.startDate}: {formatTimeAgo(currentPlan.startDate, "string", t, locale)}
               </p>

@@ -4,7 +4,7 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import type { NutritionistTranslations } from '@/lib/i18n'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
-import { PlanTagList } from '@/components/common/plan-tag-list'
+import { TagItem } from '@/components/common/tag-item'
 import type { PlanTableItem } from './plans-utils'
 
 const columnHelper = createColumnHelper<PlanTableItem>()
@@ -65,9 +65,21 @@ export function getPlansTableColumns(t: NutritionistTranslations, locale: string
       id: 'tags',
       header: t.plans.tags.header,
       size: 320,
-      cell: ({ row }) => (
-        <PlanTagList tags={row.original.tags} emptyLabel={t.plans.tags.emptyState} className="justify-start" />
-      ),
+      cell: ({ row }) => {
+        const tags = row.original.tags
+
+        if (tags.length === 0) {
+          return <p className="text-xs text-muted-foreground">{t.plans.tags.emptyState}</p>
+        }
+
+        return (
+          <div className="flex flex-wrap justify-start gap-2">
+            {tags.map((tag) => (
+              <TagItem key={tag.id} tag={tag} mode="readonly" />
+            ))}
+          </div>
+        )
+      },
     }) as ColumnDef<PlanTableItem>,
   ]
 }
